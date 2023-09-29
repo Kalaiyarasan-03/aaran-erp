@@ -11,18 +11,24 @@ return new class extends Migration
         Schema::create('jobcards', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->references('id')->on('orders');
-            $table->foreignId('style_id')->references('id')->on('styles');
-            $table->foreignId('size_id')->references('id')->on('sizes');
-            $table->foreignId('colour_id')->references('id')->on('colours');
-            $table->string('qty');
+            $table->string('total_qty');
             $table->string('active_id', 3)->nullable();
             $table->foreignId('user_id')->references('id')->on('users');
             $table->timestamps();
+        });
+
+        Schema::create('jobcard_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('style_id')->references('id')->on('styles');
+            $table->foreignId('size_id')->references('id')->on('sizes');
+            $table->foreignId('colour_id')->references('id')->on('colours');
+            $table->decimal('qty',11,3);
         });
     }
 
     public function down(): void
     {
+        Schema::dropIfExists('jobcard_items');
         Schema::dropIfExists('jobcards');
     }
 };
