@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('vname')->unique();
             $table->string('desc')->nullable();
             $table->string('active_id', 3)->nullable();
+            $table->foreignId('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

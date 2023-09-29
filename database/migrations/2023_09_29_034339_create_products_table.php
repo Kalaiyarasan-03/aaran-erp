@@ -10,11 +10,12 @@ return new class extends Migration {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('vname')->unique();
-            $table->string('producttype')->nullable();
+            $table->string('product_type')->nullable();
             $table->foreignId('hsncode_id')->references('id')->on('hsncodes');
             $table->string('unit')->nullable();
             $table->string('gstpercent')->nullable();
             $table->string('active_id', 3)->nullable();
+            $table->foreignId('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
