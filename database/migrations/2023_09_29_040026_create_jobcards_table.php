@@ -10,6 +10,10 @@ return new class extends Migration
     {
         Schema::create('jobcards', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('order_id')->references('id')->on('orders');
+            $table->foreignId('style_id')->references('id')->on('styles');
+            $table->foreignId('size_id')->references('id')->on('sizes');
+            $table->foreignId('colour_id')->references('id')->on('colours');
             $table->string('vname');
             $table->string('active_id', 3)->nullable();
             $table->timestamps();

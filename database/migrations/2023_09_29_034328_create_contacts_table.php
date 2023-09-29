@@ -11,8 +11,22 @@ return new class extends Migration
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
             $table->string('vname');
+            $table->string('contact_person')->nullable();
+            $table->string('mobile')->nullable();
+            $table->string('whatsapp')->nullable();
+            $table->string('landline')->nullable();
+            $table->string('gstin')->nullable();
+            $table->string('pan')->nullable();
+            $table->string('email')->nullable();
+            $table->string('website')->nullable();
+            $table->string('address_street')->nullable();
+            $table->string('address_area')->nullable();
+            $table->string('city_id')->nullable();
+            $table->string('state_id')->nullable();
+            $table->string('pincode_id')->nullable();
             $table->string('active_id', 3)->nullable();
             $table->timestamps();
+            $table->unique(['vname', 'mobile']);
         });
     }
 
