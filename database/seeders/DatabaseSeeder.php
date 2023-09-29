@@ -19,7 +19,5 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
-        S01_ClientSeeder::run();
-        S02_ClientDetailSeeder::run();
     }
 }
