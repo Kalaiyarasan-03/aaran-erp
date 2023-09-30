@@ -12,7 +12,6 @@ return new class extends Migration
             $table->id();
             $table->string('vname');
             $table->string('active_id', 3)->nullable();
-            $table->timestamps();
         });
     }
 

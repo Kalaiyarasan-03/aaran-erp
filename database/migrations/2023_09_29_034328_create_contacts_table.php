@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('state_id')->nullable();
             $table->string('pincode_id')->nullable();
             $table->string('active_id', 3)->nullable();
+            $table->foreignId('user_id')->references('id')->on('users');
             $table->timestamps();
             $table->unique(['vname', 'mobile']);
         });
