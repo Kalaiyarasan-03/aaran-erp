@@ -5,7 +5,7 @@
                 <x-aaranUi::assets.logo.cxlogo :icon="'light'"  class="h-7 w-auto block"/>
             </div>
             <span
-                class="self-center text-2xl font-semibold whitespace-nowrap px-2 tracking-wider">Codexsun</span>
+                class="self-center text-2xl font-semibold whitespace-nowrap px-2 tracking-wider">CODEXSUN</span>
         </a>
 
         <div class="flex items-center">
