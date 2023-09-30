@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('cuttings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->references('id')->on('orders');
-            $table->string('cutting_date');
+            $table->date('cutting_date');
             $table->string('cutting_master');
             $table->decimal('cutting_qty',11,3);
             $table->string('active_id', 3)->nullable();

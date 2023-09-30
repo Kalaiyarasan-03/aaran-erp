@@ -27,7 +27,7 @@
 
         <ul class="grid-cols-1 grid bg-gray-800">
 
-            @include('components.menu.items.admin-menu')
+            @include('components.menu.items.erp-menu')
             <li class="bg-gray-900 mt-0.5"></li>
         </ul>
     </div>

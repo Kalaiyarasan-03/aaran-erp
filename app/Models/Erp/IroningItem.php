@@ -12,7 +12,7 @@ class IroningItem extends Model
     public $timestamps = false;
     protected $guarded = [];
 
-    public static function search(string $searches): Builder
+    public static function search(string $searches)
     {
         return empty($searches) ? static::query()
            : static::where('vname', 'like', '%' . $searches . '%');

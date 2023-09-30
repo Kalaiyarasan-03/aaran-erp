@@ -1,42 +1,51 @@
 <?php
 
-namespace App\Livewire\Erp\Jobcard;
+namespace App\Livewire\Erp\Cutting;
 
 use App\Livewire\Trait\CommonTrait;
-use App\Models\Erp\Jobcard;
+use App\Models\Erp\Cutting;
 use Livewire\Component;
 
-class Index extends Component
+class Upsert extends Component
 {
     use CommonTrait;
 
-    public string $order_id = '';
-    public string $total_qty = '';
+    public Cutting $cutting;
+
+    public function mount($id)
+    {
+        $this->cutting = Cutting::find($id);
+    }
 
     public function getSave(): string
     {
         if ($this->order_id != '') {
 
             if ($this->vid == "") {
-                Jobcard::create([
+                Cutting::create([
                     'order_id' => $this->order_id,
-                    'total_qty' => $this->total_qty,
+                    'cutting_date' => $this->cutting_date,
+                    'cutting_master' => $this->cutting_master,
+                    'cutting_qty' => $this->cutting_qty,
                     'active_id' => $this->active_id,
                     'user_id' => \Auth::id(),
                 ]);
                 $message = "Saved";
 
             } else {
-                $obj = Jobcard::find($this->vid);
+                $obj = Cutting::find($this->vid);
                 $obj->order_id = $this->order_id;
-                $obj->total_qty = $this->total_qty;
+                $obj->cutting_date = $this->cutting_date;
+                $obj->cutting_master = $this->cutting_master;
+                $obj->cutting_qty = $this->cutting_qty;
                 $obj->active_id = $this->active_id ?: '0';
                 $obj->user_id = \Auth::id();
                 $obj->save();
                 $message = "Updated";
             }
-
-            $this->desc = '';
+            $this->cutting_date = '';
+            $this->cutting_master = '';
+            $this->cutting_qty = '';
             return $message;
         }
         return '';
@@ -45,10 +54,12 @@ class Index extends Component
     public function getObj($id)
     {
         if ($id) {
-            $obj = Jobcard::find($id);
+            $obj = Cutting::find($id);
             $this->vid = $obj->id;
             $this->order_id = $obj->order_id;
-            $this->total_qty = $obj->total_qty;
+            $this->cutting_date = $obj->cutting_date;
+            $this->cutting_master = $obj->cutting_master;
+            $this->cutting_qty = $obj->cutting_qty;
             $this->active_id = $obj->active_id;
             return $obj;
         }
@@ -59,7 +70,7 @@ class Index extends Component
     {
         $this->sortField = 'id';
 
-        return Jobcard::search($this->searches)
+        return Cutting::search($this->searches)
             ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
             ->paginate($this->perPage);
     }
@@ -71,7 +82,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.erp.jobcard.index')->with([
+        return view('livewire.erp.cutting.upsert')->with([
             'list' => $this->getList()
         ]);
     }
