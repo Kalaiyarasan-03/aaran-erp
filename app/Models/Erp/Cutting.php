@@ -10,8 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Cutting extends Model
 {
     use HasFactory;
-
-    public $timestamps = false;
     protected $guarded = [];
 
     public static function search(string $searches)

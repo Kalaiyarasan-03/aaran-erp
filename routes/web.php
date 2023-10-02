@@ -17,6 +17,18 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('cuttings', App\Livewire\Erp\Cutting\Index::class)->name('cuttings');
     Route::get('cuttings/{id}/upsert', App\Livewire\Erp\Cutting\Upsert::class)->name('cuttings.upsert');
+
+    Route::get('peoutwards', App\Livewire\Erp\PeOutward\Index::class)->name('peoutwards');
+    Route::get('peoutwards/{id}/upsert', App\Livewire\Erp\PeOutward\Upsert::class)->name('peoutwards.upsert');
+
+    Route::get('peinwards', App\Livewire\Erp\PeInward\Index::class)->name('peinwards');
+    Route::get('peinwards/{id}/upsert', App\Livewire\Erp\PeInward\Upsert::class)->name('peinwards.upsert');
+
+    Route::get('sectionoutwards', App\Livewire\Erp\SectionOutward\Index::class)->name('sectionoutwards');
+    Route::get('sectionoutwards/{id}/upsert', App\Livewire\Erp\SectionOutward\Upsert::class)->name('sectionoutwards.upsert');
+
+    Route::get('sectioninwards', App\Livewire\Erp\SectionInward\Index::class)->name('sectioninwards');
+    Route::get('sectioninwards/{id}/upsert', App\Livewire\Erp\SectionInward\Upsert::class)->name('sectioninwards.upsert');
 });
 
 ////Admin

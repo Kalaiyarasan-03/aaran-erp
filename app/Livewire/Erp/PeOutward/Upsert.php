@@ -1,33 +1,35 @@
 <?php
 
-namespace App\Livewire\Erp\Cutting;
+namespace App\Livewire\Erp\PeOutward;
 
 use App\Livewire\Controls\Items\Common\ColourItem;
 use App\Livewire\Controls\Items\Common\SizeItem;
-use App\Models\Erp\Cutting;
-use App\Models\Erp\CuttingItem;
+use App\Models\Erp\PeOutward;
+use App\Models\Erp\PeOutwardItem;
 use Carbon\Carbon;
-use DB;
 use Livewire\Attributes\On;
+use DB;
 use Livewire\Component;
 
 class Upsert extends Component
 {
-    public Cutting $cutting;
+    public PeOutward $peOutward;
     public mixed $vid='';
     public mixed $vno = '';
     public mixed $vdate = '';
+    public mixed $contact_id = '';
+    public mixed $contact_name = '';
     public mixed $order_id = '';
     public mixed $order_name = '';
     public mixed $style_id = '';
     public mixed $style_name = '';
-    public mixed $cutting_master = '';
-    public mixed $cutting_qty = '';
+    public mixed $total_qty = '';
+    public mixed $receiver_details = '';
     public mixed $active_id = '1';
     public $list = [];
     public string $itemIndex = "";
 
-    public mixed $cutting_id = '';
+    public mixed $peOutward_id = '';
     public mixed $colour_id = '';
     public string $colour_name = '';
     public mixed $size_id = '';
@@ -36,29 +38,31 @@ class Upsert extends Component
 
     public function mount($id)
     {
-        $this->vno = Cutting::nextNo();
+        $this->vno = PeOutward::nextNo();
         $this->vdate = (Carbon::parse(Carbon::now())->format('Y-m-d'));
 
         if ($id != 0) {
-            $this->cutting = Cutting::find($id);
-            $this->vid = $this->cutting->id;
-            $this->vno = $this->cutting->vno;
-            $this->vdate = $this->cutting->vdate;
-            $this->order_id = $this->cutting->order_id;
-            $this->order_name = $this->cutting->order->vname;
-            $this->style_id = $this->cutting->style_id;
-            $this->style_name = $this->cutting->style->vname;
-            $this->cutting_master = $this->cutting->cutting_master;
-            $this->cutting_qty = $this->cutting->cutting_qty;
+            $this->peOutward = PeOutward::find($id);
+            $this->vid = $this->peOutward->id;
+            $this->vno = $this->peOutward->vno;
+            $this->vdate = $this->peOutward->vdate;
+            $this->contact_id = $this->peOutward->contact_id;
+            $this->contact_name = $this->peOutward->contact->vname;
+            $this->order_id = $this->peOutward->order_id;
+            $this->order_name = $this->peOutward->order->vname;
+            $this->style_id = $this->peOutward->style_id;
+            $this->style_name = $this->peOutward->style->vname;
+            $this->total_qty = $this->peOutward->total_qty;
+            $this->receiver_details = $this->peOutward->receiver_details;
 
-            $data = DB::table('cutting_items')->where('cutting_id', '=', $id)
-                ->join('colours', 'colours.id', '=', 'cutting_items.colour_id')
-                ->join('sizes', 'sizes.id', '=', 'cutting_items.size_id')
-                ->select('cutting_items.*', 'colours.vname as colour_name', 'sizes.vname as size_name')
+            $data = DB::table('pe_outward_items')->where('pe_outward_id', '=', $id)
+                ->join('colours', 'colours.id', '=', 'pe_outward_items.colour_id')
+                ->join('sizes', 'sizes.id', '=', 'pe_outward_items.size_id')
+                ->select('pe_outward_items.*', 'colours.vname as colour_name', 'sizes.vname as size_name')
                 ->get()
                 ->transform(function ($data) {
                     return [
-                        'cutting_id' => $data->cutting_id,
+                        'pe_outward_id' => $data->pe_outward_id,
                         'colour_id' => $data->colour_id,
                         'colour_name' => $data->colour_name,
                         'size_id' => $data->size_id,
@@ -75,9 +79,9 @@ class Upsert extends Component
     public function calculateTotal(): void
     {
         if ($this->list) {
-            $this->cutting_qty = 0;
+            $this->total_qty = 0;
             foreach ($this->list as $row) {
-                $this->cutting_qty += round(floatval($row['qty']), 3);
+                $this->total_qty += round(floatval($row['qty']), 3);
             }
         }
     }
@@ -145,6 +149,13 @@ class Upsert extends Component
         $this->calculateTotal();
     }
 
+    #[On('refresh-contact')]
+    public function setContact($v): void
+    {
+        $this->contact_id = $v['id'];
+        $this->contact_name = $v['name'];
+    }
+
     #[On('refresh-order')]
     public function setOrder($v): void
     {
@@ -174,13 +185,14 @@ class Upsert extends Component
     {
         if ($this->order_id != '') {
             if ($this->vid == "") {
-                $obj = Cutting::create([
+                $obj = PeOutward::create([
                     'vno' => $this->vno,
                     'vdate' => $this->vdate,
+                    'contact_id' => $this->contact_id,
                     'order_id' => $this->order_id,
                     'style_id' => $this->style_id,
-                    'cutting_master' => $this->cutting_master,
-                    'cutting_qty' => $this->cutting_qty,
+                    'total_qty' => $this->total_qty,
+                    'receiver_details' => $this->receiver_details,
                     'active_id' => $this->active_id,
                     'user_id' => \Auth::id(),
                 ]);
@@ -190,18 +202,19 @@ class Upsert extends Component
                 $this->getRoute();
 
             } else {
-                $obj = Cutting::find($this->vid);
+                $obj = PeOutward::find($this->vid);
                 $obj->vno = $this->vno;
                 $obj->vdate = $this->vdate;
+                $obj->contact_id = $this->contact_id;
                 $obj->order_id = $this->order_id;
                 $obj->style_id = $this->style_id;
-                $obj->cutting_master = $this->cutting_master;
-                $obj->cutting_qty = $this->cutting_qty;
+                $obj->total_qty = $this->total_qty;
+                $obj->receiver_details = $this->receiver_details;
                 $obj->active_id = $this->active_id ?: '0';
                 $obj->user_id = \Auth::id();
                 $obj->save();
 
-                DB::table('cutting_items')->where('cutting_id', '=', $obj->id)->delete();
+                DB::table('pe_outward_items')->where('pe_outward_id', '=', $obj->id)->delete();
                 $this->saveItem($obj->id);
                 $message = "Updated";
                 $this->getRoute();
@@ -210,8 +223,10 @@ class Upsert extends Component
             $this->vdate = '';
             $this->order_id = '';
             $this->style_id = '';
-            $this->cutting_master = '';
-            $this->cutting_qty = '';
+            $this->contact_id = '';
+            $this->contact_name = '';
+            $this->total_qty = '';
+            $this->receiver_details = '';
             return $message;
         }
         return '';
@@ -220,8 +235,8 @@ class Upsert extends Component
     public function saveItem($id): void
     {
         foreach ($this->list as $sub) {
-            CuttingItem::create([
-                'cutting_id' => $id,
+            PeOutwardItem::create([
+                'pe_outward_id' => $id,
                 'colour_id' => $sub['colour_id'],
                 'size_id' => $sub['size_id'],
                 'qty' => $sub['qty'],
@@ -231,18 +246,18 @@ class Upsert extends Component
 
     public function setDelete()
     {
-        DB::table('cutting_items')->where('cutting_id', '=', $this->vid)->delete();
-        DB::table('cuttings')->where('id', '=', $this->vid)->delete();
+        DB::table('pe_outward_items')->where('pe_outward_id', '=', $this->vid)->delete();
+        DB::table('pe_outwards')->where('id', '=', $this->vid)->delete();
         $this->getRoute();
     }
 
     public function getRoute(): void
     {
-        $this->redirect(route('cuttings'));
+        $this->redirect(route('peoutwards'));
     }
 
     public function render()
     {
-        return view('livewire.erp.cutting.upsert');
+        return view('livewire.erp.pe-outward.upsert');
     }
 }
