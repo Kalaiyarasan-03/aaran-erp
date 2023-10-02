@@ -24,5 +24,9 @@ class Cutting extends Model
     {
         return $this->belongsTo(Order::class);
     }
+    public function style(): BelongsTo
+    {
+        return $this->belongsTo(Style::class);
+    }
 
 }

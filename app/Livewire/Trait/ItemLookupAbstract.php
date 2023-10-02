@@ -60,10 +60,6 @@ abstract class ItemLookupAbstract extends Component
 
     public function refreshObj($v): void
     {
-        $this->id = $v['id'];
-        $this->searches = $v['name'];
-        $this->getList();
-        $this->dispatchObj();
     }
 
     public function dispatchObj()

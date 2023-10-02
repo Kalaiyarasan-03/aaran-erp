@@ -7,7 +7,7 @@
         <x-forms.table :list="$list">
             <x-slot name="table_header">
                 <x-table.ths-slno wire:click.prevent="sortBy('vname')">Sl.no</x-table.ths-slno>
-                <x-table.ths wire:click.prevent="sortBy('vname')">Style No</x-table.ths>
+                <x-table.ths wire:click.prevent="sortBy('vname')">Style Name</x-table.ths>
                 <x-table.ths wire:click.prevent="sortBy('vname')">Description</x-table.ths>
             </x-slot>
             <x-slot name="table_body">
@@ -53,7 +53,7 @@
         <x-modal.delete/>
 
         <x-forms.create :id="$vid">
-            <x-input.model-text wire:model="vname" :label="'Style No'"/>
+            <x-input.model-text wire:model="vname" :label="'Style Name'"/>
             <x-input.model-text wire:model="desc" :label="'Description'"/>
         </x-forms.create>
 

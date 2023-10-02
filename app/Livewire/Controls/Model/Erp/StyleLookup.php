@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Controls\Model\Erp;
 
-use App\Models\Erp\Order;
+use App\Models\Erp\Style;
 use Livewire\Component;
 
-class OrderModel extends Component
+class StyleLookup extends Component
 {
     public bool $showModel = false;
 
@@ -20,7 +20,7 @@ class OrderModel extends Component
     public function save()
     {
         if ($this->vname != '') {
-            $obj = Order::create([
+            $obj = Style::create([
                 'vname' => $this->vname,
                 'desc' => $this->desc,
                 'user_id' => \Auth::id()
@@ -36,9 +36,8 @@ class OrderModel extends Component
         $this->showModel = false;
         $this->vname = "";
     }
-
     public function render()
     {
-        return view('livewire.controls.model.erp.order-model');
+        return view('livewire.controls.model.erp.style-lookup');
     }
 }

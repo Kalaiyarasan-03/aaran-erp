@@ -6,9 +6,8 @@
         <div class="grid gap-4 sm:grid-cols-4">
 
             <div class="flex flex-col col-span-2 gap-2">
-                @livewire('controls.lookup.erp.order-lookup',[$order_id,'purple-textbox mt-2','Order No'])
-
-
+                @livewire('controls.lookup.erp.order-lookup',['id'=>$order_id, 'name'=>$order_name])
+                @livewire('controls.lookup.erp.style-lookup',['id'=>$style_id, 'name'=>$style_name])
             </div>
             <div class="flex flex-col col-span-2 gap-2">
                 <x-input.text-new wire:model="cutting_date" :name="'cutting_date'" :type="'date'" :label="'Date'"/>
@@ -16,30 +15,19 @@
             </div>
         </div>
 
-        <div class="flex gap-2">
-            <div>
-                order id :{{$order_id}}
-            </div>
-            <div>
-                colour id :{{$colour_id}}
-            </div>
-            <div>
-                size id :{{$size_id}}
-            </div>
-        </div>
         <!--  Add items ----------------------------------------------------------------------------------------- -->
         <div class="mt-5 ">
-            <span class="px-6 text-lg font-extrabold"> Add Items</span>
+            <span class="px-6 text-lg font-extrabold text-orange-500"> Add Items</span>
             <table class="w-full mt-3 border border-blue-600">
                 <tr class="border border-gray-400 ">
                     <!--  Items ----------------------------------------------------------------------------------------- -->
 
                     <td class="border border-gray-300">
-                        @livewire('controls.items.common.colour-item',[$colour_id,'purple-textbox-no-rounded mt-2','Order No'])
+                        @livewire('controls.items.common.colour-item')
                     </td>
 
                     <td class="border border-gray-300">
-                        @livewire('controls.items.common.size-item',[$size_id])
+                        @livewire('controls.items.common.size-item')
                     </td>
 
                     <!--  items ----------------------------------------------------------------------------------------- -->
@@ -102,9 +90,8 @@
                 </tbody>
                 <tfoot class="mt-2">
                 <tr class="h-8 text-sm border border-gray-400 bg-gray-50">
-                    <td colspan="2" class="px-2 text-xs text-right border border-gray-300">&nbsp;TOTALS&nbsp;&nbsp;&nbsp;</td>
+                    <td colspan="3" class="px-2 text-xs text-right border border-gray-300">&nbsp;TOTALS&nbsp;&nbsp;&nbsp;</td>
                     <td class="px-2 text-center border border-gray-300">{{$cutting_qty}}</td>
-                    <td class="px-2 text-center border border-gray-300">&nbsp;</td>
                 </tr>
                 </tfoot>
 
@@ -113,6 +100,20 @@
         </div>
         <!--  end of table ----------------------------------------------------------------------------------------- -->
 
-
     </x-forms.m-panel>
+    <div class="px-8 py-6 gap-4 bg-gray-100 rounded-b-md shadow-lg w-full ">
+
+        <div class="flex flex-col md:flex-row justify-between gap-3">
+            <div class="flex gap-3">
+                <x-button.save/>
+            </div>
+            <div>
+
+            </div>
+            <div>
+
+            </div>
+
+        </div>
+    </div>
 </div>

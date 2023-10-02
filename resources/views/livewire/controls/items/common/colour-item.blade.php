@@ -36,7 +36,7 @@
                                     {{ $row->vname }}
                                 </li>
                             @empty
-                                @livewire('controls.model.common.colour-model',[$search])
+                                @livewire('controls.model.common.colour-model',[$searches])
                             @endforelse
                         </ul>
                     </div>

@@ -8,24 +8,12 @@ use Livewire\Attributes\On;
 
 class ColourItem extends ItemLookupAbstract
 {
-
-    public mixed $class;
-    public  mixed $label;
-
-    public function mount($class = null, $label = null)
-    {
-        if ($label) {
-            $this->label = $label;
-        }
-
-        if ($class) {
-            $this->class = $class;
-        }
-    }
-
-    #[On('refresh-colour')]
+    #[On('refresh-colour-item')]
     public function refreshObj($v): void
     {
+        $this->id = $v['id'];
+        $this->searches = $v['name'];
+        $this->getList();
     }
 
     public function dispatchObj(): void

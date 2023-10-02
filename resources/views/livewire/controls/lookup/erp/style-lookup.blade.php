@@ -1,13 +1,13 @@
 <div>
     <div x-data="{isTyped: false}" @click.away="isTyped = false">
         <div class="relative">
-            <label for="searches" class="gray-label">Order No</label>
+            <label for="searches" class="gray-label">Style ref</label>
             <input
                 id="searches"
                 type="search"
                 wire:model.live="searches"
                 autocomplete="off"
-                placeholder="Order No.."
+                placeholder="Style ref.."
                 @focus="isTyped = true"
                 @keydown.escape.window="isTyped = false"
                 @keydown.tab.window="isTyped = false"
@@ -38,7 +38,7 @@
                                     {{ $row->vname }}
                                 </li>
                             @empty
-                                @livewire('controls.model.erp.order-model',[$searches])
+                                @livewire('controls.model.erp.style-model',[$searches])
                             @endforelse
                         </ul>
                     </div>

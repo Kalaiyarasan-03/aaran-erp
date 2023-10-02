@@ -3,16 +3,16 @@
         <div class="relative">
             <label><input
                     type="search"
-                    wire:model.live="colour_name"
+                    wire:model.live="searches"
                     autocomplete="off"
-                    placeholder="Colour.."
+                    placeholder="Size.."
                     @focus="isTyped = true"
                     @keydown.escape.window="isTyped = false"
                     @keydown.tab.window="isTyped = false"
                     @keydown.enter.prevent="isTyped = false"
-                    wire:keydown.arrow-up="decrementColour"
-                    wire:keydown.arrow-down="incrementColour"
-                    wire:keydown.enter="selectColours"
+                    wire:keydown.arrow-up="decrementHighlight"
+                    wire:keydown.arrow-down="incrementHighlight"
+                    wire:keydown.enter="selectObj"
                     class="block w-full purple-textbox-no-rounded"
                 />
             </label>
@@ -27,16 +27,16 @@
                 rounded-lg border-transparent flex-1 appearance-none border
                                  bg-white text-gray-800 ring-1 ring-purple-600">
                         <ul class="overflow-y-scroll h-96">
-                            @forelse ($colours as $i => $colour)
-                                <div wire:key="{{ $colour->id }}"></div>
+                            @forelse ($list as $i => $row)
+                                <div wire:key="{{ $row->id }}"></div>
                                 <li class="cursor-pointer px-3 py-1 hover:font-bold hover:bg-yellow-100 border-b border-gray-300 h-8
-                                {{ $colourHighlight === $i ? 'bg-yellow-100' : '' }}"
-                                    wire:click.prevent="setColour('{{$colour->vname}}','{{$colour->id}}')"
+                                {{ $selectHighlight === $i ? 'bg-yellow-100' : '' }}"
+                                    wire:click.prevent="setObj('{{$row->vname}}','{{$row->id}}')"
                                     x-on:click="isTyped = false">
-                                    {{ $colour->vname }}
+                                    {{ $row->vname }}
                                 </li>
                             @empty
-                                @livewire('controls.model.common.colour-model',[$colour_name])
+                                @livewire('controls.model.common.size-model',[$searches])
                             @endforelse
                         </ul>
                     </div>

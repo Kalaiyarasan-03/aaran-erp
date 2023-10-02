@@ -10,7 +10,7 @@
                 <x-table.ths wire:click.prevent="sortBy('vname')">Order No</x-table.ths>
                 <x-table.ths wire:click.prevent="sortBy('vname')">Cutting Date</x-table.ths>
                 <x-table.ths wire:click.prevent="sortBy('vname')">Cutting Master</x-table.ths>
-                <x-table.ths wire:click.prevent="sortBy('vname')">Cutting Qty</x-table.ths>
+                <x-table.ths-center wire:click.prevent="sortBy('vname')">Cutting Qty</x-table.ths-center>
             </x-slot>
             <x-slot name="table_body">
                 @forelse ($list as $index =>  $row)
@@ -48,8 +48,8 @@
 
                         <x-table.cell>
                             <a href="{{route('cuttings.upsert',[$row->id])}}"
-                               class="flex flex-col px-3 text-gray-600 truncate text-xl text-left">
-                                {{ $row->cutting_qty }}
+                               class="flex flex-col px-3 text-gray-600 truncate text-xl text-center">
+                                {{ $row->cutting_qty + 0 }}
                             </a>
                         </x-table.cell>
 
