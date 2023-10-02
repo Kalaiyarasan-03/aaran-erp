@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Erp\Cutting;
 
+use App\Livewire\Controls\Items\Common\ColourItem;
 use App\Livewire\Trait\CommonTrait;
 use App\Models\Common\Colour;
 use App\Models\Erp\Cutting;
@@ -29,9 +30,7 @@ class Upsert extends Component
     public mixed $size_id;
     public string $size_name='';
     public mixed $qty;
-    public Collection $colours;
     public Collection $sizes;
-    public $colourHighlight = 0;
     public $sizeHighlight = 0;
 
     public function mount($id)
@@ -92,7 +91,7 @@ class Upsert extends Component
                     'qty' => $this->qty,
                 ];
                 $this->calculateTotal();
-//                $this->resetsItems();
+                $this->resetsItems();
             }
         } else {
             $this->list[$this->itemIndex] = [
@@ -112,8 +111,10 @@ class Upsert extends Component
     public function resetsItems()
     {
         $this->colour_name = '';
+        $this->colour_id = '';
         $this->size_name = '';
         $this->qty = '';
+        $this->dispatch('refresh-colour',['id'=> '','name'=>''])->to(ColourItem::class);
     }
 
     public function changeItems($index): void
@@ -125,6 +126,8 @@ class Upsert extends Component
         $this->size_name = $items['size_name'];
         $this->size_id = $items['size_id'];
         $this->qty = floatval($items['qty']);
+
+        $this->dispatch('refresh-colour',['id'=> $this->colour_id,'name'=>$this->colour_name])->to(ColourItem::class);
     }
 
     public function removeItems($index)
@@ -139,60 +142,15 @@ class Upsert extends Component
     {
         $this->order_id = $v['id'];
     }
-    #[On('update-colour')]
-    public function updateColour($v): void
+    #[On('refresh-colour')]
+    public function setColour($v): void
     {
         $this->colour_id = $v['id'];
         $this->colour_name = $v['name'];
-        $this->getColourList();
     }
 
-    public function setColour($name,$id): void
-    {
-        $this->colour_id = $id;
-        $this->colour_name = $name;
-        $this->getColourList();
-    }
-    public function getColourList(): void
-    {
-        $this->colours = $this->colour_name ? Colour::search(trim($this->colour_name))
-            ->get() : Colour::all();
-    }
-    public function selectColours(): void
-    {
-        $obj = $this->colours[$this->colourHighlight] ?? null;
-        $this->colourEmpty();
-        $this->colour_name = $obj['vname'] ?? '';;
-        $this->colour_id = $obj['id'] ?? '';;
-    }
-
-    public function colourEmpty(): void
-    {
-        $this->colour_name = '';
-        $this->colours = Collection::empty();
-        $this->colourHighlight = 0;
-    }
-
-    public function incrementColour(): void
-    {
-        if ($this->colourHighlight === count($this->colours) - 1) {
-            $this->colourHighlight = 0;
-            return;
-        }
-        $this->colourHighlight++;
-    }
-
-    public function decrementColour(): void
-    {
-        if ($this->colourHighlight === 0) {
-            $this->colourHighlight = count($this->colours) - 1;
-            return;
-        }
-        $this->colourHighlight--;
-    }
-
-    #[On('set-size')]
-    public function setSize($v)
+    #[On('refresh-size')]
+    public function setSize($v): void
     {
         $this->size_id = $v['id'];
         $this->size_name = $v['name'];
@@ -264,7 +222,6 @@ class Upsert extends Component
 
     public function render()
     {
-        $this->getColourList();
         return view('livewire.erp.cutting.upsert');
     }
 }

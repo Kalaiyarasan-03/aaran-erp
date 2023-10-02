@@ -2,72 +2,46 @@
 
 namespace App\Livewire\Controls\Items\Common;
 
+use App\Livewire\Trait\ItemLookupAbstract;
 use App\Models\Common\Colour;
-use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
-use Livewire\Component;
 
-class ColourItem extends Component
+class ColourItem extends ItemLookupAbstract
 {
-    public string $colour_name='';
-    public string $colour_id='';
-    public Collection $colours;
-    public $colourHighlight = 0;
 
-    #[On('update-colour')]
-    public function updateColour($v): void
+    public mixed $class;
+    public  mixed $label;
+
+    public function mount($class = null, $label = null)
     {
-        $this->colour_id = $v['id'];
-        $this->colour_name = $v['name'];
-        $this->getColourList();
+        if ($label) {
+            $this->label = $label;
+        }
+
+        if ($class) {
+            $this->class = $class;
+        }
     }
 
-    public function setColour($name,$id): void
+    #[On('refresh-colour')]
+    public function refreshObj($v): void
     {
-        $this->colour_id = $id;
-        $this->colour_name = $name;
-        $this->getColourList();
     }
-    public function getColourList(): void
+
+    public function dispatchObj(): void
     {
-        $this->colours = $this->colour_name ? Colour::search(trim($this->colour_name))
+        $this->dispatch('refresh-colour',['id'=>$this->id,'name'=>$this->searches]);
+    }
+
+    public function getList(): void
+    {
+        $this->list = $this->searches ? Colour::search(trim($this->searches))
             ->get() : Colour::all();
     }
-    public function selectColours(): void
-    {
-        $obj = $this->colours[$this->colourHighlight] ?? null;
-        $this->colourEmpty();
-        $this->colour_name = $obj['vname'] ?? '';;
-        $this->colour_id = $obj['id'] ?? '';;
-    }
 
-    public function colourEmpty(): void
-    {
-        $this->colour_name = '';
-        $this->colours = Collection::empty();
-        $this->colourHighlight = 0;
-    }
-
-    public function incrementColour(): void
-    {
-        if ($this->colourHighlight === count($this->colours) - 1) {
-            $this->colourHighlight = 0;
-            return;
-        }
-        $this->colourHighlight++;
-    }
-
-    public function decrementColour(): void
-    {
-        if ($this->colourHighlight === 0) {
-            $this->colourHighlight = count($this->colours) - 1;
-            return;
-        }
-        $this->colourHighlight--;
-    }
     public function render()
     {
-        $this->getColourList();
+        $this->getList();
         return view('livewire.controls.items.common.colour-item');
     }
 }

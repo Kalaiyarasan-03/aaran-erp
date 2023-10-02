@@ -23,7 +23,7 @@ class ColourModel extends Component
                 'vname' => \Str::ucfirst($this->vname),
                 'active_id' => '1'
             ]);
-            $this->dispatch('update-colour', ['name' => $this->vname, 'id' => $obj->id]);
+            $this->dispatch('refresh-colour', ['name' => $this->vname, 'id' => $obj->id]);
             $this->clearAll();
         }
     }
