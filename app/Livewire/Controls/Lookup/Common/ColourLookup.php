@@ -17,19 +17,23 @@ class ColourLookup extends Component
 
     public function mount($v = null, $class = null)
     {
+
         if ($class) {
             $this->class = $class;
         }
+
         $obj = $v ? Colour::find($v) : '';
         if ($obj) {
+            dd($obj);
             $this->searches = $obj->vname;
         }
     }
+
     #[On('update-colour')]
     public function setColour($name, $ids)
     {
         $this->searches = $name;
-        $this->dispatch('set-colour', $ids);
+        $this->dispatch('set-colour', ['id' => $ids, 'name' => $name]);
     }
 
     public function incrementHighlight()

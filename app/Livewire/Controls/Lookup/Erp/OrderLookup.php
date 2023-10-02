@@ -14,9 +14,14 @@ class OrderLookup extends Component
 
     public Collection $list;
     public $class;
+    public $label;
 
-    public function mount($v = null, $class = null)
+    public function mount($v = null, $class = null, $label = null)
     {
+        if ($label) {
+            $this->label = $label;
+        }
+
         if ($class) {
             $this->class = $class;
         }
@@ -25,11 +30,12 @@ class OrderLookup extends Component
             $this->searches = $obj->vname;
         }
     }
+
     #[On('update-order')]
     public function setOrder($name, $ids)
     {
         $this->searches = $name;
-        $this->dispatch('set-order', $ids);
+        $this->dispatch('set-order', ['id' => $ids, 'name' => $name]);
     }
 
     public function incrementHighlight()

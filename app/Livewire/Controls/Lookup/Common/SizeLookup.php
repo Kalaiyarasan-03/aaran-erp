@@ -25,11 +25,12 @@ class SizeLookup extends Component
             $this->searches = $obj->vname;
         }
     }
+
     #[On('update-size')]
     public function setSize($name, $ids)
     {
         $this->searches = $name;
-        $this->dispatch('set-size', $ids);
+        $this->dispatch('set-size', ['id' => $ids, 'name' => $name]);
     }
 
     public function incrementHighlight()

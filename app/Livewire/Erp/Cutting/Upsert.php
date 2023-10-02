@@ -3,7 +3,12 @@
 namespace App\Livewire\Erp\Cutting;
 
 use App\Livewire\Trait\CommonTrait;
+use App\Models\Common\Colour;
 use App\Models\Erp\Cutting;
+use Carbon\Carbon;
+use DB;
+use Illuminate\Support\Collection;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Upsert extends Component
@@ -11,20 +16,187 @@ class Upsert extends Component
     use CommonTrait;
 
     public Cutting $cutting;
-     public mixed $order_id;
+    public mixed $order_id;
     public mixed $cutting_date;
     public mixed $cutting_master;
     public mixed $cutting_qty;
+    public $list = [];
+    public string $itemIndex = "";
+
+    public mixed $cutting_id;
+    public mixed $colour_id;
+    public string $colour_name='';
+    public mixed $size_id;
+    public string $size_name='';
+    public mixed $qty;
+    public Collection $colours;
+    public Collection $sizes;
+    public $colourHighlight = 0;
+    public $sizeHighlight = 0;
 
     public function mount($id)
     {
-        $this->cutting = Cutting::find($id);
+        $this->cutting_date = (Carbon::parse(Carbon::now())->format('Y-m-d'));
+
+        if ($id) {
+            $this->cutting = Cutting::find($id);
+            $this->order_id = $this->cutting->order_id;
+            $this->cutting_date = $this->cutting->cutting_date;
+            $this->cutting_master = $this->cutting->cutting_master;
+            $this->cutting_qty = $this->cutting->cutting_qty;
+        }
+
+        $data = DB::table('cutting_items')->where('cutting_id', '=', $id)
+            ->get()
+            ->transform(function ($data) {
+                return [
+                    'cutting_id' => $data->cutting_id,
+                    'size_id' => $data->size_id,
+                    'colour_id' => $data->colour_id,
+                    'qty' => $data->qty,
+                ];
+            });
+
+        $this->list = $data;
+
+        $this->calculateTotal();
+
+        if ($this->qty = "0.0") {
+            $this->qty = "";
+        }
     }
 
+    public function calculateTotal(): void
+    {
+        if ($this->list) {
+            $this->cutting_qty = 0;
+            foreach ($this->list as $row) {
+                $this->cutting_qty += round(floatval($row['qty']), 3);
+            }
+        }
+    }
 
+    public function addItems()
+    {
 
+        if ($this->itemIndex == "") {
+            if (!(empty($this->colour_name)) &&
+                !(empty($this->size_name)) &&
+                !(empty($this->qty))
+            ) {
+                $this->list[] = [
+                    'colour_id' => $this->colour_id,
+                    'colour_name' => $this->colour_name,
+                    'size_id' => $this->size_id,
+                    'size_name' => $this->size_name,
+                    'qty' => $this->qty,
+                ];
+                $this->calculateTotal();
+//                $this->resetsItems();
+            }
+        } else {
+            $this->list[$this->itemIndex] = [
+                'colour_id' => $this->colour_id,
+                'colour_name' => $this->colour_name,
+                'size_id' => $this->size_id,
+                'size_name' => $this->size_name,
+                'qty' => $this->qty,
+            ];
+            $this->calculateTotal();
+            $this->resetsItems();
+            $this->render();
+        }
+//        $this->emit('getfocus');
+    }
 
+    public function resetsItems()
+    {
+        $this->colour_name = '';
+        $this->size_name = '';
+        $this->qty = '';
+    }
 
+    public function changeItems($index): void
+    {
+        $this->itemIndex = $index;
+        $items = $this->list[$index];
+        $this->colour_name = $items['colour_name'];
+        $this->colour_id = $items['colour_id'];
+        $this->size_name = $items['size_name'];
+        $this->size_id = $items['size_id'];
+        $this->qty = floatval($items['qty']);
+    }
+
+    public function removeItems($index)
+    {
+        unset($this->list[$index]);
+        $this->list = collect($this->list);
+        $this->calculateTotal();
+    }
+
+    #[On('set-order')]
+    public function setOrder($v): void
+    {
+        $this->order_id = $v['id'];
+    }
+    #[On('update-colour')]
+    public function updateColour($v): void
+    {
+        $this->colour_id = $v['id'];
+        $this->colour_name = $v['name'];
+        $this->getColourList();
+    }
+
+    public function setColour($name,$id): void
+    {
+        $this->colour_id = $id;
+        $this->colour_name = $name;
+        $this->getColourList();
+    }
+    public function getColourList(): void
+    {
+        $this->colours = $this->colour_name ? Colour::search(trim($this->colour_name))
+            ->get() : Colour::all();
+    }
+    public function selectColours(): void
+    {
+        $obj = $this->colours[$this->colourHighlight] ?? null;
+        $this->colourEmpty();
+        $this->colour_name = $obj['vname'] ?? '';;
+        $this->colour_id = $obj['id'] ?? '';;
+    }
+
+    public function colourEmpty(): void
+    {
+        $this->colour_name = '';
+        $this->colours = Collection::empty();
+        $this->colourHighlight = 0;
+    }
+
+    public function incrementColour(): void
+    {
+        if ($this->colourHighlight === count($this->colours) - 1) {
+            $this->colourHighlight = 0;
+            return;
+        }
+        $this->colourHighlight++;
+    }
+
+    public function decrementColour(): void
+    {
+        if ($this->colourHighlight === 0) {
+            $this->colourHighlight = count($this->colours) - 1;
+            return;
+        }
+        $this->colourHighlight--;
+    }
+
+    #[On('set-size')]
+    public function setSize($v)
+    {
+        $this->size_id = $v['id'];
+        $this->size_name = $v['name'];
+    }
 
 
     public function getSave(): string
@@ -92,8 +264,7 @@ class Upsert extends Component
 
     public function render()
     {
-        return view('livewire.erp.cutting.upsert')->with([
-            'list' => $this->getList()
-        ]);
+        $this->getColourList();
+        return view('livewire.erp.cutting.upsert');
     }
 }

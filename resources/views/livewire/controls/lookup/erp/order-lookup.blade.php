@@ -1,5 +1,5 @@
 <div>
-    <x-controls.lookup.base :placeholder="'Order no'" :class="$class">
+    <x-controls.lookup.base :placeholder="'Order no'" :class="$class" :label="$label" >
         @if(!empty($list))
             @forelse ($list as $i=> $row)
                 <div wire:key="{{ $row->id }}"></div>

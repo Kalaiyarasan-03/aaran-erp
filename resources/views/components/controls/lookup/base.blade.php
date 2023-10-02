@@ -1,11 +1,13 @@
 @props([
     'placeholder' => '',
-    'class'=>''
+    'class'=>'',
+    'label'=>''
 ])
 <div x-data="{isTyped: false}" @click.away="isTyped = false">
     <div class="relative">
-        <label>
+        <label for="{{$label}}" class="">{{$label}}</label>
             <input
+                id="{{$label}}"
                 type="search"
                 wire:model.live="searches"
                 autocomplete="off"
@@ -19,7 +21,6 @@
                 wire:keydown.enter="selectHighlight"
                 class="block w-full {{$class}}"
             />
-        </label>
 
         <div x-show="isTyped"
              x-transition:leave="transition ease-in duration-100"
