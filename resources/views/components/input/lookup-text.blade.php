@@ -8,5 +8,5 @@
     <input type="text" id="{{$name}}" {{$attributes}}
            class="purple-textbox w-full purple-textbox"
            autofocus
-           placeholder="{{$name}}"/>
+           placeholder="{{$label}}"/>
 </div>

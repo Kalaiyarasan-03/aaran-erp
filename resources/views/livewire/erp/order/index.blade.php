@@ -9,6 +9,7 @@
                 <x-table.ths-slno wire:click.prevent="sortBy('vname')">Sl.no</x-table.ths-slno>
                 <x-table.ths wire:click.prevent="sortBy('vname')">Order No</x-table.ths>
                 <x-table.ths wire:click.prevent="sortBy('vname')">Description</x-table.ths>
+                <x-table.heading class="w-[12rem]">Action</x-table.heading>
             </x-slot>
             <x-slot name="table_body">
                 @forelse ($list as $index =>  $row)

@@ -17,16 +17,22 @@ class Cutting extends Model
     public static function search(string $searches)
     {
         return empty($searches) ? static::query()
-            : static::where('vname', 'like', '%' . $searches . '%');
+            : static::where('vno', '=', $searches);
     }
 
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
     }
+
     public function style(): BelongsTo
     {
         return $this->belongsTo(Style::class);
+    }
+
+    public static function nextNo()
+    {
+        return static::max('vno') + 1;
     }
 
 }

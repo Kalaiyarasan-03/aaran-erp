@@ -10,8 +10,11 @@ return new class extends Migration
     {
         Schema::create('section_outwards', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('contact_id')->references('id')->on('contacts');
+            $table->integer('vno');
             $table->date('vdate');
+            $table->foreignId('contact_id')->references('id')->on('contacts');
+            $table->foreignId('order_id')->references('id')->on('orders');
+            $table->foreignId('style_id')->references('id')->on('styles');
             $table->decimal('total_qty',11,3);
             $table->string('active_id', 3)->nullable();
             $table->foreignId('user_id')->references('id')->on('users');
@@ -21,7 +24,6 @@ return new class extends Migration
         Schema::create('section_outward_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('section_outward_id')->references('id')->on('section_outwards');
-            $table->foreignId('style_id')->references('id')->on('styles');
             $table->foreignId('size_id')->references('id')->on('sizes');
             $table->foreignId('colour_id')->references('id')->on('colours');
             $table->decimal('qty',11,3);

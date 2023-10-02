@@ -10,7 +10,10 @@
                 @livewire('controls.lookup.erp.style-lookup',['id'=>$style_id, 'name'=>$style_name])
             </div>
             <div class="flex flex-col col-span-2 gap-2">
-                <x-input.text-new wire:model="cutting_date" :name="'cutting_date'" :type="'date'" :label="'Date'"/>
+                <x-input.text-new wire:model="vno" :name="'vno'" :label="'No'"/>
+                <x-input.text-new wire:model="vdate" :name="'vdate'" :type="'date'" :label="'Date'"/>
+            </div>
+            <div class="flex flex-col col-span-2 gap-2">
                 <x-input.text-new wire:model="cutting_master" :name="'cutting_master'" :label="'Cutting Master'"/>
             </div>
         </div>
@@ -106,12 +109,13 @@
         <div class="flex flex-col md:flex-row justify-between gap-3">
             <div class="flex gap-3">
                 <x-button.save/>
+                <x-button.back/>
             </div>
             <div>
 
             </div>
             <div>
-
+                <x-button.delete/>
             </div>
 
         </div>

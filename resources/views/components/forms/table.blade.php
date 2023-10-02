@@ -6,7 +6,7 @@
                 @if(isset($table_header))
                     {{$table_header}}
                 @endif
-                <x-table.heading class="w-[12rem]">Action</x-table.heading>
+
             </tr>
             </thead>
             <tbody class="bg-white divide-y divide-cool-gray-200">

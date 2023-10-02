@@ -14,16 +14,17 @@ use Livewire\Component;
 
 class Upsert extends Component
 {
-    use CommonTrait;
-
     public Cutting $cutting;
+    public mixed $vid='';
+    public mixed $vno = '';
+    public mixed $vdate = '';
     public mixed $order_id = '';
     public mixed $order_name = '';
     public mixed $style_id = '';
     public mixed $style_name = '';
-    public mixed $cutting_date = '';
     public mixed $cutting_master = '';
     public mixed $cutting_qty = '';
+    public mixed $active_id = '1';
     public $list = [];
     public string $itemIndex = "";
 
@@ -36,41 +37,39 @@ class Upsert extends Component
 
     public function mount($id)
     {
-        $this->cutting_date = (Carbon::parse(Carbon::now())->format('Y-m-d'));
+        $this->vno = Cutting::nextNo();
+        $this->vdate = (Carbon::parse(Carbon::now())->format('Y-m-d'));
 
-        if ($id) {
+        if ($id != 0) {
             $this->cutting = Cutting::find($id);
+            $this->vid = $this->cutting->id;
+            $this->vno = $this->cutting->vno;
+            $this->vdate = $this->cutting->vdate;
             $this->order_id = $this->cutting->order_id;
             $this->order_name = $this->cutting->order->vname;
             $this->style_id = $this->cutting->style_id;
             $this->style_name = $this->cutting->style->vname;
-            $this->cutting_date = $this->cutting->cutting_date;
             $this->cutting_master = $this->cutting->cutting_master;
             $this->cutting_qty = $this->cutting->cutting_qty;
-        }
 
-        $data = DB::table('cutting_items')->where('cutting_id', '=', $id)
-            ->join('colours', 'colours.id', '=', 'cutting_items.colour_id')
-            ->join('sizes', 'sizes.id', '=', 'cutting_items.size_id')
-            ->select('cutting_items.*', 'colours.vname as colour_name', 'sizes.vname as size_name')
-            ->get()
-            ->transform(function ($data) {
-                return [
-                    'cutting_id' => $data->cutting_id,
-                    'colour_id' => $data->colour_id,
-                    'colour_name' => $data->colour_name,
-                    'size_id' => $data->size_id,
-                    'size_name' => $data->size_name,
-                    'qty' => $data->qty,
-                ];
-            });
+            $data = DB::table('cutting_items')->where('cutting_id', '=', $id)
+                ->join('colours', 'colours.id', '=', 'cutting_items.colour_id')
+                ->join('sizes', 'sizes.id', '=', 'cutting_items.size_id')
+                ->select('cutting_items.*', 'colours.vname as colour_name', 'sizes.vname as size_name')
+                ->get()
+                ->transform(function ($data) {
+                    return [
+                        'cutting_id' => $data->cutting_id,
+                        'colour_id' => $data->colour_id,
+                        'colour_name' => $data->colour_name,
+                        'size_id' => $data->size_id,
+                        'size_name' => $data->size_name,
+                        'qty' => $data->qty,
+                    ];
+                });
 
-        $this->list = $data;
-
-        $this->calculateTotal();
-
-        if ($this->qty = "0.0") {
-            $this->qty = "";
+            $this->list = $data;
+            $this->calculateTotal();
         }
     }
 
@@ -137,6 +136,7 @@ class Upsert extends Component
         $this->qty = floatval($items['qty']);
 
         $this->dispatch('refresh-colour-item', ['id' => $this->colour_id, 'name' => $this->colour_name])->to(ColourItem::class);
+        $this->dispatch('refresh-size-item', ['id' => $this->size_id, 'name' => $this->size_name])->to(SizeItem::class);
     }
 
     public function removeItems($index)
@@ -150,6 +150,11 @@ class Upsert extends Component
     public function setOrder($v): void
     {
         $this->order_id = $v['id'];
+    }
+    #[On('refresh-style')]
+    public function setStyle($v): void
+    {
+        $this->style_id = $v['id'];
     }
 
     #[On('refresh-colour')]
@@ -166,14 +171,15 @@ class Upsert extends Component
         $this->size_name = $v['name'];
     }
 
-    public function getSave(): string
+    public function save(): string
     {
         if ($this->order_id != '') {
             if ($this->vid == "") {
                 $obj = Cutting::create([
+                    'vno' => $this->vno,
+                    'vdate' => $this->vdate,
                     'order_id' => $this->order_id,
                     'style_id' => $this->style_id,
-                    'cutting_date' => $this->cutting_date,
                     'cutting_master' => $this->cutting_master,
                     'cutting_qty' => $this->cutting_qty,
                     'active_id' => $this->active_id,
@@ -182,12 +188,14 @@ class Upsert extends Component
                 $this->saveItem($obj->id);
 
                 $message = "Saved";
+                $this->getRoute();
 
             } else {
                 $obj = Cutting::find($this->vid);
+                $obj->vno = $this->vno;
+                $obj->vdate = $this->vdate;
                 $obj->order_id = $this->order_id;
                 $obj->style_id = $this->style_id;
-                $obj->cutting_date = $this->cutting_date;
                 $obj->cutting_master = $this->cutting_master;
                 $obj->cutting_qty = $this->cutting_qty;
                 $obj->active_id = $this->active_id ?: '0';
@@ -197,10 +205,12 @@ class Upsert extends Component
                 DB::table('cutting_items')->where('cutting_id', '=', $obj->id)->delete();
                 $this->saveItem($obj->id);
                 $message = "Updated";
+                $this->getRoute();
             }
+            $this->vno = '';
+            $this->vdate = '';
             $this->order_id = '';
             $this->style_id = '';
-            $this->cutting_date = '';
             $this->cutting_master = '';
             $this->cutting_qty = '';
             return $message;
@@ -220,38 +230,16 @@ class Upsert extends Component
         }
     }
 
-    public function getObj($id)
+    public function setDelete()
     {
-        if ($id) {
-            $obj = Cutting::find($id);
-            $this->vid = $obj->id;
-            $this->order_id = $obj->order_id;
-            $this->cutting_date = $obj->cutting_date;
-            $this->cutting_master = $obj->cutting_master;
-            $this->cutting_qty = $obj->cutting_qty;
-            $this->active_id = $obj->active_id;
-            return $obj;
-        }
-        return null;
+        DB::table('cutting_items')->where('cutting_id', '=', $this->vid)->delete();
+        DB::table('cuttings')->where('id', '=', $this->vid)->delete();
+        $this->getRoute();
     }
 
-    public function getList()
-    {
-        $this->sortField = 'id';
-
-        return Cutting::search($this->searches)
-            ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-            ->paginate($this->perPage);
-    }
-
-    public function goTo()
+    public function getRoute(): void
     {
         $this->redirect(route('cuttings'));
-    }
-
-    public function reRender(): void
-    {
-        $this->render();
     }
 
     public function render()

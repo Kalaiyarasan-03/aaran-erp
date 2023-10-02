@@ -5,7 +5,7 @@ namespace App\Livewire\Controls\Model\Erp;
 use App\Models\Erp\Style;
 use Livewire\Component;
 
-class StyleLookup extends Component
+class StyleModel extends Component
 {
     public bool $showModel = false;
 
@@ -23,10 +23,11 @@ class StyleLookup extends Component
             $obj = Style::create([
                 'vname' => $this->vname,
                 'desc' => $this->desc,
+                'active_id' => '1',
                 'user_id' => \Auth::id()
             ]);
-            $this->dispatch('refresh-order-item', ['name' => $this->vname, 'id' => $obj->id]);
-            $this->dispatch('refresh-order', ['name' => $this->vname, 'id' => $obj->id]);
+            $this->dispatch('refresh-style-item', ['name' => $this->vname, 'id' => $obj->id]);
+            $this->dispatch('refresh-style', ['name' => $this->vname, 'id' => $obj->id]);
             $this->clearAll();
         }
     }
@@ -38,6 +39,6 @@ class StyleLookup extends Component
     }
     public function render()
     {
-        return view('livewire.controls.model.erp.style-lookup');
+        return view('livewire.controls.model.erp.style-model');
     }
 }

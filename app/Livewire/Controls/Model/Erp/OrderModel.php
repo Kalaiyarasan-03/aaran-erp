@@ -23,6 +23,7 @@ class OrderModel extends Component
             $obj = Order::create([
                 'vname' => $this->vname,
                 'desc' => $this->desc,
+                'active_id' => '1',
                 'user_id' => \Auth::id()
             ]);
             $this->dispatch('refresh-order-item', ['name' => $this->vname, 'id' => $obj->id]);
