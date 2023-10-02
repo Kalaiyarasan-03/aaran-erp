@@ -11,11 +11,21 @@ class Upsert extends Component
     use CommonTrait;
 
     public Cutting $cutting;
+     public mixed $order_id;
+    public mixed $cutting_date;
+    public mixed $cutting_master;
+    public mixed $cutting_qty;
 
     public function mount($id)
     {
         $this->cutting = Cutting::find($id);
     }
+
+
+
+
+
+
 
     public function getSave(): string
     {
