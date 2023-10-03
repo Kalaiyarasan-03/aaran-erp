@@ -38,7 +38,7 @@
                     <td class="border border-gray-300 ">
 
                         <label>
-                            <input wire:model="qty" type="text" placeholder="Cutting Qty"
+                            <input wire:model="qty" type="text" placeholder="Qty"
                                    class="purple-textbox-no-rounded w-full"/>
                         </label>
                     </td>
