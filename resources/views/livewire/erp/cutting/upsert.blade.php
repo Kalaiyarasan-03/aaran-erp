@@ -78,7 +78,7 @@
                             </button>
                         </td>
                         <td class="px-2 text-left border border-gray-300">{{$row['colour_name']}}</td>
-                        <td class="px-2 text-left border border-gray-300">{{$row['size_name']}}</td>
+                        <td class="px-2 text-center border border-gray-300">{{$row['size_name']}}</td>
                         <td class="px-2 text-center border border-gray-300">{{floatval($row['qty'])}}</td>
                         <td class="text-center border border-gray-300">
                             <button wire:click.prevent="removeItems({{$index}})"
@@ -111,9 +111,7 @@
                 <x-button.save/>
                 <x-button.back/>
             </div>
-            <div>
 
-            </div>
             <div>
                 <x-button.delete/>
             </div>

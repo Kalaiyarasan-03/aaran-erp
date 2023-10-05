@@ -100,7 +100,7 @@
                 </tbody>
                 <tfoot class="mt-2">
                 <tr class="h-8 text-sm border border-gray-400 bg-gray-50">
-                    <td colspan="3" class="px-2 text-xs text-right border border-gray-300">&nbsp;TOTALS&nbsp;&nbsp;&nbsp;</td>
+                    <td colspan="4" class="px-2 text-xs text-right border border-gray-300">&nbsp;TOTALS&nbsp;&nbsp;&nbsp;</td>
                     <td class="px-2 text-center border border-gray-300">{{$total_qty}}</td>
                 </tr>
                 </tfoot>
