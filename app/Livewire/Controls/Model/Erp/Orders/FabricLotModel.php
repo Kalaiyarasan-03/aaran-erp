@@ -10,6 +10,7 @@ class FabricLotModel extends Component
     public bool $showModel = false;
 
     public string $vname = "";
+    public string $desc = "";
 
     public function mount($name)
     {
@@ -21,7 +22,9 @@ class FabricLotModel extends Component
         if ($this->vname != '') {
             $obj = FabricLot::create([
                 'vname' => \Str::ucfirst($this->vname),
-                'active_id' => '1'
+                'desc' => \Str::ucfirst($this->desc),
+                'active_id' => '1',
+                 'user_id' => \Auth::id()
             ]);
             $this->dispatch('refresh-fabric-lot-item', ['name' => $this->vname, 'id' => $obj->id]);
             $this->dispatch('refresh-fabric-lot', ['name' => $this->vname, 'id' => $obj->id]);
@@ -33,6 +36,7 @@ class FabricLotModel extends Component
     {
         $this->showModel = false;
         $this->vname = "";
+        $this->desc = "";
     }
 
     public function render()
