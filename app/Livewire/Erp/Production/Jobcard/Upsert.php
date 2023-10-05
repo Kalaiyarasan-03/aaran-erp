@@ -4,6 +4,7 @@ namespace App\Livewire\Erp\Production\Jobcard;
 
 use App\Livewire\Controls\Items\Common\ColourItem;
 use App\Livewire\Controls\Items\Common\SizeItem;
+use App\Livewire\Controls\Items\Erp\Orders\FabricLotItem;
 use App\Models\Erp\Jobcard;
 use App\Models\Erp\JobcardItem;
 use App\Models\Erp\PeInward;
@@ -28,6 +29,8 @@ class Upsert extends Component
     public string $itemIndex = "";
 
     public mixed $jobcard_id = '';
+    public mixed $fabric_lot_id = '';
+    public string $fabric_lot_name = '';
     public mixed $colour_id = '';
     public string $colour_name = '';
     public mixed $size_id = '';
@@ -52,13 +55,16 @@ class Upsert extends Component
             $this->receiver_details = $this->jobcard->receiver_details;
 
             $data = DB::table('jobcard_items')->where('jobcard_id', '=', $id)
+                ->join('fabric_lots', 'fabric_lots.id', '=', 'jobcard_items.fabric_lot_id')
                 ->join('colours', 'colours.id', '=', 'jobcard_items.colour_id')
                 ->join('sizes', 'sizes.id', '=', 'jobcard_items.size_id')
-                ->select('jobcard_items.*', 'colours.vname as colour_name', 'sizes.vname as size_name')
+                ->select('jobcard_items.*', 'fabric_lots.vname as fabric_lot_name','colours.vname as colour_name', 'sizes.vname as size_name')
                 ->get()
                 ->transform(function ($data) {
                     return [
                         'jobcard_id' => $data->jobcard_id,
+                        'fabric_lot_id' => $data->fabric_lot_id,
+                        'fabric_lot_name' => $data->fabric_lot_name,
                         'colour_id' => $data->colour_id,
                         'colour_name' => $data->colour_name,
                         'size_id' => $data->size_id,
@@ -90,6 +96,8 @@ class Upsert extends Component
                 !(empty($this->qty))
             ) {
                 $this->list[] = [
+                    'fabric_lot_id' => $this->fabric_lot_id,
+                    'fabric_lot_name' => $this->fabric_lot_name,
                     'colour_id' => $this->colour_id,
                     'colour_name' => $this->colour_name,
                     'size_id' => $this->size_id,
@@ -101,6 +109,8 @@ class Upsert extends Component
             }
         } else {
             $this->list[$this->itemIndex] = [
+                'fabric_lot_id' => $this->fabric_lot_id,
+                'fabric_lot_name' => $this->fabric_lot_name,
                 'colour_id' => $this->colour_id,
                 'colour_name' => $this->colour_name,
                 'size_id' => $this->size_id,
@@ -116,10 +126,13 @@ class Upsert extends Component
 
     public function resetsItems()
     {
+        $this->fabric_lot_id = '';
+        $this->fabric_lot_name = '';
         $this->colour_name = '';
         $this->colour_id = '';
         $this->size_name = '';
         $this->qty = '';
+        $this->dispatch('refresh-fabric-lot', ['id' => '', 'name' => ''])->to(FabricLotItem::class);
         $this->dispatch('refresh-colour', ['id' => '', 'name' => ''])->to(ColourItem::class);
         $this->dispatch('refresh-size', ['id' => '', 'name' => ''])->to(SizeItem::class);
     }
@@ -128,12 +141,15 @@ class Upsert extends Component
     {
         $this->itemIndex = $index;
         $items = $this->list[$index];
+        $this->fabric_lot_name = $items['fabric_lot_name'];
+        $this->fabric_lot_id = $items['fabric_lot_id'];
         $this->colour_name = $items['colour_name'];
         $this->colour_id = $items['colour_id'];
         $this->size_name = $items['size_name'];
         $this->size_id = $items['size_id'];
         $this->qty = floatval($items['qty']);
 
+        $this->dispatch('refresh-fabric-lot-item', ['id' => $this->fabric_lot_id, 'name' => $this->fabric_lot_name])->to(FabricLotItem::class);
         $this->dispatch('refresh-colour-item', ['id' => $this->colour_id, 'name' => $this->colour_name])->to(ColourItem::class);
         $this->dispatch('refresh-size-item', ['id' => $this->size_id, 'name' => $this->size_name])->to(SizeItem::class);
     }
@@ -155,6 +171,13 @@ class Upsert extends Component
     public function setStyle($v): void
     {
         $this->style_id = $v['id'];
+    }
+
+    #[On('refresh-fabric-lot')]
+    public function setFabricLot($v): void
+    {
+        $this->fabric_lot_id = $v['id'];
+        $this->fabric_lot_name = $v['name'];
     }
 
     #[On('refresh-colour')]
@@ -221,6 +244,7 @@ class Upsert extends Component
             JobcardItem::create([
                 'jobcard_id' => $id,
                 'colour_id' => $sub['colour_id'],
+                'fabric_lot_id' => $sub['fabric_lot_id'],
                 'size_id' => $sub['size_id'],
                 'qty' => $sub['qty'],
             ]);

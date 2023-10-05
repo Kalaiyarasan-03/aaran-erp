@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Jobcard extends Model
 {
     use HasFactory;
-    public $timestamps = false;
+
     protected $guarded = [];
 
     public static function search(string $searches)
@@ -26,5 +26,10 @@ class Jobcard extends Model
     public function style(): BelongsTo
     {
         return $this->belongsTo(Style::class);
+    }
+
+    public static function nextNo()
+    {
+        return static::max('vno') + 1;
     }
 }

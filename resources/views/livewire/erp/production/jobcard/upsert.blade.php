@@ -6,8 +6,8 @@
         <div class="grid gap-4 sm:grid-cols-4">
 
             <div class="flex flex-col col-span-2 gap-2">
-                @livewire('controls.lookup.master.contact-lookup',['id'=>$contact_id, 'name'=>$contact_name])
                 @livewire('controls.lookup.erp.order-lookup',['id'=>$order_id, 'name'=>$order_name])
+                @livewire('controls.lookup.erp.style-lookup',['id'=>$style_id, 'name'=>$style_name])
 
             </div>
             <div class="flex flex-col col-span-2 gap-2">
@@ -15,7 +15,7 @@
                 <x-input.text-new wire:model="vdate" :name="'vdate'" :type="'date'" :label="'Date'"/>
             </div>
             <div class="flex flex-col col-span-2 gap-2">
-                @livewire('controls.lookup.erp.style-lookup',['id'=>$style_id, 'name'=>$style_name])
+
             </div>
         </div>
 
@@ -25,6 +25,10 @@
             <table class="w-full mt-3 border border-blue-600">
                 <tr class="border border-gray-400 ">
                     <!--  Items ----------------------------------------------------------------------------------------- -->
+
+                    <td class="border border-gray-300">
+                        @livewire('controls.items.erp.orders.fabric-lot-item')
+                    </td>
 
                     <td class="border border-gray-300">
                         @livewire('controls.items.common.colour-item')
@@ -61,6 +65,7 @@
                 <thead>
                 <tr class="h-8 text-xs bg-gray-100 border border-gray-300">
                     <th class="w-12 px-2 text-center border border-gray-300">#</th>
+                    <th class="px-2 text-center border border-gray-300">LOT</th>
                     <th class="px-2 text-center border border-gray-300">COLOUR</th>
                     <th class="px-2 text-center border border-gray-300">SIZE</th>
                     <th class="px-2 text-center border border-gray-300">QTY</th>
@@ -78,6 +83,7 @@
                                 {{$index+1}}
                             </button>
                         </td>
+                        <td class="px-2 text-left border border-gray-300">{{$row['lot_name']}}</td>
                         <td class="px-2 text-left border border-gray-300">{{$row['colour_name']}}</td>
                         <td class="px-2 text-left border border-gray-300">{{$row['size_name']}}</td>
                         <td class="px-2 text-center border border-gray-300">{{floatval($row['qty'])}}</td>
