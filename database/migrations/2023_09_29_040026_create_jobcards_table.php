@@ -22,6 +22,7 @@ return new class extends Migration
 
         Schema::create('jobcard_items', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('jobcard_id')->references('id')->on('jobcards');
             $table->foreignId('fabric_lot_id')->references('id')->on('fabric_lots');
             $table->foreignId('colour_id')->references('id')->on('colours');
             $table->foreignId('size_id')->references('id')->on('sizes');

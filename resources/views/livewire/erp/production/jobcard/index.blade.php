@@ -10,15 +10,14 @@
                 <x-table.ths wire:click.prevent="sortBy('vname')">Style</x-table.ths>
                 <x-table.ths wire:click.prevent="sortBy('vname')">No</x-table.ths>
                 <x-table.ths wire:click.prevent="sortBy('vname')">Date</x-table.ths>
-                <x-table.ths wire:click.prevent="sortBy('vname')">Party Name</x-table.ths>
-                <x-table.ths-center wire:click.prevent="sortBy('vname')">Inward Qty</x-table.ths-center>
+                <x-table.ths-center wire:click.prevent="sortBy('vname')">Qty</x-table.ths-center>
             </x-slot>
             <x-slot name="table_body">
                 @forelse ($list as $index =>  $row)
                     <x-table.row>
 
                         <x-table.cell>
-                            <a href="{{route('peinwards.upsert',[$row->id])}}"
+                            <a href="{{route('jobcards.upsert',[$row->id])}}"
                                class="flex flex-col px-3">
                                 <div class="text-gray-600 truncate text-xl text-left">
                                     {{ $row->order->vname }}
@@ -27,7 +26,7 @@
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('peinwards.upsert',[$row->id])}}"
+                            <a href="{{route('jobcards.upsert',[$row->id])}}"
                                class="flex flex-col px-3">
                                 <div class="text-gray-600 truncate text-xl text-left">
                                     {{ $row->style->vname }}
@@ -36,7 +35,7 @@
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('peinwards.upsert',[$row->id])}}"
+                            <a href="{{route('jobcards.upsert',[$row->id])}}"
                                class="flex px-3 text-gray-600 truncate text-xl text-left">
                                 {{ $row->vno }}
                             </a>
@@ -45,14 +44,14 @@
 
 
                         <x-table.cell>
-                            <a href="{{route('peinwards.upsert',[$row->id])}}"
+                            <a href="{{route('jobcards.upsert',[$row->id])}}"
                                class="flex flex-col px-3 text-gray-600 truncate text-xl text-left">
                                 {{date('d-m-Y', strtotime($row->vdate))}}
                             </a>
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('peinwards.upsert',[$row->id])}}"
+                            <a href="{{route('jobcards.upsert',[$row->id])}}"
                                class="flex flex-col px-3 text-gray-600 truncate text-xl text-center">
                                 {{ $row->total_qty + 0 }}
                             </a>

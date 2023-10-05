@@ -198,7 +198,7 @@ class Upsert extends Component
     {
         if ($this->order_id != '') {
             if ($this->vid == "") {
-                $obj = PeInward::create([
+                $obj = Jobcard::create([
                     'vno' => $this->vno,
                     'vdate' => $this->vdate,
                     'order_id' => $this->order_id,
@@ -213,7 +213,7 @@ class Upsert extends Component
                 $this->getRoute();
 
             } else {
-                $obj = PeInward::find($this->vid);
+                $obj = Jobcard::find($this->vid);
                 $obj->vno = $this->vno;
                 $obj->vdate = $this->vdate;
                 $obj->order_id = $this->order_id;
