@@ -1,35 +1,34 @@
 <?php
 
-namespace App\Livewire\Erp\Jobcard;
+namespace App\Livewire\Erp\Production\FabricLot;
 
 use App\Livewire\Trait\CommonTrait;
-use App\Models\Erp\Jobcard;
+use App\Models\Erp\Production\FabricLot;
 use Livewire\Component;
 
 class Index extends Component
 {
     use CommonTrait;
 
-    public string $order_id = '';
-    public string $total_qty = '';
+    public string $desc = '';
 
     public function getSave(): string
     {
-        if ($this->order_id != '') {
+        if ($this->vname != '' ) {
 
             if ($this->vid == "") {
-                Jobcard::create([
-                    'order_id' => $this->order_id,
-                    'total_qty' => $this->total_qty,
+                FabricLot::create([
+                    'vname' => \Str::upper($this->vname),
+                    'desc' => \Str::ucfirst($this->desc),
                     'active_id' => $this->active_id,
                     'user_id' => \Auth::id(),
                 ]);
                 $message = "Saved";
 
             } else {
-                $obj = Jobcard::find($this->vid);
-                $obj->order_id = $this->order_id;
-                $obj->total_qty = $this->total_qty;
+                $obj = FabricLot::find($this->vid);
+                $obj->vname = \Str::upper($this->vname);
+                $obj->desc = \Str::ucfirst($this->desc);
                 $obj->active_id = $this->active_id ?: '0';
                 $obj->user_id = \Auth::id();
                 $obj->save();
@@ -45,10 +44,10 @@ class Index extends Component
     public function getObj($id)
     {
         if ($id) {
-            $obj = Jobcard::find($id);
+            $obj = FabricLot::find($id);
             $this->vid = $obj->id;
-            $this->order_id = $obj->order_id;
-            $this->total_qty = $obj->total_qty;
+            $this->vname = $obj->vname;
+            $this->desc = $obj->desc;
             $this->active_id = $obj->active_id;
             return $obj;
         }
@@ -59,7 +58,8 @@ class Index extends Component
     {
         $this->sortField = 'id';
 
-        return Jobcard::search($this->searches)
+        return FabricLot::search($this->searches)
+            ->where('active_id', '=', $this->activeRecord)
             ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
             ->paginate($this->perPage);
     }
@@ -71,7 +71,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.erp.jobcard.index')->with([
+        return view('livewire.erp.production.fabric-lot.index')->with([
             'list' => $this->getList()
         ]);
     }

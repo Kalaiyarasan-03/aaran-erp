@@ -10,7 +10,10 @@ return new class extends Migration
     {
         Schema::create('jobcards', function (Blueprint $table) {
             $table->id();
+            $table->integer('vno');
+            $table->date('vdate');
             $table->foreignId('order_id')->references('id')->on('orders');
+            $table->foreignId('style_id')->references('id')->on('styles');
             $table->string('total_qty');
             $table->string('active_id', 3)->nullable();
             $table->foreignId('user_id')->references('id')->on('users');
@@ -19,9 +22,9 @@ return new class extends Migration
 
         Schema::create('jobcard_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('style_id')->references('id')->on('styles');
-            $table->foreignId('size_id')->references('id')->on('sizes');
+            $table->foreignId('fabric_lot_id')->references('id')->on('fabric_lots');
             $table->foreignId('colour_id')->references('id')->on('colours');
+            $table->foreignId('size_id')->references('id')->on('sizes');
             $table->decimal('qty',11,3);
         });
     }
