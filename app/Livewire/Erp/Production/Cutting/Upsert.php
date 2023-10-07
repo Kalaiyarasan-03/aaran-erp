@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Erp\Cutting;
+namespace App\Livewire\Erp\Production\Cutting;
 
 use App\Livewire\Controls\Items\Common\ColourItem;
 use App\Livewire\Controls\Items\Common\SizeItem;
@@ -243,6 +243,6 @@ class Upsert extends Component
 
     public function render()
     {
-        return view('livewire.erp.cutting.upsert');
+        return view('livewire.erp.production.cutting.upsert');
     }
 }

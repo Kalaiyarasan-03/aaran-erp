@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Livewire\Erp\Cutting;
+namespace App\Livewire\Erp\Production\Cutting;
 
-use App\Livewire\Trait\CommonTrait;
 use App\Livewire\Trait\EntriesIndexAbstract;
 use App\Models\Erp\Cutting;
-use Livewire\Component;
 
-class Index extends EntriesIndexAbstract
+class Index  extends EntriesIndexAbstract
 {
     public function create(): void
     {
@@ -24,7 +22,7 @@ class Index extends EntriesIndexAbstract
 
     public function render()
     {
-        return view('livewire.erp.cutting.index')->with([
+        return view('livewire.erp.production.cutting.index')->with([
             'list' => $this->getList()
         ]);
     }

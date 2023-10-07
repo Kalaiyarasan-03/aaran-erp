@@ -37,7 +37,7 @@
                         <x-table.cell>
                             <a href="{{route('cuttings.upsert',[$row->id])}}"
                                class="flex flex-col px-3 text-gray-600 truncate text-xl text-left">
-                              {{date('d-m-Y', strtotime($row->vdate))}}
+                                {{date('d-m-Y', strtotime($row->vdate))}}
                             </a>
                         </x-table.cell>
 

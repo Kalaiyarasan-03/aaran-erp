@@ -18,8 +18,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('jobcards', App\Livewire\Erp\Production\Jobcard\Index::class)->name('jobcards');
     Route::get('jobcards/{id}/upsert', App\Livewire\Erp\Production\Jobcard\Upsert::class)->name('jobcards.upsert');
 
-    Route::get('cuttings', App\Livewire\Erp\Cutting\Index::class)->name('cuttings');
-    Route::get('cuttings/{id}/upsert', App\Livewire\Erp\Cutting\Upsert::class)->name('cuttings.upsert');
+    Route::get('cuttings', App\Livewire\Erp\Production\Cutting\Index::class)->name('cuttings');
+    Route::get('cuttings/{id}/upsert', App\Livewire\Erp\Production\Cutting\Upsert::class)->name('cuttings.upsert');
 
     Route::get('peoutwards', App\Livewire\Erp\PeOutward\Index::class)->name('peoutwards');
     Route::get('peoutwards/{id}/upsert', App\Livewire\Erp\PeOutward\Upsert::class)->name('peoutwards.upsert');
