@@ -4,6 +4,7 @@ namespace App\Livewire\Erp\Production\Cutting;
 
 use App\Livewire\Controls\Items\Common\ColourItem;
 use App\Livewire\Controls\Items\Common\SizeItem;
+use App\Livewire\Controls\Items\Erp\Production\JobcardItem;
 use App\Models\Erp\Cutting;
 use App\Models\Erp\CuttingItem;
 use Carbon\Carbon;
@@ -19,8 +20,8 @@ class Upsert extends Component
     public mixed $vdate = '';
     public mixed $order_id = '';
     public mixed $order_name = '';
-    public mixed $style_id = '';
-    public mixed $style_name = '';
+    public mixed $jobcard_id = '';
+    public mixed $jobcard_name = '';
     public mixed $cutting_master = '';
     public mixed $cutting_qty = '';
     public mixed $active_id = '1';
@@ -46,8 +47,8 @@ class Upsert extends Component
             $this->vdate = $this->cutting->vdate;
             $this->order_id = $this->cutting->order_id;
             $this->order_name = $this->cutting->order->vname;
-            $this->style_id = $this->cutting->style_id;
-            $this->style_name = $this->cutting->style->vname;
+            $this->jobcard_id = $this->cutting->style_id;
+            $this->jobcard_name = $this->cutting->style->vname;
             $this->cutting_master = $this->cutting->cutting_master;
             $this->cutting_qty = $this->cutting->cutting_qty;
 
@@ -145,15 +146,28 @@ class Upsert extends Component
         $this->calculateTotal();
     }
 
+    #[On('refresh-cutting-jobcard')]
+    public function refreshCuttingJobcard($v)
+    {
+        $this->colour_id = $v['colour_id'];
+        $this->colour_name = $v['colour_name'];
+        $this->size_id = $v['size_id'];
+        $this->size_name = $v['size_name'];
+        $this->qty = $v['qty'];
+    }
+
     #[On('refresh-order')]
     public function setOrder($v): void
     {
         $this->order_id = $v['id'];
+
     }
-    #[On('refresh-style')]
-    public function setStyle($v): void
+    #[On('refresh-jobcard')]
+    public function setJobcard($v): void
     {
-        $this->style_id = $v['id'];
+        $this->jobcard_id = $v['id'];
+        $this->jobcard_name = $v['name'];
+        $this->dispatch('refresh-with-job', ['id' => $this->jobcard_id, 'name' => $this->jobcard_name])->to(JobcardItem::class);
     }
 
     #[On('refresh-colour')]
@@ -178,7 +192,7 @@ class Upsert extends Component
                     'vno' => $this->vno,
                     'vdate' => $this->vdate,
                     'order_id' => $this->order_id,
-                    'style_id' => $this->style_id,
+                    'style_id' => $this->jobcard_id,
                     'cutting_master' => $this->cutting_master,
                     'cutting_qty' => $this->cutting_qty,
                     'active_id' => $this->active_id,
@@ -194,7 +208,7 @@ class Upsert extends Component
                 $obj->vno = $this->vno;
                 $obj->vdate = $this->vdate;
                 $obj->order_id = $this->order_id;
-                $obj->style_id = $this->style_id;
+                $obj->style_id = $this->jobcard_id;
                 $obj->cutting_master = $this->cutting_master;
                 $obj->cutting_qty = $this->cutting_qty;
                 $obj->active_id = $this->active_id ?: '0';
@@ -209,7 +223,7 @@ class Upsert extends Component
             $this->vno = '';
             $this->vdate = '';
             $this->order_id = '';
-            $this->style_id = '';
+            $this->jobcard_id = '';
             $this->cutting_master = '';
             $this->cutting_qty = '';
             return $message;

@@ -7,11 +7,14 @@
 
             <div class="flex flex-col col-span-2 gap-2">
                 @livewire('controls.lookup.erp.order-lookup',['id'=>$order_id, 'name'=>$order_name])
-                @livewire('controls.lookup.erp.style-lookup',['id'=>$style_id, 'name'=>$style_name])
+                @livewire('controls.lookup.erp.production.jobcard-lookup',['id'=>$jobcard_id, 'name'=>$jobcard_name])
             </div>
             <div class="flex flex-col col-span-2 gap-2">
                 <x-input.text-new wire:model="vno" :name="'vno'" :label="'No'"/>
                 <x-input.text-new wire:model="vdate" :name="'vdate'" :type="'date'" :label="'Date'"/>
+            </div>
+            <div class="flex flex-col col-span-2 gap-2">
+                &nbsp;
             </div>
             <div class="flex flex-col col-span-2 gap-2">
                 <x-input.text-new wire:model="cutting_master" :name="'cutting_master'" :label="'Cutting Master'"/>
@@ -24,6 +27,10 @@
             <table class="w-full mt-3 border border-blue-600">
                 <tr class="border border-gray-400 ">
                     <!--  Items ----------------------------------------------------------------------------------------- -->
+
+                    <td class="border border-gray-300">
+                        @livewire('controls.items.erp.production.jobcard-item')
+                    </td>
 
                     <td class="border border-gray-300">
                         @livewire('controls.items.common.colour-item')
