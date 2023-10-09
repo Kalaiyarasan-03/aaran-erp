@@ -6,10 +6,8 @@ use App\Livewire\Controls\Items\Common\ColourItem;
 use App\Livewire\Controls\Items\Common\SizeItem;
 use App\Livewire\Erp\Production\Cutting\Upsert;
 use App\Livewire\Trait\ItemLookupAbstract;
-use App\Models\Erp\Jobcard;
 use DB;
 use Livewire\Attributes\On;
-use Livewire\Component;
 
 class JobcardItem extends ItemLookupAbstract
 {

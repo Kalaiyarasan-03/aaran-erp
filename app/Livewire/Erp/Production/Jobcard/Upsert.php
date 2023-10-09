@@ -133,7 +133,7 @@ class Upsert extends Component
         $this->size_name = '';
         $this->size_id = '';
         $this->qty = '';
-        $this->dispatch('refresh-fabric-lot', ['id' => '', 'name' => ''])->to(FabricLotItem::class);
+        $this->dispatch('refresh-fabric-lot-item', ['id' => '', 'name' => ''])->to(FabricLotItem::class);
         $this->dispatch('refresh-colour-item', ['id' => '', 'name' => ''])->to(ColourItem::class);
         $this->dispatch('refresh-size-item', ['id' => '', 'name' => ''])->to(SizeItem::class);
     }

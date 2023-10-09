@@ -47,8 +47,8 @@ class Upsert extends Component
             $this->vdate = $this->cutting->vdate;
             $this->order_id = $this->cutting->order_id;
             $this->order_name = $this->cutting->order->vname;
-            $this->jobcard_id = $this->cutting->style_id;
-            $this->jobcard_name = $this->cutting->style->vname;
+            $this->jobcard_id = $this->cutting->jobcard_id;
+            $this->jobcard_name = $this->cutting->jobcard->vno;
             $this->cutting_master = $this->cutting->cutting_master;
             $this->cutting_qty = $this->cutting->cutting_qty;
 

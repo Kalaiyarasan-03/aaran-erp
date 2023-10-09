@@ -23,9 +23,9 @@ class Cutting extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function style(): BelongsTo
+    public function jobcard(): BelongsTo
     {
-        return $this->belongsTo(Style::class);
+        return $this->belongsTo(Jobcard::class);
     }
 
     public static function nextNo()
