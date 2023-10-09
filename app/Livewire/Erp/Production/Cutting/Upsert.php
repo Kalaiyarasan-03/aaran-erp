@@ -192,7 +192,7 @@ class Upsert extends Component
                     'vno' => $this->vno,
                     'vdate' => $this->vdate,
                     'order_id' => $this->order_id,
-                    'style_id' => $this->jobcard_id,
+                    'jobcard_id' => $this->jobcard_id,
                     'cutting_master' => $this->cutting_master,
                     'cutting_qty' => $this->cutting_qty,
                     'active_id' => $this->active_id,
@@ -208,7 +208,7 @@ class Upsert extends Component
                 $obj->vno = $this->vno;
                 $obj->vdate = $this->vdate;
                 $obj->order_id = $this->order_id;
-                $obj->style_id = $this->jobcard_id;
+                $obj->jobcard_id = $this->jobcard_id;
                 $obj->cutting_master = $this->cutting_master;
                 $obj->cutting_qty = $this->cutting_qty;
                 $obj->active_id = $this->active_id ?: '0';

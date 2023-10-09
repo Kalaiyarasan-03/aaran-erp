@@ -44,21 +44,43 @@
                                 @if($list)
                                     @forelse ($list as $i => $row)
 
-                                        <tr class="border border-gray-400">
-                                            <td class="px-2 text-left border border-gray-300 cursor-pointer hover:bg-blue-500"
+                                        <tr class="border border-gray-400 hover:bg-blue-300 cursor-pointer">
+                                            <td class="px-2 text-left border border-gray-300 "
                                                 wire:click="sendItem(
                                                 '{{$row['colour_name']}}','{{$row['colour_id']}}',
                                                 '{{$row['size_name']}}','{{$row['size_id']}}',
                                                 '{{$row['qty']}}'
-                                                )">
-                                            {{$row['colour_name']}}
+                                                )"
+                                                x-on:click="isTyped = false"
+                                            >
+
+                                                {{$row['colour_name']}}
+
                                             </td>
-                                            <td class="px-2 text-center border border-gray-300">
+
+                                            <td class="px-2 text-left border border-gray-300"
+                                                wire:click="sendItem(
+                                                '{{$row['colour_name']}}','{{$row['colour_id']}}',
+                                                '{{$row['size_name']}}','{{$row['size_id']}}',
+                                                '{{$row['qty']}}'
+                                                )"
+                                                x-on:click="isTyped = false"
+                                            >
+
                                                 {{$row['size_name']}}
                                             </td>
-                                            <td class="px-2 text-center border border-gray-300">
+
+                                            <td class="px-2 text-left border border-gray-300"
+                                                wire:click="sendItem(
+                                                '{{$row['colour_name']}}','{{$row['colour_id']}}',
+                                                '{{$row['size_name']}}','{{$row['size_id']}}',
+                                                '{{$row['qty']}}'
+                                                )"
+                                                x-on:click="isTyped = false"
+                                            >
                                                 {{floatval($row['qty'])}}
                                             </td>
+
                                         </tr>
                                     @empty
                                         no record
