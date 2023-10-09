@@ -28,5 +28,13 @@ class DatabaseSeeder extends Seeder
             'remember_token' => Str::random(10)
         ]);
 
+        User::create([
+            'name' => 'Karthi',
+            'email' => 'karthi@aaran.com',
+            'password' => bcrypt('123456789'),
+            'email_verified_at'=> now(),
+            'active_id' => '1',
+            'remember_token' => Str::random(10)
+        ]);
     }
 }
