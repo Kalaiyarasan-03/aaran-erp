@@ -1,123 +1,173 @@
 <div>
     <x-slot name="header">Printing & Emb Outward Note</x-slot>
+
     <x-forms.m-panel>
 
-        <div class="grid gap-4 sm:grid-cols-4">
+        <section class="grid grid-cols-2 gap-12">
+            <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-2">
+                    <div>
+                        <div x-data="{isTyped: false}" @click.away="isTyped = false">
+                            <div class="relative">
+                                <label for="contact_name" class="gray-label">Party Name</label>
+                                <input
+                                    id="contact_name"
+                                    type="search"
+                                    wire:model.live="contact_name"
+                                    autocomplete="off"
+                                    placeholder="Contact.."
+                                    @focus="isTyped = true"
+                                    @keydown.escape.window="isTyped = false"
+                                    @keydown.tab.window="isTyped = false"
+                                    @keydown.enter.prevent="isTyped = false"
+                                    wire:keydown.arrow-up="decrementHighlight"
+                                    wire:keydown.arrow-down="incrementHighlight"
+                                    wire:keydown.enter="selectObj"
+                                    class="block w-full purple-textbox mt-2"
+                                />
 
-            <div class="flex flex-col col-span-2 gap-2">
-                @livewire('controls.lookup.master.contact-lookup',['id'=>$contact_id, 'name'=>$contact_name])
-                @livewire('controls.lookup.erp.order-lookup',['id'=>$order_id, 'name'=>$order_name])
+                                <div x-show="isTyped"
+                                     x-transition:leave="transition ease-in duration-100"
+                                     x-transition:leave-start="opacity-100"
+                                     x-transition:leave-end="opacity-0"
+                                     x-cloak
+                                >
+                                    <div class="absolute z-20 w-full mt-2">
+                                        <div class="block py-1 shadow-md w-full
+                rounded-lg border-transparent flex-1 appearance-none border
+                                 bg-white text-gray-800 ring-1 ring-purple-600">
+                                            <ul class="overflow-y-scroll h-96">
+                                                @forelse (\App\Models\Master\Contact::where('active_id','=', \App\Enums\Active::ACTIVE)->get() as $i => $row)
+                                                    <div wire:key="{{ $row->id }}"></div>
+                                                    <li class="cursor-pointer px-3 py-1 hover:font-bold hover:bg-yellow-100 border-b border-gray-300 h-8
+                                                        {{ $selectHighlight === $i ? 'bg-yellow-100' : '' }}"
+                                                        wire:click.prevent="setObj('{{$row->vname}}','{{$row->id}}')"
+                                                        x-on:click="isTyped = false">
+                                                        {{ $row->vname }}
+                                                    </li>
+                                                @empty
+                                                    @livewire('controls.model.master.contact-model',[$contact_name])
+                                                @endforelse
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label for="contact" class="gray-label">Job Card</label>
+                    <input id="contact" class="purple-textbox">
+                </div>
             </div>
-            <div class="flex flex-col col-span-2 gap-2">
-                <x-input.text-new wire:model="vno" :name="'vno'" :label="'No'"/>
-                <x-input.text-new wire:model="vdate" :name="'vdate'" :type="'date'" :label="'Date'"/>
+            <div class="flex flex-col gap-3">
+                <div class="flex flex-col gap-2">
+                    <label for="vno" class="gray-label">VC NO</label>
+                    <input id="vno" class="purple-textbox">
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label for="date" class="gray-label">Date</label>
+                    <input date id="date" class="purple-textbox">
+                </div>
             </div>
-            <div class="flex flex-col col-span-2 gap-2">
-                @livewire('controls.lookup.erp.style-lookup',['id'=>$style_id, 'name'=>$style_name])
-            </div>
-        </div>
+        </section>
 
-        <!--  Add items ----------------------------------------------------------------------------------------- -->
-        <div class="mt-5 ">
-            <span class="px-6 text-lg font-extrabold text-orange-500"> Add Items</span>
-            <table class="w-full mt-3 border border-blue-600">
-                <tr class="border border-gray-400 ">
-                    <!--  Items ----------------------------------------------------------------------------------------- -->
+        <section>
+            Add Items
+        </section>
 
-                    <td class="border border-gray-300">
-                        @livewire('controls.items.common.colour-item')
-                    </td>
+        <section class="flex flex-row w-full">
+            <label class="w-full">
+                <input class="w-full border-gray-300" placeholder="Cutting Ref">
+            </label>
+            <label class="w-full">
+                <input class="w-full border-gray-300 " placeholder="Colour">
+            </label>
+            <label class="w-full">
+                <input class="w-full border-gray-300" placeholder="Size">
+            </label>
+            <label class="w-full">
+                <input class="w-full border-gray-300" placeholder="Qty">
+            </label>
+            <button class="px-3 bg-green-500 text-white font-semibold tracking-wider ">Add</button>
+        </section>
 
-                    <td class="border border-gray-300">
-                        @livewire('controls.items.common.size-item')
-                    </td>
+        <section>
 
-                    <!--  items ----------------------------------------------------------------------------------------- -->
+            <div class="py-2 mt-5">
 
-                    <td class="border border-gray-300 ">
-
-                        <label>
-                            <input wire:model="qty" type="text" placeholder="Qty"
-                                   class="purple-textbox-no-rounded w-full"/>
-                        </label>
-                    </td>
-
-                    <!--  Add button ----------------------------------------------------------------------------------------- -->
-                    <td class="w-16 text-center border border-gray-300">
-                        <button wire:click="addItems"
-                                class="w-full h-10 font-bold text-white bg-green-500 text-md">add
-                        </button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <!--  table ----------------------------------------------------------------------------------------- -->
-        <div class="py-2 mt-5">
-
-            <table class="w-full">
-                <thead>
-                <tr class="h-8 text-xs bg-gray-100 border border-gray-300">
-                    <th class="w-12 px-2 text-center border border-gray-300">#</th>
-                    <th class="px-2 text-center border border-gray-300">COLOUR</th>
-                    <th class="px-2 text-center border border-gray-300">SIZE</th>
-                    <th class="px-2 text-center border border-gray-300">QTY</th>
-                    <th class="w-12 px-1 text-center border border-gray-300">ACTION</th>
-                </tr>
-
-                </thead>
-
-                <tbody>
-
-                @foreach($list as $index => $row)
-                    <tr class="border border-gray-400">
-                        <td class="text-center border border-gray-300 bg-gray-100">
-                            <button class="w-full h-full cursor-pointer" wire:click.prevent="changeItems({{$index}})">
-                                {{$index+1}}
-                            </button>
-                        </td>
-                        <td class="px-2 text-left border border-gray-300">{{$row['colour_name']}}</td>
-                        <td class="px-2 text-left border border-gray-300">{{$row['size_name']}}</td>
-                        <td class="px-2 text-center border border-gray-300">{{floatval($row['qty'])}}</td>
-                        <td class="text-center border border-gray-300">
-                            <button wire:click.prevent="removeItems({{$index}})"
-                                    class="py-1.5 w-full text-red-500 items-center ">
-                                <x-aaranUi::icons.icon icon="trash" class="block w-auto h-6"/>
-                            </button>
-                        </td>
+                <table class="w-full">
+                    <thead>
+                    <tr class="h-8 text-xs bg-gray-100 border border-gray-300">
+                        <th class="w-12 px-2 text-center border border-gray-300">#</th>
+                        <th class="px-2 text-center border border-gray-300">LOT</th>
+                        <th class="px-2 text-center border border-gray-300">COLOUR</th>
+                        <th class="px-2 text-center border border-gray-300">SIZE</th>
+                        <th class="px-2 text-center border border-gray-300">QTY</th>
+                        <th class="w-12 px-1 text-center border border-gray-300">ACTION</th>
                     </tr>
-                @endforeach
+
+                    </thead>
+
+                    <tbody>
+
+                    @foreach($list as $index => $row)
+                        <tr class="border border-gray-400">
+                            <td class="text-center border border-gray-300 bg-gray-100">
+                                <button class="w-full h-full cursor-pointer"
+                                        wire:click.prevent="changeItems({{$index}})">
+                                    {{$index+1}}
+                                </button>
+                            </td>
+                            <td class="px-2 text-left border border-gray-300">{{$row['fabric_lot_name']}}</td>
+                            <td class="px-2 text-center border border-gray-300">{{$row['colour_name']}}</td>
+                            <td class="px-2 text-center border border-gray-300">{{$row['size_name']}}</td>
+                            <td class="px-2 text-center border border-gray-300">{{floatval($row['qty'])}}</td>
+                            <td class="text-center border border-gray-300">
+                                <button wire:click.prevent="removeItems({{$index}})"
+                                        class="py-1.5 w-full text-red-500 items-center ">
+                                    <x-aaranUi::icons.icon icon="trash" class="block w-auto h-6"/>
+                                </button>
+                            </td>
+                        </tr>
+                        @php
+                            $total_qty += $row['qty']+0
+                        @endphp
+
+                    @endforeach
 
 
-                </tbody>
-                <tfoot class="mt-2">
-                <tr class="h-8 text-sm border border-gray-400 bg-gray-50">
-                    <td colspan="3" class="px-2 text-xs text-right border border-gray-300">&nbsp;TOTALS&nbsp;&nbsp;&nbsp;</td>
-                    <td class="px-2 text-center border border-gray-300">{{$total_qty}}</td>
-                </tr>
-                </tfoot>
+                    </tbody>
+                    <tfoot class="mt-2">
+                    <tr class="h-8 text-sm border border-gray-400 bg-gray-50">
+                        <td colspan="4" class="px-2 text-xs text-right border border-gray-300">&nbsp;TOTALS&nbsp;&nbsp;&nbsp;</td>
+                        <td class="px-2 text-center border border-gray-300">{{$total_qty}}</td>
+                    </tr>
+                    </tfoot>
 
-            </table>
+                </table>
 
-        </div>
-        <!--  end of table ----------------------------------------------------------------------------------------- -->
-
+            </div>
+        </section>
     </x-forms.m-panel>
-    <div class="px-8 py-6 gap-4 bg-gray-100 rounded-b-md shadow-lg w-full ">
 
-        <div class="flex flex-col md:flex-row justify-between gap-3">
-            <div class="flex gap-3">
-                <x-button.save/>
-                <x-button.back/>
+    <section>
+        <div class="px-8 py-6 gap-4 bg-gray-100 rounded-b-md shadow-lg w-full ">
+            <div class="flex flex-col md:flex-row justify-between gap-3">
+                <div class="flex gap-3">
+                    <x-button.save/>
+                    <x-button.back/>
+                </div>
+                <div>
+                    <x-button.print/>
+                </div>
+                <div>
+                    <x-button.delete/>
+                </div>
             </div>
-            <div>
-
-            </div>
-            <div>
-                <x-button.delete/>
-            </div>
-
         </div>
-    </div>
+    </section>
+
 </div>

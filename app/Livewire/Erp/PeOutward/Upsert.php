@@ -6,254 +6,116 @@ use App\Livewire\Controls\Items\Common\ColourItem;
 use App\Livewire\Controls\Items\Common\SizeItem;
 use App\Models\Erp\PeOutward;
 use App\Models\Erp\PeOutwardItem;
+use App\Models\Master\Contact;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
 use DB;
 use Livewire\Component;
 
 class Upsert extends Component
 {
-    public PeOutward $peOutward;
-    public mixed $vid='';
-    public mixed $vno = '';
-    public mixed $vdate = '';
-    public mixed $contact_id = '';
-    public mixed $contact_name = '';
-    public mixed $order_id = '';
-    public mixed $order_name = '';
-    public mixed $style_id = '';
-    public mixed $style_name = '';
-    public mixed $total_qty = '';
-    public mixed $receiver_details = '';
-    public mixed $active_id = '1';
-    public $list = [];
-    public string $itemIndex = "";
 
-    public mixed $peOutward_id = '';
-    public mixed $colour_id = '';
-    public string $colour_name = '';
-    public mixed $size_id = '';
-    public string $size_name = '';
-    public mixed $qty = '';
+    public string $contact_name = '';
+    public string $contact_id;
+    public string $vno;
+    public string $vdate;
+    public string $jobcard_id;
+    public string $jobcard_no;
+    public mixed $total_qty;
 
-    public function mount($id)
+    public string $searches = '';
+    public string $id = '';
+//    public Collection $list;
+    public int $selectHighlight = 0;
+
+
+    public array $list = [
+        [
+            'fabric_lot_name' => '102',
+            'colour_name' => 'Red',
+            'size_name' => 'M',
+            'qty' => '20',
+        ],
+        [
+            'fabric_lot_name' => '102',
+            'colour_name' => 'Red',
+            'size_name' => 'M',
+            'qty' => '20',
+        ],
+        [
+            'fabric_lot_name' => '102',
+            'colour_name' => 'Red',
+            'size_name' => 'M',
+            'qty' => '20',
+        ],
+        [
+            'fabric_lot_name' => '102',
+            'colour_name' => 'Red',
+            'size_name' => 'M',
+            'qty' => '20',
+        ]
+    ];
+
+    public function setObj($name, $id): void
     {
-        $this->vno = PeOutward::nextNo();
-        $this->vdate = (Carbon::parse(Carbon::now())->format('Y-m-d'));
+        $this->id = $id;
+        $this->searches = $name;
+        $this->getList();
+        $this->dispatchObj();
+    }
 
-        if ($id != 0) {
-            $this->peOutward = PeOutward::find($id);
-            $this->vid = $this->peOutward->id;
-            $this->vno = $this->peOutward->vno;
-            $this->vdate = $this->peOutward->vdate;
-            $this->contact_id = $this->peOutward->contact_id;
-            $this->contact_name = $this->peOutward->contact->vname;
-            $this->order_id = $this->peOutward->order_id;
-            $this->order_name = $this->peOutward->order->vname;
-            $this->style_id = $this->peOutward->style_id;
-            $this->style_name = $this->peOutward->style->vname;
-            $this->total_qty = $this->peOutward->total_qty;
-            $this->receiver_details = $this->peOutward->receiver_details;
+    public function selectObj(): void
+    {
+        $obj = $this->list[$this->selectHighlight] ?? null;
+        $this->resetEmpty();
+        $this->searches = $obj['vname'] ?? '';;
+        $this->id = $obj['id'] ?? '';;
+        $this->dispatchObj();
+    }
 
-            $data = DB::table('pe_outward_items')->where('pe_outward_id', '=', $id)
-                ->join('colours', 'colours.id', '=', 'pe_outward_items.colour_id')
-                ->join('sizes', 'sizes.id', '=', 'pe_outward_items.size_id')
-                ->select('pe_outward_items.*', 'colours.vname as colour_name', 'sizes.vname as size_name')
-                ->get()
-                ->transform(function ($data) {
-                    return [
-                        'pe_outward_id' => $data->pe_outward_id,
-                        'colour_id' => $data->colour_id,
-                        'colour_name' => $data->colour_name,
-                        'size_id' => $data->size_id,
-                        'size_name' => $data->size_name,
-                        'qty' => $data->qty,
-                    ];
-                });
+    public function resetEmpty(): void
+    {
+        $this->searches = '';
+        $this->list = Collection::empty();
+        $this->selectHighlight = 0;
+    }
 
-            $this->list = $data;
-            $this->calculateTotal();
+    public function incrementHighlight(): void
+    {
+        if ($this->selectHighlight === count($this->list) - 1) {
+            $this->selectHighlight = 0;
+            return;
         }
+        $this->selectHighlight++;
     }
 
-    public function calculateTotal(): void
+    public function decrementHighlight(): void
     {
-        if ($this->list) {
-            $this->total_qty = 0;
-            foreach ($this->list as $row) {
-                $this->total_qty += round(floatval($row['qty']), 3);
-            }
+        if ($this->selectHighlight === 0) {
+            $this->selectHighlight = count($this->list) - 1;
+            return;
         }
+        $this->selectHighlight--;
     }
 
-    public function addItems()
+    #[On('refresh-contact-item')]
+    public function refreshObj($v): void
     {
-        if ($this->itemIndex == "") {
-            if (!(empty($this->colour_name)) &&
-                !(empty($this->size_name)) &&
-                !(empty($this->qty))
-            ) {
-                $this->list[] = [
-                    'colour_id' => $this->colour_id,
-                    'colour_name' => $this->colour_name,
-                    'size_id' => $this->size_id,
-                    'size_name' => $this->size_name,
-                    'qty' => $this->qty,
-                ];
-                $this->calculateTotal();
-                $this->resetsItems();
-            }
-        } else {
-            $this->list[$this->itemIndex] = [
-                'colour_id' => $this->colour_id,
-                'colour_name' => $this->colour_name,
-                'size_id' => $this->size_id,
-                'size_name' => $this->size_name,
-                'qty' => $this->qty,
-            ];
-            $this->calculateTotal();
-            $this->resetsItems();
-            $this->render();
-        }
-//        $this->emit('getfocus');
+        $this->id = $v['id'];
+        $this->searches = $v['name'];
+        $this->getList();
     }
 
-    public function resetsItems()
+    public function dispatchObj(): void
     {
-        $this->colour_name = '';
-        $this->colour_id = '';
-        $this->size_name = '';
-        $this->qty = '';
-        $this->dispatch('refresh-colour-item', ['id' => '', 'name' => ''])->to(ColourItem::class);
-        $this->dispatch('refresh-size-item', ['id' => '', 'name' => ''])->to(SizeItem::class);
+        $this->dispatch('refresh-contact',['id'=>$this->id,'name'=>$this->searches]);
     }
 
-    public function changeItems($index): void
+    public function getList(): void
     {
-        $this->itemIndex = $index;
-        $items = $this->list[$index];
-        $this->colour_name = $items['colour_name'];
-        $this->colour_id = $items['colour_id'];
-        $this->size_name = $items['size_name'];
-        $this->size_id = $items['size_id'];
-        $this->qty = floatval($items['qty']);
-
-        $this->dispatch('refresh-colour-item', ['id' => $this->colour_id, 'name' => $this->colour_name])->to(ColourItem::class);
-        $this->dispatch('refresh-size-item', ['id' => $this->size_id, 'name' => $this->size_name])->to(SizeItem::class);
-    }
-
-    public function removeItems($index)
-    {
-        unset($this->list[$index]);
-        $this->list = collect($this->list);
-        $this->calculateTotal();
-    }
-
-    #[On('refresh-contact')]
-    public function setContact($v): void
-    {
-        $this->contact_id = $v['id'];
-        $this->contact_name = $v['name'];
-    }
-
-    #[On('refresh-order')]
-    public function setOrder($v): void
-    {
-        $this->order_id = $v['id'];
-    }
-    #[On('refresh-style')]
-    public function setStyle($v): void
-    {
-        $this->style_id = $v['id'];
-    }
-
-    #[On('refresh-colour')]
-    public function setColour($v): void
-    {
-        $this->colour_id = $v['id'];
-        $this->colour_name = $v['name'];
-    }
-
-    #[On('refresh-size')]
-    public function setSize($v): void
-    {
-        $this->size_id = $v['id'];
-        $this->size_name = $v['name'];
-    }
-
-    public function save(): string
-    {
-        if ($this->order_id != '') {
-            if ($this->vid == "") {
-                $obj = PeOutward::create([
-                    'vno' => $this->vno,
-                    'vdate' => $this->vdate,
-                    'contact_id' => $this->contact_id,
-                    'order_id' => $this->order_id,
-                    'style_id' => $this->style_id,
-                    'total_qty' => $this->total_qty,
-                    'receiver_details' => $this->receiver_details,
-                    'active_id' => $this->active_id,
-                    'user_id' => \Auth::id(),
-                ]);
-                $this->saveItem($obj->id);
-
-                $message = "Saved";
-                $this->getRoute();
-
-            } else {
-                $obj = PeOutward::find($this->vid);
-                $obj->vno = $this->vno;
-                $obj->vdate = $this->vdate;
-                $obj->contact_id = $this->contact_id;
-                $obj->order_id = $this->order_id;
-                $obj->style_id = $this->style_id;
-                $obj->total_qty = $this->total_qty;
-                $obj->receiver_details = $this->receiver_details;
-                $obj->active_id = $this->active_id ?: '0';
-                $obj->user_id = \Auth::id();
-                $obj->save();
-
-                DB::table('pe_outward_items')->where('pe_outward_id', '=', $obj->id)->delete();
-                $this->saveItem($obj->id);
-                $message = "Updated";
-                $this->getRoute();
-            }
-            $this->vno = '';
-            $this->vdate = '';
-            $this->order_id = '';
-            $this->style_id = '';
-            $this->contact_id = '';
-            $this->contact_name = '';
-            $this->total_qty = '';
-            $this->receiver_details = '';
-            return $message;
-        }
-        return '';
-    }
-
-    public function saveItem($id): void
-    {
-        foreach ($this->list as $sub) {
-            PeOutwardItem::create([
-                'pe_outward_id' => $id,
-                'colour_id' => $sub['colour_id'],
-                'size_id' => $sub['size_id'],
-                'qty' => $sub['qty'],
-            ]);
-        }
-    }
-
-    public function setDelete()
-    {
-        DB::table('pe_outward_items')->where('pe_outward_id', '=', $this->vid)->delete();
-        DB::table('pe_outwards')->where('id', '=', $this->vid)->delete();
-        $this->getRoute();
-    }
-
-    public function getRoute(): void
-    {
-        $this->redirect(route('peoutwards'));
+        $this->list = $this->searches ? Contact::search(trim($this->searches))
+            ->get() : Contact::all();
     }
 
     public function render()
