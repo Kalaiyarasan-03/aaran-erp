@@ -10,6 +10,8 @@ use Livewire\Component;
 
 class ContactLookup extends ItemLookupAbstract
 {
+
+    public bool $Typed = false;
     #[On('refresh-contact-item')]
     public function refreshObj($v): void
     {
@@ -27,6 +29,7 @@ class ContactLookup extends ItemLookupAbstract
 
     public function dispatchObj(): void
     {
+        $this->Typed = false;
         $this->dispatch('refresh-contact',['id'=>$this->id,'name'=>$this->searches]);
     }
 

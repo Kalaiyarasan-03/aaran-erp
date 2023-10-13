@@ -12,6 +12,7 @@ abstract class ItemLookupAbstract extends Component
     public Collection $list;
     public int $selectHighlight = 0;
 
+
     public function setObj($name, $id): void
     {
         $this->id = $id;

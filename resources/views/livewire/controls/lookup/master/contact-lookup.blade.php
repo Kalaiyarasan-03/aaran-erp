@@ -1,5 +1,5 @@
 <div>
-    <div x-data="{isTyped: false}" @click.away="isTyped = false">
+    <div x-data="{isTyped: @entangle('Typed')}" @click.away="isTyped = false">
         <div class="relative">
             <label for="searches" class="gray-label">contact</label>
             <input

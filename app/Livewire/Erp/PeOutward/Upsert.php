@@ -24,66 +24,39 @@ class Upsert extends Component
     public string $jobcard_no;
     public mixed $total_qty;
 
-    public string $searches = '';
-    public string $id = '';
-//    public Collection $list;
+    public Collection $contacts;
     public int $selectHighlight = 0;
+    public bool $showDropdown = false;
 
 
-    public array $list = [
-        [
-            'fabric_lot_name' => '102',
-            'colour_name' => 'Red',
-            'size_name' => 'M',
-            'qty' => '20',
-        ],
-        [
-            'fabric_lot_name' => '102',
-            'colour_name' => 'Red',
-            'size_name' => 'M',
-            'qty' => '20',
-        ],
-        [
-            'fabric_lot_name' => '102',
-            'colour_name' => 'Red',
-            'size_name' => 'M',
-            'qty' => '20',
-        ],
-        [
-            'fabric_lot_name' => '102',
-            'colour_name' => 'Red',
-            'size_name' => 'M',
-            'qty' => '20',
-        ]
-    ];
+
+//    public $list;
 
     public function setObj($name, $id): void
     {
-        $this->id = $id;
-        $this->searches = $name;
+        $this->contact_name = $name;
+        $this->contact_id = $id;
         $this->getList();
-        $this->dispatchObj();
     }
 
     public function selectObj(): void
     {
-        $obj = $this->list[$this->selectHighlight] ?? null;
+        $obj = $this->contacts[$this->selectHighlight] ?? null;
         $this->resetEmpty();
-        $this->searches = $obj['vname'] ?? '';;
-        $this->id = $obj['id'] ?? '';;
-        $this->dispatchObj();
+        $this->contact_name = $obj['vname'] ?? '';;
+        $this->contact_id = $obj['id'] ?? '';;
     }
 
     public function resetEmpty(): void
     {
-        $this->searches = '';
-        $this->list = Collection::empty();
+        $this->contact_name = '';
+        $this->contacts = Collection::empty();
         $this->selectHighlight = 0;
     }
 
     public function incrementHighlight(): void
     {
-        if ($this->selectHighlight === count($this->list) - 1) {
+        if ($this->selectHighlight === count($this->contacts) - 1) {
             $this->selectHighlight = 0;
             return;
         }
@@ -93,33 +66,30 @@ class Upsert extends Component
     public function decrementHighlight(): void
     {
         if ($this->selectHighlight === 0) {
-            $this->selectHighlight = count($this->list) - 1;
+            $this->selectHighlight = count($this->contacts) - 1;
             return;
         }
         $this->selectHighlight--;
     }
 
-    #[On('refresh-contact-item')]
-    public function refreshObj($v): void
-    {
-        $this->id = $v['id'];
-        $this->searches = $v['name'];
-        $this->getList();
-    }
-
-    public function dispatchObj(): void
-    {
-        $this->dispatch('refresh-contact',['id'=>$this->id,'name'=>$this->searches]);
-    }
-
     public function getList(): void
     {
-        $this->list = $this->searches ? Contact::search(trim($this->searches))
+        $this->contacts = $this->contact_name ? Contact::search(trim($this->contact_name))
             ->get() : Contact::all();
+    }
+
+    #[On('refresh-contact')]
+    public function refreshContact($v): void
+    {
+        $this->contact_id = $v['id'];
+        $this->contact_name = $v['name'];
+        $this->showDropdown = false;
+
     }
 
     public function render()
     {
+        $this->getList();
         return view('livewire.erp.pe-outward.upsert');
     }
 }
