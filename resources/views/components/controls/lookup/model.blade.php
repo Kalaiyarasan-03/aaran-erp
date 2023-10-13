@@ -1,5 +1,6 @@
 @props([
-    'showModel' =>false
+    'showModel' =>false,
+    'width' => 'w-1/3'
 ])
 <div>
     <button wire:click="$set('showModel',true); "
@@ -13,7 +14,8 @@
             <div wire:click="clearAll"
                  class="fixed inset-0 bg-gray-900 bg-opacity-90 cursor-pointer"></div>
 
-            <div class="bg-white shadow-md w-1/3 m-auto rounded-md fixed inset-0 inline-block h-80 overflow-y-auto">
+            <div
+                class="bg-white shadow-md m-auto rounded-md fixed inset-0 inline-block h-80 overflow-y-auto {{$width}}">
 
                 <div class="flex flex-col h-full justify-between">
 

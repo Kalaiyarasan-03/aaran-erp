@@ -5,11 +5,11 @@
 
         <section class="grid grid-cols-2 gap-12">
             <div class="flex flex-col gap-3">
+
+
                 <div class="flex flex-col gap-2">
-
                     <label for="contact_name" class="gray-label">Party Name</label>
-
-                    <div x-data="{isTyped: @entangle('showDropdown')}" @click.away="isTyped = false">
+                    <div x-data="{isTyped: @entangle('contactTyped')}" @click.away="isTyped = false">
                         <div class="relative">
                             <input
                                 id="contact_name"
@@ -21,9 +21,9 @@
                                 @keydown.escape.window="isTyped = false"
                                 @keydown.tab.window="isTyped = false"
                                 @keydown.enter.prevent="isTyped = false"
-                                wire:keydown.arrow-up="decrementHighlight"
-                                wire:keydown.arrow-down="incrementHighlight"
-                                wire:keydown.enter="selectObj"
+                                wire:keydown.arrow-up="decrementContact"
+                                wire:keydown.arrow-down="incrementContact"
+                                wire:keydown.enter="enterContact"
                                 class="block w-full purple-textbox"
                             />
 
@@ -38,12 +38,12 @@
                 rounded-lg border-transparent flex-1 appearance-none border
                                  bg-white text-gray-800 ring-1 ring-purple-600">
                                         <ul class="overflow-y-scroll h-96">
-                                            @if($contacts)
-                                                @forelse ($contacts as $i => $contact)
+                                            @if($contactCollection)
+                                                @forelse ($contactCollection as $i => $contact)
                                                     <div wire:key="{{ $contact->id }}"></div>
                                                     <li class="cursor-pointer px-3 py-1 hover:font-bold hover:bg-yellow-100 border-b border-gray-300 h-8
-                                                        {{ $selectHighlight === $i ? 'bg-yellow-100' : '' }}"
-                                                        wire:click.prevent="setObj('{{$contact->vname}}','{{$contact->id}}')"
+                                                        {{ $highlightContact === $i ? 'bg-yellow-100' : '' }}"
+                                                        wire:click.prevent="setContact('{{$contact->vname}}','{{$contact->id}}')"
                                                         x-on:click="isTyped = false">
                                                         {{ $contact->vname }}
                                                     </li>
@@ -58,12 +58,69 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label for="jobcard_no" class="gray-label">Job No</label>
+                    <div x-data="{isTyped: @entangle('jobcardTyped')}" @click.away="isTyped = false">
+                        <div class="relative">
+                            <input
+                                id="jobcard_no"
+                                type="search"
+                                wire:model.live="jobcard_no"
+                                autocomplete="off"
+                                placeholder="Job Card.."
+                                @focus="isTyped = true"
+                                @keydown.escape.window="isTyped = false"
+                                @keydown.tab.window="isTyped = false"
+                                @keydown.enter.prevent="isTyped = false"
+                                wire:keydown.arrow-up="decrementJobcard"
+                                wire:keydown.arrow-down="incrementJobcard"
+                                wire:keydown.enter="enterJobcard"
+                                class="block w-full purple-textbox"
+                            />
+
+                            <div x-show="isTyped"
+                                 x-transition:leave="transition ease-in duration-100"
+                                 x-transition:leave-start="opacity-100"
+                                 x-transition:leave-end="opacity-0"
+                                 x-cloak
+                            >
+                                <div class="absolute z-20 w-full mt-2">
+                                    <div class="block py-1 shadow-md w-full
+                rounded-lg border-transparent flex-1 appearance-none border
+                                 bg-white text-gray-800 ring-1 ring-purple-600">
+                                        <ul class="overflow-y-scroll h-96">
+                                            @if($jobcardCollection)
+                                                @forelse ($jobcardCollection as $i => $jobcard)
+                                                    <div wire:key="{{ $jobcard->id }}"></div>
+                                                    <li class="cursor-pointer px-3 py-1 hover:font-bold hover:bg-yellow-100 border-b border-gray-300 h-8
+                                                        {{ $highlightJobcard === $i ? 'bg-yellow-100' : '' }}"
+                                                        wire:click.prevent="setJobcard('{{$jobcard->vno}}','{{$jobcard->id}}')"
+                                                        x-on:click="isTyped = false">
+                                                        {{ $jobcard->vno }}&nbsp;&nbsp;-&nbsp;&nbsp;{{ $jobcard->style->vname }}
+                                                    </li>
+                                                @empty
+                                                    <a href="{{route('jobcards.upsert',['0'])}}" role="button"
+                                                       class="flex items-center justify-center bg-green-500 w-full h-8 text-white text-center">
+                                                        Not found , Want to create new
+                                                    </a>
+                                                @endforelse
+                                            @endif
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+
+                    <label for="contact_name" class="gray-label">Party Name</label>
 
                 </div>
-                <div class="flex flex-col gap-2">
-                    <label for="contact" class="gray-label">Job Card</label>
-                    <input id="contact" class="purple-textbox">
-                </div>
+
             </div>
             <div class="flex flex-col gap-3">
                 <div class="flex flex-col gap-2">
