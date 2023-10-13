@@ -38,7 +38,7 @@
                 rounded-lg border-transparent flex-1 appearance-none border
                                  bg-white text-gray-800 ring-1 ring-purple-600">
                                         <ul class="overflow-y-scroll h-96">
-                                            @if($list)
+                                            @if($contacts)
                                                 @forelse ($contacts as $i => $contact)
                                                     <div wire:key="{{ $contact->id }}"></div>
                                                     <li class="cursor-pointer px-3 py-1 hover:font-bold hover:bg-yellow-100 border-b border-gray-300 h-8
