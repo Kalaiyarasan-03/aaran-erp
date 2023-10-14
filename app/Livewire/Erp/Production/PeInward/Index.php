@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Livewire\Erp\PeOutward;
+namespace App\Livewire\Erp\Production\PeInward;
 
-use App\Livewire\Trait\EntriesIndexAbstract;
 use App\Models\Erp\PeOutward;
+use Livewire\Component;
 
-class Index extends EntriesIndexAbstract
+class Index extends Component
 {
     public function create(): void
     {
@@ -30,10 +30,9 @@ class Index extends EntriesIndexAbstract
             ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
             ->paginate($this->perPage);
     }
+
     public function render()
     {
-        return view('livewire.erp.pe-outward.index')->with([
-            'list' => $this->getList()
-        ]);
+        return view('livewire.erp.production.pe-inward.index');
     }
 }

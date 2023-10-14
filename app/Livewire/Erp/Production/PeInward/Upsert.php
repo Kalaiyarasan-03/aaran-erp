@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Livewire\Erp\PeOutward;
+namespace App\Livewire\Erp\Production\PeInward;
 
-use App\Livewire\Controls\Items\Common\ColourItem;
-use App\Livewire\Controls\Items\Common\SizeItem;
-use App\Models\Erp\Cutting;
 use App\Models\Erp\Jobcard;
 use App\Models\Erp\PeOutward;
 use App\Models\Erp\PeOutwardItem;
 use App\Models\Master\Contact;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
-use DB;
 use Livewire\Component;
 
 class Upsert extends Component
@@ -447,7 +444,6 @@ class Upsert extends Component
         $this->getContactList();
         $this->getJobcardList();
         $this->getCuttingList();
-
-        return view('livewire.erp.pe-outward.upsert');
+        return view('livewire.erp.production.pe-inward.upsert');
     }
 }
