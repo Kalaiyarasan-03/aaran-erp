@@ -12,10 +12,7 @@
 
     <div class="space-x-2 flex items-center">
         <x-forms.per-page/>
-
-        @editor
         <x-button.new/>
-        @endeditor
     </div>
 </div>
 
