@@ -19,15 +19,11 @@ class PeOutward extends Model
             : static::where('vno', '=', $searches);
     }
 
-    public function order(): BelongsTo
+    public function jobcard(): BelongsTo
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Jobcard::class);
     }
 
-    public function style(): BelongsTo
-    {
-        return $this->belongsTo(Style::class);
-    }
     public function contact(): BelongsTo
     {
         return $this->belongsTo(Contact::class);

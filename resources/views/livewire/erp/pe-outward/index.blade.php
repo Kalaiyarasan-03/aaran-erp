@@ -21,7 +21,7 @@
                             <a href="{{route('peoutwards.upsert',[$row->id])}}"
                                class="flex flex-col px-3">
                                 <div class="text-gray-600 truncate text-xl text-left">
-                                    {{ $row->order->vname }}
+                                    {{ $row->order_name }}
                                 </div>
                             </a>
                         </x-table.cell>
@@ -30,7 +30,7 @@
                             <a href="{{route('peoutwards.upsert',[$row->id])}}"
                                class="flex flex-col px-3">
                                 <div class="text-gray-600 truncate text-xl text-left">
-                                    {{ $row->style->vname }}
+                                    {{ $row->style_name }}
                                 </div>
                             </a>
                         </x-table.cell>
@@ -54,7 +54,7 @@
                         <x-table.cell>
                             <a href="{{route('peoutwards.upsert',[$row->id])}}"
                                class="flex flex-col px-3 text-gray-600 truncate text-xl text-left">
-                                {{ $row->contact_id }}
+                                {{ $row->contact_name }}
                             </a>
                         </x-table.cell>
 

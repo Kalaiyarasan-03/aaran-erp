@@ -10,31 +10,15 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::create([
-            'name' => 'sundar',
-            'email' => 'sundar@sundar.com',
-            'password' => bcrypt('kalarani'),
-            'email_verified_at'=> now(),
-            'active_id' => '1',
-            'remember_token' => Str::random(10)
-        ]);
-
-        User::create([
-            'name' => 'Adal',
-            'email' => 'adal@aaran.com',
-            'password' => bcrypt('123456789'),
-            'email_verified_at'=> now(),
-            'active_id' => '1',
-            'remember_token' => Str::random(10)
-        ]);
-
-        User::create([
-            'name' => 'Karthi',
-            'email' => 'karthi@aaran.com',
-            'password' => bcrypt('123456789'),
-            'email_verified_at'=> now(),
-            'active_id' => '1',
-            'remember_token' => Str::random(10)
-        ]);
+        S01_UserSeeder::run();
+//        S02_TenantSeeder::run();
+//        S03_CitySeeder::run();
+//
+//        S09_ColourSeeder::run();
+//        S10_SizeSeeder::run();
+//        S12_ContactSeeder::run();
+//        S14_OrderSeeder::run();
+//        S15_StyleSeeder::run();
+//        S16_FabricLotSeeder::run();
     }
 }
