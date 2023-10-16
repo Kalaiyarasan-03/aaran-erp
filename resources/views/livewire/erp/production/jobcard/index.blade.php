@@ -8,7 +8,7 @@
             <x-slot name="table_header">
                 <x-table.ths wire:click.prevent="sortBy('vname')">Order No</x-table.ths>
                 <x-table.ths wire:click.prevent="sortBy('vname')">Style</x-table.ths>
-                <x-table.ths wire:click.prevent="sortBy('vname')">No</x-table.ths>
+                <x-table.ths wire:click.prevent="sortBy('vname')">Job card No</x-table.ths>
                 <x-table.ths wire:click.prevent="sortBy('vname')">Date</x-table.ths>
                 <x-table.ths-center wire:click.prevent="sortBy('vname')">Qty</x-table.ths-center>
             </x-slot>

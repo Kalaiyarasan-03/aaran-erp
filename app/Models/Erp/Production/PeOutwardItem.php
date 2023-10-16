@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\Erp;
+namespace App\Models\Erp\Production;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class JobcardItem extends Model
+class PeOutwardItem extends Model
 {
     use HasFactory;
     public $timestamps = false;

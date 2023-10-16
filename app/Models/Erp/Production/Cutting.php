@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Erp;
+namespace App\Models\Erp\Production;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,22 +10,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Cutting extends Model
 {
     use HasFactory;
+
     protected $guarded = [];
 
-    public static function search(string $searches)
+    public static function search(string $searches): Builder
     {
         return empty($searches) ? static::query()
-            : static::where('vno', '=', $searches);
-    }
-
-    public function order(): BelongsTo
-    {
-        return $this->belongsTo(Order::class);
-    }
-
-    public function jobcard(): BelongsTo
-    {
-        return $this->belongsTo(Jobcard::class);
+            : static::where('vname', 'like', '%' . $searches . '%');
     }
 
     public static function nextNo()
@@ -33,4 +24,8 @@ class Cutting extends Model
         return static::max('vno') + 1;
     }
 
+    public function jobcard(): BelongsTo
+    {
+        return $this->belongsTo(Jobcard::class);
+    }
 }

@@ -21,8 +21,8 @@ class OrderModel extends Component
     {
         if ($this->vname != '') {
             $obj = Order::create([
-                'vname' => $this->vname,
-                'desc' => $this->desc,
+                'vname' => \Str::upper($this->vname),
+                'desc' => \Str::ucfirst($this->desc),
                 'active_id' => '1',
                 'user_id' => \Auth::id()
             ]);

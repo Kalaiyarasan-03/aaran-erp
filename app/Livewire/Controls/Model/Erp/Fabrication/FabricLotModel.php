@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Controls\Model\Erp\Orders;
+namespace App\Livewire\Controls\Model\Erp\Fabrication;
 
 use App\Models\Erp\Production\FabricLot;
 use Livewire\Component;
@@ -24,7 +24,7 @@ class FabricLotModel extends Component
                 'vname' => \Str::ucfirst($this->vname),
                 'desc' => \Str::ucfirst($this->desc),
                 'active_id' => '1',
-                 'user_id' => \Auth::id()
+                'user_id' => \Auth::id()
             ]);
             $this->dispatch('refresh-fabric-lot-item', ['name' => $this->vname, 'id' => $obj->id]);
             $this->dispatch('refresh-fabric-lot', ['name' => $this->vname, 'id' => $obj->id]);
@@ -41,6 +41,6 @@ class FabricLotModel extends Component
 
     public function render()
     {
-        return view('livewire.controls.model.erp.orders.fabric-lot-model');
+        return view('livewire.controls.model.erp.fabrication.fabric-lot-model');
     }
 }

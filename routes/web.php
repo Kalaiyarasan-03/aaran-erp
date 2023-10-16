@@ -13,7 +13,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('orders/{id}/show', App\Livewire\Erp\Order\Index::class)->name('orders.show');
 
     Route::get('styles', App\Livewire\Erp\Style\Index::class)->name('styles');
-    Route::get('fabriclots', App\Livewire\Erp\Production\FabricLot\Index::class)->name('fabriclots');
+    Route::get('fabriclots', App\Livewire\Erp\Fabrication\FabricLot\Index::class)->name('fabriclots');
 
     Route::get('jobcards', App\Livewire\Erp\Production\Jobcard\Index::class)->name('jobcards');
     Route::get('jobcards/{id}/upsert', App\Livewire\Erp\Production\Jobcard\Upsert::class)->name('jobcards.upsert');

@@ -3,7 +3,7 @@
 namespace App\Livewire\Erp\Production\Jobcard;
 
 use App\Livewire\Trait\EntriesIndexAbstract;
-use App\Models\Erp\Jobcard;
+use App\Models\Erp\Production\Jobcard;
 
 class Index  extends EntriesIndexAbstract
 {

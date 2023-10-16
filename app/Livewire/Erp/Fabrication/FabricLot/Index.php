@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Erp\Production\FabricLot;
+namespace App\Livewire\Erp\Fabrication\FabricLot;
 
 use App\Livewire\Trait\CommonTrait;
 use App\Models\Erp\Production\FabricLot;
@@ -14,7 +14,7 @@ class Index extends Component
 
     public function getSave(): string
     {
-        if ($this->vname != '' ) {
+        if ($this->vname != '') {
 
             if ($this->vid == "") {
                 FabricLot::create([
@@ -71,8 +71,8 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.erp.production.fabric-lot.index')->with([
-            'list' => $this->getList()
-        ]);
+        return view('livewire.erp.fabrication.fabric-lot.index') > with([
+                'list' => $this->getList()
+            ]);
     }
 }

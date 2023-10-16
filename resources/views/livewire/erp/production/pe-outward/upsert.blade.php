@@ -24,6 +24,7 @@
                                 wire:keydown.arrow-up="decrementContact"
                                 wire:keydown.arrow-down="incrementContact"
                                 wire:keydown.enter="enterContact"
+
                                 class="block w-full purple-textbox"
                             />
 
