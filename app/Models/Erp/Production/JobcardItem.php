@@ -11,6 +11,8 @@ class JobcardItem extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $guarded = [];
 
     public static function search(string $searches): Builder

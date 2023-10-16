@@ -295,8 +295,8 @@
             </div>
             {{--Qty -------------------------------------------------------------------------------------}}
             <div class="w-full">
-                <label for="cutting_qty"></label>
-                <input id="cutting_qty" wire:model="qty" class="block w-full purple-textbox-no-rounded" placeholder="Qty">
+                <label for="qty"></label>
+                <input id="qty" wire:model="qty" class="block w-full purple-textbox-no-rounded" placeholder="Qty">
             </div>
 
             <button wire:click="addItems" class="px-3 bg-green-500 text-white font-semibold tracking-wider ">Add
@@ -311,7 +311,7 @@
                     <thead>
                     <tr class="h-8 text-xs bg-gray-100 border border-gray-300">
                         <th class="w-12 px-2 text-center border border-gray-300">#</th>
-                        <th class="px-2 text-center border border-gray-300">CUTTING</th>
+                        <th class="px-2 text-center border border-gray-300">Lot no</th>
                         <th class="px-2 text-center border border-gray-300">COLOUR</th>
                         <th class="px-2 text-center border border-gray-300">SIZE</th>
                         <th class="px-2 text-center border border-gray-300">QTY</th>
@@ -321,6 +321,9 @@
                     </thead>
 
                     <tbody>
+                    @php
+                        $totalQty = 0;
+                    @endphp
 
                     @foreach($itemList as $index => $row)
                         <tr class="border border-gray-400">
@@ -330,7 +333,7 @@
                                     {{$index+1}}
                                 </button>
                             </td>
-                            <td class="px-2 text-left border border-gray-300">{{$row['cutting_no']}}</td>
+                            <td class="px-2 text-left border border-gray-300">{{$row['fabric_lot_name']}}</td>
                             <td class="px-2 text-center border border-gray-300">{{$row['colour_name']}}</td>
                             <td class="px-2 text-center border border-gray-300">{{$row['size_name']}}</td>
                             <td class="px-2 text-center border border-gray-300">{{floatval($row['qty'])}}</td>
@@ -342,7 +345,7 @@
                             </td>
                         </tr>
                         @php
-                            $total_qty += $row['qty']+0
+                            $totalQty += $row['qty']+0
                         @endphp
 
                     @endforeach
@@ -352,19 +355,13 @@
                     <tfoot class="mt-2">
                     <tr class="h-8 text-sm border border-gray-400 bg-gray-50">
                         <td colspan="4" class="px-2 text-xs text-right border border-gray-300">&nbsp;TOTALS&nbsp;&nbsp;&nbsp;</td>
-                        <td class="px-2 text-center border border-gray-300">{{$total_qty}}</td>
+                        <td class="px-2 text-center border border-gray-300">{{$totalQty}}</td>
                     </tr>
                     </tfoot>
 
                 </table>
 
             </div>
-
-            <div class="mt-5 flex gap-3">
-                <label for="receiver_details" class="gray-label">Receiver Details</label>
-                <input id="receiver_details" wire:model="receiver_details" class="purple-textbox w-[32rem]"/>
-            </div>
-
 
         </section>
     </x-forms.m-panel>

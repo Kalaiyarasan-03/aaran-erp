@@ -8,6 +8,7 @@ use App\Models\Erp\Fabrication\FabricLot;
 use App\Models\Erp\Order;
 use App\Models\Erp\PeInward;
 use App\Models\Erp\Production\Jobcard;
+use App\Models\Erp\Production\JobcardItem;
 use App\Models\Erp\Style;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -201,10 +202,6 @@ class Upsert extends Component
         $this->fabricLotCollection = $this->fabric_lot_name ? FabricLot::search(trim($this->fabric_lot_name))
             ->get() : FabricLot::all();
     }
-
-
-
-
     //
     // Colour name
     //
@@ -328,7 +325,7 @@ class Upsert extends Component
     }
 
     //
-    // Job Card No
+    // properties
     //
 
     public string $vid = '';
@@ -337,6 +334,11 @@ class Upsert extends Component
     public mixed $total_qty = 0;
     public string $itemIndex = "";
     public $itemList = [];
+    public mixed $qty;
+
+    //
+    // mount
+    //
 
     public function mount($id): void
     {
@@ -345,15 +347,15 @@ class Upsert extends Component
 
         if ($id != 0) {
 
-            $obj = PeInward::find($id);
+            $obj = Jobcard::find($id);
             $this->vid = $obj->id;
             $this->vno = $obj->vno;
             $this->vdate = $obj->vdate;
-            $this->order_id = $this->$obj->order_id;
-            $this->order_no = $this->$obj->order->vname;
-            $this->style_id = $this->$obj->style_id;
-            $this->style_name = $this->$obj->style->vname;
-            $this->total_qty = $this->$obj->total_qty;
+            $this->order_id = $obj->order_id;
+            $this->order_no = $obj->order->vname;
+            $this->style_id = $obj->style_id;
+            $this->style_name = $obj->style->vname;
+            $this->total_qty = $obj->total_qty;
 
             $data = DB::table('jobcard_items')
                 ->select('jobcard_items.*',
@@ -368,6 +370,7 @@ class Upsert extends Component
                 ->get()
                 ->transform(function ($data) {
                     return [
+                        'jobcard_item_id' => $data->id,
                         'fabric_lot_name' => $data->fabric_lot_name,
                         'fabric_lot_id' => $data->fabric_lot_id,
                         'colour_name' => $data->colour_name,
@@ -384,6 +387,9 @@ class Upsert extends Component
 
     }
 
+    //
+    // add items
+    //
     public function addItems(): void
     {
         if ($this->itemIndex == "") {
@@ -392,60 +398,60 @@ class Upsert extends Component
                 !(empty($this->qty))
             ) {
                 $this->itemList[] = [
-                    'pe_outward_item_id' => $this->pe_outward_item_id,
-                    'pe_outward_id' => $this->pe_outward_id,
-                    'pe_outward_no' => $this->pe_outward_no,
+                    'fabric_lot_name' => $this->fabric_lot_name,
+                    'fabric_lot_id' => $this->fabric_lot_id,
                     'colour_id' => $this->colour_id,
                     'colour_name' => $this->colour_name,
                     'size_id' => $this->size_id,
                     'size_name' => $this->size_name,
                     'qty' => $this->qty,
                 ];
-                $this->calculateTotal();
-                $this->resetsItems();
             }
         } else {
             $this->itemList[$this->itemIndex] = [
-                'pe_outward_item_id' => $this->pe_outward_item_id,
-                'pe_outward_id' => $this->pe_outward_id,
-                'pe_outward_no' => $this->pe_outward_no,
+                'fabric_lot_name' => $this->fabric_lot_name,
+                'fabric_lot_id' => $this->fabric_lot_id,
                 'colour_id' => $this->colour_id,
                 'colour_name' => $this->colour_name,
                 'size_id' => $this->size_id,
                 'size_name' => $this->size_name,
                 'qty' => $this->qty,
             ];
-            $this->calculateTotal();
-            $this->resetsItems();
-            $this->render();
+
         }
+
+        $this->calculateTotal();
+        $this->resetsItems();
+        $this->render();
 //        $this->emit('getfocus');
     }
 
     public function resetsItems(): void
     {
-        $this->pe_outward_no = '';
-        $this->pe_outward_id = '';
-        $this->pe_outward_item_id = '';
+        $this->itemIndex = '';
+        $this->fabric_lot_name = '';
+        $this->fabric_lot_id = '';
         $this->colour_name = '';
         $this->colour_id = '';
         $this->size_name = '';
         $this->size_id = '';
         $this->qty = '';
+        $this->calculateTotal();
     }
 
     public function changeItems($index): void
     {
         $this->itemIndex = $index;
+
         $items = $this->itemList[$index];
-        $this->pe_outward_no = $items['pe_outward_no'];
-        $this->pe_outward_id = $items['pe_outward_id'];
-        $this->pe_outward_item_id = $items['pe_outward_item_id'];
+        $this->fabric_lot_name = $items['fabric_lot_name'];
+        $this->fabric_lot_id = $items['fabric_lot_id'];
         $this->colour_name = $items['colour_name'];
         $this->colour_id = $items['colour_id'];
         $this->size_name = $items['size_name'];
         $this->size_id = $items['size_id'];
         $this->qty = $items['qty'] + 0;
+        $this->calculateTotal();
     }
 
     public function removeItems($index): void
@@ -464,6 +470,87 @@ class Upsert extends Component
             }
         }
     }
+
+    //
+    // save
+    //
+
+    public function save(): string
+    {
+        if ($this->order_id != '') {
+
+            if ($this->vid == "") {
+
+                $obj = Jobcard::create([
+                    'vno' => $this->vno,
+                    'vdate' => $this->vdate,
+                    'order_id' => $this->order_id,
+                    'style_id' => $this->style_id,
+                    'total_qty' => $this->total_qty,
+                    'active_id' => '1',
+                    'user_id' => \Auth::id(),
+                ]);
+                $this->saveItem($obj->id);
+
+                $message = "Saved";
+
+            } else {
+                $obj = Jobcard::find($this->vid);
+                $obj->vno = $this->vno;
+                $obj->vdate = $this->vdate;
+                $obj->order_id = $this->order_id;
+                $obj->style_id = $this->style_id;
+                $obj->total_qty = $this->total_qty;
+                $obj->active_id = '1';
+                $obj->user_id = \Auth::id();
+                $obj->save();
+
+                DB::table('jobcard_items')->where('jobcard_id', '=', $obj->id)->delete();
+                $this->saveItem($obj->id);
+                $message = "Updated";
+            }
+            $this->getRoute();
+            $this->vno = '';
+            $this->vdate = '';
+            $this->order_id = '';
+            $this->style_id = '';
+            $this->total_qty = '';
+            return $message;
+        }
+        return '';
+    }
+
+    public function saveItem($id): void
+    {
+        foreach ($this->itemList as $sub) {
+            JobcardItem::create([
+                'jobcard_id' => $id,
+                'fabric_lot_id' => $sub['fabric_lot_id'],
+                'colour_id' => $sub['colour_id'],
+                'size_id' => $sub['size_id'],
+                'qty' => $sub['qty'],
+                'cutting_qty' => '0',
+                'pe_out_qty' => '0',
+                'pe_in_qty' => '0',
+                'se_out_qty' => '0',
+                'se_in_qty' => '0',
+                'active_id' => '1',
+            ]);
+        }
+    }
+
+    public function setDelete()
+    {
+        DB::table('jobcard_items')->where('jobcard_id', '=', $this->vid)->delete();
+        DB::table('jobcards')->where('id', '=', $this->vid)->delete();
+        $this->getRoute();
+    }
+
+    public function getRoute(): void
+    {
+        $this->redirect(route('jobcards'));
+    }
+
 
     public function render()
     {
