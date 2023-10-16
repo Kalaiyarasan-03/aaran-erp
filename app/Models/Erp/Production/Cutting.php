@@ -2,6 +2,7 @@
 
 namespace App\Models\Erp\Production;
 
+use App\Models\Erp\Order;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +25,10 @@ class Cutting extends Model
         return static::max('vno') + 1;
     }
 
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
     public function jobcard(): BelongsTo
     {
         return $this->belongsTo(Jobcard::class);

@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <label for="style_name" class="gray-label">Job No</label>
+                    <label for="style_name" class="gray-label">Style Name</label>
                     <div x-data="{isTyped: @entangle('styleTyped')}" @click.away="isTyped = false">
                         <div class="relative">
                             <input

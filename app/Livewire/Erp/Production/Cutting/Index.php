@@ -3,7 +3,7 @@
 namespace App\Livewire\Erp\Production\Cutting;
 
 use App\Livewire\Trait\EntriesIndexAbstract;
-use App\Models\Erp\Cutting;
+use App\Models\Erp\Production\Cutting;
 
 class Index  extends EntriesIndexAbstract
 {

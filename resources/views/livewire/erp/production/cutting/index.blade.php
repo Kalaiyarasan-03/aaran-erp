@@ -7,7 +7,7 @@
         <x-forms.table>
             <x-slot name="table_header">
                 <x-table.ths wire:click.prevent="sortBy('vname')">Order No</x-table.ths>
-                <x-table.ths wire:click.prevent="sortBy('vname')">No</x-table.ths>
+                <x-table.ths wire:click.prevent="sortBy('vname')">Job No</x-table.ths>
                 <x-table.ths wire:click.prevent="sortBy('vname')">Date</x-table.ths>
                 <x-table.ths wire:click.prevent="sortBy('vname')">Cutting Master</x-table.ths>
                 <x-table.ths-center wire:click.prevent="sortBy('vname')">Cutting Qty</x-table.ths-center>
@@ -51,7 +51,7 @@
                         <x-table.cell>
                             <a href="{{route('cuttings.upsert',[$row->id])}}"
                                class="flex flex-col px-3 text-gray-600 truncate text-xl text-center">
-                                {{ $row->cutting_qty + 0 }}
+                                {{ $row->total_qty + 0 }}
                             </a>
                         </x-table.cell>
                     </x-table.row>

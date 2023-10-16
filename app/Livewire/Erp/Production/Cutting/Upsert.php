@@ -2,207 +2,407 @@
 
 namespace App\Livewire\Erp\Production\Cutting;
 
-use App\Livewire\Controls\Items\Common\ColourItem;
-use App\Livewire\Controls\Items\Common\SizeItem;
-use App\Livewire\Controls\Items\Erp\Production\JobcardItem;
-use App\Models\Erp\Cutting;
-use App\Models\Erp\CuttingItem;
+use App\Models\Common\Colour;
+use App\Models\Common\Size;
+use App\Models\Erp\Order;
+use App\Models\Erp\Production\Cutting;
+use App\Models\Erp\Production\CuttingItem;
+use App\Models\Erp\Production\Jobcard;
+use App\Models\Erp\Production\JobcardItem;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Upsert extends Component
 {
-    public Cutting $cutting;
+    //
+    // Order no
+    //
+    public $order_id = '';
+    public $order_no = '';
+    public Collection $orderCollection;
+    public $highlightOrder = 0;
+    public $orderTyped = false;
 
-    public mixed $vid='';
-    public mixed $vno = '';
-    public mixed $vdate = '';
-    public mixed $order_id = '';
-    public mixed $order_name = '';
-    public mixed $jobcard_id = '';
-    public mixed $jobcard_name = '';
-    public mixed $cutting_master = '';
-    public mixed $cutting_qty = '';
-    public mixed $active_id = '1';
-    public $list = [];
+    public function decrementOrder(): void
+    {
+        if ($this->highlightOrder === 0) {
+            $this->highlightOrder = count($this->orderCollection) - 1;
+            return;
+        }
+        $this->highlightOrder--;
+    }
+
+    public function incrementOrder(): void
+    {
+        if ($this->highlightOrder === count($this->orderCollection) - 1) {
+            $this->highlightOrder = 0;
+            return;
+        }
+        $this->highlightOrder++;
+    }
+
+    public function enterOrder(): void
+    {
+        $obj = $this->orderCollection[$this->highlightOrder] ?? null;
+
+        $this->order_no = '';
+        $this->orderCollection = Collection::empty();
+        $this->highlightOrder = 0;
+
+        $this->order_no = $obj['vname'] ?? '';;
+        $this->order_id = $obj['id'] ?? '';;
+
+        $this->jobcard_id = '';
+        $this->jobcard_no = '';
+    }
+
+    public function setOrder($name, $id): void
+    {
+        $this->order_no = $name;
+        $this->order_id = $id;
+
+        $this->jobcard_id = '';
+        $this->jobcard_no = '';
+
+        $this->getOrderList();
+    }
+
+    #[On('refresh-order')]
+    public function refreshContact($v): void
+    {
+        $this->order_id = $v['id'];
+        $this->order_no = $v['name'];
+
+        $this->orderTyped = false;
+
+        $this->jobcard_id = '';
+        $this->jobcard_no = '';
+
+    }
+
+    public function getOrderList(): void
+    {
+        $this->orderCollection = $this->order_no ? Order::search(trim($this->order_no))
+            ->get() : Order::all();
+    }
+
+    //
+    // Job no
+    //
+
+    public $jobcard_id = '';
+    public $jobcard_no = '';
+    public Collection $jobcardCollection;
+    public $highlightJobcard = 0;
+    public $jobcardTyped = false;
+
+    public function decrementJobcard(): void
+    {
+        if ($this->highlightJobcard === 0) {
+            $this->highlightJobcard = count($this->jobcardCollection) - 1;
+            return;
+        }
+        $this->highlightJobcard--;
+    }
+
+    public function incrementJobcard(): void
+    {
+        if ($this->highlightJobcard === count($this->jobcardCollection) - 1) {
+            $this->highlightJobcard = 0;
+            return;
+        }
+        $this->highlightJobcard++;
+    }
+
+    public function enterJobcard(): void
+    {
+        $obj = $this->jobcardCollection[$this->highlightJobcard] ?? null;
+
+        $this->jobcard_no = '';
+        $this->jobcardCollection = Collection::empty();
+        $this->highlightJobcard = 0;
+
+        $this->jobcard_no = $obj['vname'] ?? '';;
+        $this->jobcard_id = $obj['id'] ?? '';;
+    }
+
+    public function setJobcard($name, $id): void
+    {
+        $this->jobcard_no = $name;
+        $this->jobcard_id = $id;
+        $this->getJobcardList();
+    }
+
+    #[On('refresh-jobcard')]
+    public function refreshJobcard($v): void
+    {
+        $this->jobcard_id = $v['id'];
+        $this->jobcard_no = $v['name'];
+        $this->jobcardTyped = false;
+
+    }
+
+    public function getJobcardList(): void
+    {
+        if ($this->order_id) {
+            $this->jobcardCollection = $this->jobcard_no ? Jobcard::search(trim($this->jobcard_no))
+                ->where('order_id', '=', $this->order_id)
+                ->get() : Jobcard::where('order_id', '=', $this->order_id)->get();
+        }
+
+    }
+
+    //
+    // Job List
+    //
+
+    public $jobcard_item_id = '';
+    public $jobcard_item_name = '';
+    public Collection $jobcardItemCollection;
+    public $highlightJobcardItem = 0;
+    public $jobcardItemTyped = false;
+
+    public function decrementJobcardItem(): void
+    {
+        if ($this->highlightJobcardItem === 0) {
+            $this->highlightJobcardItem = count($this->jobcardItemCollection) - 1;
+            return;
+        }
+        $this->highlightJobcardItem--;
+    }
+
+    public function incrementJobcardItem(): void
+    {
+        if ($this->highlightJobcardItem === count($this->jobcardItemCollection) - 1) {
+            $this->highlightJobcardItem = 0;
+            return;
+        }
+        $this->highlightJobcardItem++;
+    }
+
+    public function enterJobcardItem(): void
+    {
+        $obj = $this->jobcardItemCollection[$this->highlightJobcardItem] ?? null;
+
+        $this->jobcard_item_id = '';
+        $this->jobcardItemCollection = Collection::empty();
+        $this->highlightJobcardItem = 0;
+
+        $this->jobcard_item_id = $obj['jobcard_item_id'] ?? '';
+        $this->fabric_lot_no = $obj['fabric_lot_no'] ?? '';
+        $this->colour_name = $obj['colour_name'] ?? '';
+        $this->size_name = $obj['size_name'] ?? '';
+        $this->qty = $obj['qty'] ?? '';
+    }
+
+    public function setJobcardItem($id, $lot, $colour, $size, $qty): void
+    {
+        $this->jobcard_item_id = $id;
+        $this->fabric_lot_no = $lot;
+        $this->colour_name = $colour;
+        $this->size_name = $size;
+        $this->qty = $qty + 0;
+        $this->getJobcardItemList();
+    }
+
+    public function getJobcardItemList(): void
+    {
+        $data = DB::table('jobcard_items')
+            ->select('jobcard_items.*',
+                'fabric_lots.vname as fabric_lot_no',
+                'colours.vname as colour_name',
+                'sizes.vname as size_name'
+            )
+            ->join('fabric_lots', 'fabric_lots.id', '=', 'jobcard_items.fabric_lot_id')
+            ->join('colours', 'colours.id', '=', 'jobcard_items.colour_id')
+            ->join('sizes', 'sizes.id', '=', 'jobcard_items.size_id')
+            ->where('jobcard_id', '=', $this->jobcard_id)
+            ->get()
+            ->transform(function ($data) {
+                return [
+                    'jobcard_item_id' => $data->id,
+                    'fabric_lot_no' => $data->fabric_lot_no,
+                    'colour_name' => $data->colour_name,
+                    'size_name' => $data->size_name,
+                    'qty' => $data->qty + 0,
+                ];
+            });
+
+        $this->jobcardItemCollection = $data;
+    }
+
+
+    //
+    // properties
+    //
+
+    public string $vid = '';
+    public string $vno = '';
+    public string $vdate = '';
+    public string $cutting_master = '';
+    public mixed $total_qty = 0;
     public string $itemIndex = "";
+    public $itemList = [];
+    public mixed $fabric_lot_no;
+    public mixed $colour_name;
+    public mixed $size_name;
+    public mixed $qty;
 
-    public mixed $cutting_id = '';
-    public mixed $colour_id = '';
-    public string $colour_name = '';
-    public mixed $size_id = '';
-    public string $size_name = '';
-    public mixed $qty = '';
+    //
+    // mount
+    //
 
-    public function mount($id)
+    public function mount($id): void
     {
         $this->vno = Cutting::nextNo();
-        $this->vdate = (Carbon::parse(Carbon::now())->format('Y-m-d'));
+        $this->vdate = Carbon::parse(Carbon::now())->format('Y-m-d');
 
         if ($id != 0) {
-            $this->cutting = Cutting::find($id);
-            $this->vid = $this->cutting->id;
-            $this->vno = $this->cutting->vno;
-            $this->vdate = $this->cutting->vdate;
-            $this->order_id = $this->cutting->order_id;
-            $this->order_name = $this->cutting->order->vname;
-            $this->jobcard_id = $this->cutting->jobcard_id;
-            $this->jobcard_name = $this->cutting->jobcard->vno;
-            $this->cutting_master = $this->cutting->cutting_master;
-            $this->cutting_qty = $this->cutting->cutting_qty;
 
-            $data = DB::table('cutting_items')->where('cutting_id', '=', $id)
-                ->join('colours', 'colours.id', '=', 'cutting_items.colour_id')
-                ->join('sizes', 'sizes.id', '=', 'cutting_items.size_id')
-                ->select('cutting_items.*', 'colours.vname as colour_name', 'sizes.vname as size_name')
+            $obj = Cutting::find($id);
+            $this->vid = $obj->id;
+            $this->vno = $obj->vno;
+            $this->vdate = $obj->vdate;
+            $this->order_id = $obj->order_id;
+            $this->order_no = $obj->order->vname;
+            $this->jobcard_id = $obj->jobcard_id;
+            $this->jobcard_no = $obj->jobcard->vno;
+            $this->cutting_master = $obj->cutting_master;
+            $this->total_qty = $obj->total_qty;
+
+            $data = DB::table('cutting_items')
+                ->select('cutting_items.*',
+                    'fabric_lots.vname as fabric_lot_no',
+                    'colours.vname as colour_name',
+                    'sizes.vname as size_name'
+                )
+                ->join('cuttings', 'cuttings.id', '=', 'cutting_items.cutting_id')
+                ->join('jobcard_items', 'jobcard_items.id', '=', 'cutting_items.jobcard_item_id')
+                ->join('fabric_lots', 'fabric_lots.id', '=', 'jobcard_items.fabric_lot_id')
+                ->join('colours', 'colours.id', '=', 'jobcard_items.colour_id')
+                ->join('sizes', 'sizes.id', '=', 'jobcard_items.size_id')
+                ->where('cutting_id', '=', $id)
                 ->get()
                 ->transform(function ($data) {
                     return [
-                        'cutting_id' => $data->cutting_id,
-                        'colour_id' => $data->colour_id,
+                        'jobcard_item_id' => $data->jobcard_item_id,
+                        'fabric_lot_no' => $data->fabric_lot_no,
                         'colour_name' => $data->colour_name,
-                        'size_id' => $data->size_id,
                         'size_name' => $data->size_name,
                         'qty' => $data->qty,
                     ];
                 });
 
-            $this->list = $data;
-            $this->calculateTotal();
+            $this->itemList = $data;
+
         }
+
     }
 
-    public function calculateTotal(): void
-    {
-        if ($this->list) {
-            $this->cutting_qty = 0;
-            foreach ($this->list as $row) {
-                $this->cutting_qty += round(floatval($row['qty']), 3);
-            }
-        }
-    }
-
-    public function addItems()
+    //
+    // add items
+    //
+    public function addItems(): void
     {
         if ($this->itemIndex == "") {
             if (!(empty($this->colour_name)) &&
                 !(empty($this->size_name)) &&
                 !(empty($this->qty))
             ) {
-                $this->list[] = [
-                    'colour_id' => $this->colour_id,
+                $this->itemList[] = [
+                    'jobcard_item_id' => $this->jobcard_item_id,
+                    'fabric_lot_no' => $this->fabric_lot_no,
+                    'fabric_lot_id' => $this->jobcard_item_id,
                     'colour_name' => $this->colour_name,
-                    'size_id' => $this->size_id,
                     'size_name' => $this->size_name,
                     'qty' => $this->qty,
                 ];
-                $this->calculateTotal();
-                $this->resetsItems();
             }
         } else {
-            $this->list[$this->itemIndex] = [
-                'colour_id' => $this->colour_id,
+            $this->itemList[$this->itemIndex] = [
+                'jobcard_item_id' => $this->jobcard_item_id,
+                'fabric_lot_no' => $this->fabric_lot_no,
+                'fabric_lot_id' => $this->jobcard_item_id,
                 'colour_name' => $this->colour_name,
-                'size_id' => $this->size_id,
                 'size_name' => $this->size_name,
                 'qty' => $this->qty,
             ];
-            $this->calculateTotal();
-            $this->resetsItems();
-            $this->render();
+
         }
+
+        $this->calculateTotal();
+        $this->resetsItems();
+        $this->render();
 //        $this->emit('getfocus');
     }
 
-    public function resetsItems()
+    public function resetsItems(): void
     {
+        $this->itemIndex = '';
+        $this->fabric_lot_no = '';
+        $this->jobcard_item_id = '';
         $this->colour_name = '';
-        $this->colour_id = '';
         $this->size_name = '';
         $this->qty = '';
-        $this->dispatch('refresh-colour-item', ['id' => '', 'name' => ''])->to(ColourItem::class);
-        $this->dispatch('refresh-size-item', ['id' => '', 'name' => ''])->to(SizeItem::class);
+        $this->calculateTotal();
     }
 
     public function changeItems($index): void
     {
         $this->itemIndex = $index;
-        $items = $this->list[$index];
+
+        $items = $this->itemList[$index];
+        $this->fabric_lot_no = $items['fabric_lot_no'];
+        $this->jobcard_item_id = $items['jobcard_item_id'];
         $this->colour_name = $items['colour_name'];
-        $this->colour_id = $items['colour_id'];
         $this->size_name = $items['size_name'];
-        $this->size_id = $items['size_id'];
-        $this->qty = floatval($items['qty']);
-
-        $this->dispatch('refresh-colour-item', ['id' => $this->colour_id, 'name' => $this->colour_name])->to(ColourItem::class);
-        $this->dispatch('refresh-size-item', ['id' => $this->size_id, 'name' => $this->size_name])->to(SizeItem::class);
-    }
-
-    public function removeItems($index)
-    {
-        unset($this->list[$index]);
-        $this->list = collect($this->list);
+        $this->qty = $items['qty'] + 0;
         $this->calculateTotal();
     }
 
-    #[On('refresh-cutting-jobcard')]
-    public function refreshCuttingJobcard($v)
+    public function removeItems($index): void
     {
-        $this->colour_id = $v['colour_id'];
-        $this->colour_name = $v['colour_name'];
-        $this->size_id = $v['size_id'];
-        $this->size_name = $v['size_name'];
-        $this->qty = $v['qty'];
+        unset($this->itemList[$index]);
+        $this->itemList = collect($this->itemList);
+        $this->calculateTotal();
     }
 
-    #[On('refresh-order')]
-    public function setOrder($v): void
+    public function calculateTotal(): void
     {
-        $this->order_id = $v['id'];
-
-    }
-    #[On('refresh-jobcard')]
-    public function setJobcard($v): void
-    {
-        $this->jobcard_id = $v['id'];
-        $this->jobcard_name = $v['name'];
-        $this->dispatch('refresh-with-job', ['id' => $this->jobcard_id, 'name' => $this->jobcard_name])->to(JobcardItem::class);
+        if ($this->itemList) {
+            $this->total_qty = 0;
+            foreach ($this->itemList as $row) {
+                $this->total_qty += round(floatval($row['qty']), 3);
+            }
+        }
     }
 
-    #[On('refresh-colour')]
-    public function setColour($v): void
-    {
-        $this->colour_id = $v['id'];
-        $this->colour_name = $v['name'];
-    }
-
-    #[On('refresh-size')]
-    public function setSize($v): void
-    {
-        $this->size_id = $v['id'];
-        $this->size_name = $v['name'];
-    }
+    //
+    // save
+    //
 
     public function save(): string
     {
         if ($this->order_id != '') {
+
             if ($this->vid == "") {
+
                 $obj = Cutting::create([
                     'vno' => $this->vno,
                     'vdate' => $this->vdate,
                     'order_id' => $this->order_id,
                     'jobcard_id' => $this->jobcard_id,
                     'cutting_master' => $this->cutting_master,
-                    'cutting_qty' => $this->cutting_qty,
-                    'active_id' => $this->active_id,
+                    'total_qty' => $this->total_qty,
+                    'active_id' => '1',
                     'user_id' => \Auth::id(),
                 ]);
                 $this->saveItem($obj->id);
 
                 $message = "Saved";
-                $this->getRoute();
 
             } else {
                 $obj = Cutting::find($this->vid);
@@ -211,22 +411,21 @@ class Upsert extends Component
                 $obj->order_id = $this->order_id;
                 $obj->jobcard_id = $this->jobcard_id;
                 $obj->cutting_master = $this->cutting_master;
-                $obj->cutting_qty = $this->cutting_qty;
-                $obj->active_id = $this->active_id ?: '0';
+                $obj->total_qty = $this->total_qty;
+                $obj->active_id = '1';
                 $obj->user_id = \Auth::id();
                 $obj->save();
 
                 DB::table('cutting_items')->where('cutting_id', '=', $obj->id)->delete();
                 $this->saveItem($obj->id);
                 $message = "Updated";
-                $this->getRoute();
             }
+            $this->getRoute();
             $this->vno = '';
             $this->vdate = '';
             $this->order_id = '';
             $this->jobcard_id = '';
-            $this->cutting_master = '';
-            $this->cutting_qty = '';
+            $this->total_qty = '';
             return $message;
         }
         return '';
@@ -234,12 +433,12 @@ class Upsert extends Component
 
     public function saveItem($id): void
     {
-        foreach ($this->list as $sub) {
+        foreach ($this->itemList as $sub) {
             CuttingItem::create([
                 'cutting_id' => $id,
-                'colour_id' => $sub['colour_id'],
-                'size_id' => $sub['size_id'],
+                'jobcard_item_id' => $sub['jobcard_item_id'],
                 'qty' => $sub['qty'],
+                'active_id' => '1'
             ]);
         }
     }
@@ -256,8 +455,13 @@ class Upsert extends Component
         $this->redirect(route('cuttings'));
     }
 
+
     public function render()
     {
+        $this->getOrderList();
+        $this->getJobcardList();
+        $this->getJobcardItemList();
+
         return view('livewire.erp.production.cutting.upsert');
     }
 }
