@@ -24,8 +24,8 @@ class S16_FabricLotSeeder extends Seeder
         ]);
 
         FabricLot::create([
-            'vname' => 'Lot- 2',
-            'desc' => 'Lot - 2 desc',
+            'vname' => 'Lot- 3',
+            'desc' => 'Lot - 3 desc',
             'active_id' => '1',
             'user_id' => '1'
         ]);

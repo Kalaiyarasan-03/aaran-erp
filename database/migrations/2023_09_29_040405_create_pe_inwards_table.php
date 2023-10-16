@@ -13,8 +13,7 @@ return new class extends Migration
             $table->integer('vno');
             $table->date('vdate');
             $table->foreignId('contact_id')->references('id')->on('contacts');
-            $table->foreignId('order_id')->references('id')->on('orders');
-            $table->foreignId('style_id')->references('id')->on('styles');
+            $table->foreignId('jobcard_id')->references('id')->on('jobcards');
             $table->decimal('total_qty',11,3);
             $table->string('receiver_details');
             $table->string('active_id', 3)->nullable();
@@ -25,9 +24,10 @@ return new class extends Migration
         Schema::create('pe_inward_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pe_inward_id')->references('id')->on('pe_inwards');
-            $table->foreignId('colour_id')->references('id')->on('colours');
-            $table->foreignId('size_id')->references('id')->on('sizes');
+            $table->foreignId('jobcard_item_id')->references('id')->on('jobcard_items');
+            $table->foreignId('pe_outward_item_id')->references('id')->on('pe_outward_items');
             $table->decimal('qty',11,3);
+            $table->string('active_id', 3)->nullable();
         });
     }
 

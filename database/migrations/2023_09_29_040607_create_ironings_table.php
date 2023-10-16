@@ -25,9 +25,10 @@ return new class extends Migration
         Schema::create('ironing_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('ironing_id')->references('id')->on('ironings');
-            $table->foreignId('colour_id')->references('id')->on('colours');
-            $table->foreignId('size_id')->references('id')->on('sizes');
+            $table->foreignId('jobcard_item_id')->references('id')->on('jobcard_items');
+            $table->foreignId('section_inward_item_id')->references('id')->on('section_inward_items');
             $table->decimal('qty',11,3);
+            $table->string('active_id', 3)->nullable();
         });
     }
 

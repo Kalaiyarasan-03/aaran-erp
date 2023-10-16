@@ -27,11 +27,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('peinwards', App\Livewire\Erp\Production\PeInward\Index::class)->name('peinwards');
     Route::get('peinwards/{id}/upsert', App\Livewire\Erp\Production\PeInward\Upsert::class)->name('peinwards.upsert');
 
-    Route::get('sectionoutwards', App\Livewire\Erp\SectionOutward\Index::class)->name('sectionoutwards');
-    Route::get('sectionoutwards/{id}/upsert', App\Livewire\Erp\SectionOutward\Upsert::class)->name('sectionoutwards.upsert');
+    Route::get('sectionoutwards', App\Livewire\Erp\Production\SectionOutward\Index::class)->name('sectionoutwards');
+    Route::get('sectionoutwards/{id}/upsert', App\Livewire\Erp\Production\SectionOutward\Upsert::class)->name('sectionoutwards.upsert');
 
-    Route::get('sectioninwards', App\Livewire\Erp\SectionInward\Index::class)->name('sectioninwards');
-    Route::get('sectioninwards/{id}/upsert', App\Livewire\Erp\SectionInward\Upsert::class)->name('sectioninwards.upsert');
+    Route::get('sectioninwards', App\Livewire\Erp\Production\SectionInward\Index::class)->name('sectioninwards');
+    Route::get('sectioninwards/{id}/upsert', App\Livewire\Erp\Production\SectionInward\Upsert::class)->name('sectioninwards.upsert');
 });
 
 ////Admin

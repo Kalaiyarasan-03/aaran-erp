@@ -1,5 +1,5 @@
 <div>
-    <x-slot name="header">Printing & Emb Outward Note</x-slot>
+    <x-slot name="header">Printing & Emb Outward Note Details</x-slot>
 
     <x-forms.m-panel>
 

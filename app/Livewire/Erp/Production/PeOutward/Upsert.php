@@ -311,6 +311,12 @@ class Upsert extends Component
 
     public function calculateTotal()
     {
+        if ($this->itemList) {
+            $this->total_qty = 0;
+            foreach ($this->itemList as $row) {
+                $this->total_qty += round(floatval($row['qty']), 3);
+            }
+        }
     }
 
     #[On('refresh-cutting')]

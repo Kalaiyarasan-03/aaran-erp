@@ -3,6 +3,8 @@
 namespace App\Livewire\Erp\Production\PeInward;
 
 use App\Models\Erp\Jobcard;
+use App\Models\Erp\PeInward;
+use App\Models\Erp\PeInwardItem;
 use App\Models\Erp\PeOutward;
 use App\Models\Erp\PeOutwardItem;
 use App\Models\Master\Contact;
@@ -16,24 +18,24 @@ class Upsert extends Component
 {
     public Collection $contactCollection;
     public Collection $jobcardCollection;
-    public Collection $cuttingCollection;
+    public Collection $peOutwardCollection;
 
     public string $contact_name = '';
     public string $contact_id = '';
     public string $jobcard_id = '';
     public string $jobcard_no = '';
 
-    public string $cutting_id = '';
-    public string $cutting_no = '';
+    public string $pe_outward_id = '';
+    public string $pe_outward_no = '';
     public string $style_name = '';
 
     public int $highlightContact = 0;
     public int $highlightJobcard = 0;
-    public int $highlightCutting = 0;
+    public int $highlightPeOutward = 0;
 
     public bool $contactTyped = false;
     public bool $jobcardTyped = false;
-    public bool $cuttingTyped = false;
+    public bool $peOutwardTyped = false;
 
 
     public string $vno = '';
@@ -148,65 +150,70 @@ class Upsert extends Component
         $this->jobcardTyped = false;
     }
 
-    //Cutting
+    //Outward
 
-    public function setCutting($name, $id): void
+    public function setPeOutward($name, $id): void
     {
-        $this->cutting_no = $name;
-        $this->cutting_id = $id;
-        $this->getCuttingList();
+        $this->pe_outward_no = $name;
+        $this->pe_outward_id = $id;
+        $this->getPeOutwardList();
     }
 
-    public function enterCutting(): void
+    public function enterPeOutward(): void
     {
-        $obj = $this->cuttingCollection[$this->highlightCutting] ?? null;
+        $obj = $this->peOutwardCollection[$this->highlightPeOutward] ?? null;
 
-        $this->cutting_no = '';
-        $this->cuttingCollection = Collection::empty();
-        $this->highlightCutting = 0;
+        $this->pe_outward_no = '';
+        $this->peOutwardCollection = Collection::empty();
+        $this->highlightPeOutward = 0;
 
-        $this->cutting_no = $obj['vname'] ?? '';;
-        $this->cutting_id = $obj['id'] ?? '';;
+        $this->pe_outward_no = $obj['vname'] ?? '';;
+        $this->pe_outward_id = $obj['id'] ?? '';;
     }
 
-    public function incrementCutting(): void
+    public function incrementPeOutward(): void
     {
-        if ($this->highlightCutting === count($this->cuttingCollection) - 1) {
-            $this->highlightCutting = 0;
+        if ($this->highlightPeOutward === count($this->peOutwardCollection) - 1) {
+            $this->highlightPeOutward = 0;
             return;
         }
-        $this->highlightCutting++;
+        $this->highlightPeOutward++;
     }
 
-    public function decrementCutting(): void
+    public function decrementPeOutward(): void
     {
-        if ($this->highlightCutting === 0) {
-            $this->highlightCutting = count($this->cuttingCollection) - 1;
+        if ($this->highlightPeOutward === 0) {
+            $this->highlightPeOutward = count($this->peOutwardCollection) - 1;
             return;
         }
-        $this->highlightCutting--;
+        $this->highlightPeOutward--;
     }
 
-    public function getCuttingList(): void
+    public function getPeOutwardList(): void
     {
-        $data = DB::table('cuttings')
-            ->select('cuttings.id as cutting_id',
-                'cuttings.vno as vno',
+        $data = DB::table('pe_outwards')
+            ->select('pe_outwards.id as pe_outward_id',
+                'pe_outwards.vno as vno',
+                'contacts.id as contact_id',
                 'colours.id as colour_id',
                 'colours.vname as colour_name',
                 'sizes.id as size_id',
                 'sizes.vname as size_name',
-                'cutting_items.qty'
+                'pe_outward_items.qty',
+                'pe_outward_items.id as pe_outward_item_id'
             )
-            ->join('cutting_items', 'cuttings.id', '=', 'cutting_items.cutting_id')
-            ->join('colours', 'colours.id', '=', 'cutting_items.colour_id')
-            ->join('sizes', 'sizes.id', '=', 'cutting_items.size_id')
+            ->join('contacts', 'contacts.id', '=', 'pe_outwards.contact_id')
+            ->join('pe_outward_items', 'pe_outwards.id', '=', 'pe_outward_items.pe_outward_id')
+            ->join('colours', 'colours.id', '=', 'pe_outward_items.colour_id')
+            ->join('sizes', 'sizes.id', '=', 'pe_outward_items.size_id')
             ->where('jobcard_id', '=', $this->jobcard_id)
+            ->where('contact_id', '=', $this->contact_id)
             ->get()
             ->transform(function ($data) {
                 return [
-                    'cutting_id' => $data->cutting_id,
-                    'cutting_no' => $data->vno,
+                    'pe_outward_item_id' => $data->pe_outward_item_id,
+                    'pe_outward_id' => $data->pe_outward_id,
+                    'pe_outward_no' => $data->vno,
                     'colour_id' => $data->colour_id,
                     'colour_name' => $data->colour_name,
                     'size_id' => $data->size_id,
@@ -215,7 +222,7 @@ class Upsert extends Component
                 ];
             });
 
-        $this->cuttingCollection = $data;
+        $this->peOutwardCollection = $data;
 
     }
 
@@ -225,12 +232,14 @@ class Upsert extends Component
     public $size_name;
     public $size_id;
     public $qty;
+    public $pe_outward_item_id;
 
-    public function sendCuttingItem($cutting_no, $cutting_id, $colour_name, $colour_id, $size_name, $size_id, $qty): void
+    public function sendPeOutwardItem($pe_outward_no, $pe_outward_id, $colour_name, $colour_id, $size_name, $size_id, $qty, $pe_outward_item_id): void
     {
 
-        $this->cutting_no = $cutting_no;
-        $this->cutting_id = $cutting_id;
+        $this->pe_outward_no = $pe_outward_no;
+        $this->pe_outward_id = $pe_outward_id;
+        $this->pe_outward_item_id = $pe_outward_item_id;
         $this->colour_name = $colour_name;
         $this->colour_id = $colour_id;
         $this->size_name = $size_name;
@@ -250,8 +259,9 @@ class Upsert extends Component
                 !(empty($this->qty))
             ) {
                 $this->itemList[] = [
-                    'cutting_id' => $this->cutting_id,
-                    'cutting_no' => $this->cutting_no,
+                    'pe_outward_item_id' => $this->pe_outward_item_id,
+                    'pe_outward_id' => $this->pe_outward_id,
+                    'pe_outward_no' => $this->pe_outward_no,
                     'colour_id' => $this->colour_id,
                     'colour_name' => $this->colour_name,
                     'size_id' => $this->size_id,
@@ -263,8 +273,9 @@ class Upsert extends Component
             }
         } else {
             $this->itemList[$this->itemIndex] = [
-                'cutting_id' => $this->cutting_id,
-                'cutting_no' => $this->cutting_no,
+                'pe_outward_item_id' => $this->pe_outward_item_id,
+                'pe_outward_id' => $this->pe_outward_id,
+                'pe_outward_no' => $this->pe_outward_no,
                 'colour_id' => $this->colour_id,
                 'colour_name' => $this->colour_name,
                 'size_id' => $this->size_id,
@@ -280,8 +291,9 @@ class Upsert extends Component
 
     public function resetsItems(): void
     {
-        $this->cutting_no = '';
-        $this->cutting_id = '';
+        $this->pe_outward_no = '';
+        $this->pe_outward_id = '';
+        $this->pe_outward_item_id = '';
         $this->colour_name = '';
         $this->colour_id = '';
         $this->size_name = '';
@@ -293,8 +305,9 @@ class Upsert extends Component
     {
         $this->itemIndex = $index;
         $items = $this->itemList[$index];
-        $this->cutting_no = $items['cutting_no'];
-        $this->cutting_id = $items['cutting_id'];
+        $this->pe_outward_no = $items['pe_outward_no'];
+        $this->pe_outward_id = $items['pe_outward_id'];
+        $this->pe_outward_item_id = $items['pe_outward_item_id'];
         $this->colour_name = $items['colour_name'];
         $this->colour_id = $items['colour_id'];
         $this->size_name = $items['size_name'];
@@ -309,51 +322,63 @@ class Upsert extends Component
         $this->calculateTotal();
     }
 
-    public function calculateTotal()
+    public function calculateTotal(): void
     {
+        if ($this->itemList) {
+            $this->total_qty = 0;
+            foreach ($this->itemList as $row) {
+                $this->total_qty += round(floatval($row['qty']), 3);
+            }
+        }
     }
 
-    #[On('refresh-cutting')]
-    public function refreshCutting($v): void
+    #[On('refresh-outward')]
+    public function refreshOutward($v): void
     {
-        $this->cutting_id = $v['id'];
-        $this->cutting_no = $v['name'];
-        $this->cuttingTyped = false;
+        $this->pe_outward_id = $v['id'];
+        $this->pe_outward_no = $v['name'];
+        $this->peOutwardTyped = false;
     }
 
-    public $peOutward;
+    public $peInward;
 
     public function mount($id)
     {
-        $this->vno = PeOutward::nextNo();
+        $this->vno = PeInward::nextNo();
         $this->vdate = Carbon::parse(Carbon::now())->format('Y-m-d');
 
         if ($id != 0) {
 
-            $this->peOutward = PeOutward::find($id);
-            $this->vid = $this->peOutward->id;
-            $this->vno = $this->peOutward->vno;
-            $this->vdate = $this->peOutward->vdate;
-            $this->contact_id = $this->peOutward->contact_id;
-            $this->contact_name = $this->peOutward->contact->vname;
-            $this->jobcard_id = $this->peOutward->jobcard_id;
-            $this->jobcard_no = $this->peOutward->jobcard->vno;
-            $this->total_qty = $this->peOutward->total_qty;
-            $this->receiver_details = $this->peOutward->receiver_details;
+            $this->peInward = PeInward::find($id);
+            $this->vid = $this->peInward->id;
+            $this->vno = $this->peInward->vno;
+            $this->vdate = $this->peInward->vdate;
+            $this->contact_id = $this->peInward->contact_id;
+            $this->contact_name = $this->peInward->contact->vname;
+            $this->jobcard_id = $this->peInward->jobcard_id;
+            $this->jobcard_no = $this->peInward->jobcard->vno;
+            $this->total_qty = $this->peInward->total_qty;
+            $this->receiver_details = $this->peInward->receiver_details;
 
-            $data = DB::table('pe_outward_items')->where('pe_outward_id', '=', $id)
-                ->join('cuttings', 'cuttings.id', '=', 'pe_outward_items.cutting_id')
+            $data = DB::table('pe_inward_items')
+                ->select('pe_inward_items.*',
+                    'pe_outwards.vno as pe_outward_no',
+                    'colours.vname as colour_name',
+                    'sizes.vname as size_name'
+                )
+                ->join('pe_inwards', 'pe_inwards.id', '=', 'pe_inward_items.pe_inward_id')
+                ->join('pe_outward_items', 'pe_outward_items.id', '=', 'pe_inward_items.pe_outward_item_id')
+                ->join('pe_outwards', 'pe_outwards.id', '=', 'pe_outward_items.pe_outward_id')
                 ->join('colours', 'colours.id', '=', 'pe_outward_items.colour_id')
                 ->join('sizes', 'sizes.id', '=', 'pe_outward_items.size_id')
-                ->select('pe_outward_items.*', 'cuttings.vno as cutting_no', 'colours.vname as colour_name', 'sizes.vname as size_name')
+                ->where('pe_inward_id', '=', $id)
                 ->get()
                 ->transform(function ($data) {
                     return [
-                        'cutting_id' => $data->cutting_id,
-                        'cutting_no' => $data->cutting_no,
-                        'colour_id' => $data->colour_id,
+                        'pe_outward_item_id' => $data->pe_outward_item_id,
+                        'pe_inward_id' => $data->pe_inward_id,
+                        'pe_outward_no' => $data->pe_outward_no,
                         'colour_name' => $data->colour_name,
-                        'size_id' => $data->size_id,
                         'size_name' => $data->size_name,
                         'qty' => $data->qty,
                     ];
@@ -372,7 +397,7 @@ class Upsert extends Component
 
             if ($this->vid == "") {
 
-                $obj = PeOutward::create([
+                $obj = PeInward::create([
                     'vno' => $this->vno,
                     'vdate' => $this->vdate,
                     'contact_id' => $this->contact_id,
@@ -387,7 +412,7 @@ class Upsert extends Component
                 $message = "Saved";
 
             } else {
-                $obj = PeOutward::find($this->vid);
+                $obj = PeInward::find($this->vid);
                 $obj->vno = $this->vno;
                 $obj->vdate = $this->vdate;
                 $obj->contact_id = $this->contact_id;
@@ -416,11 +441,9 @@ class Upsert extends Component
     public function saveItem($id): void
     {
         foreach ($this->itemList as $sub) {
-            PeOutwardItem::create([
-                'pe_outward_id' => $id,
-                'cutting_id' => $sub['cutting_id'],
-                'colour_id' => $sub['colour_id'],
-                'size_id' => $sub['size_id'],
+            PeInwardItem::create([
+                'pe_inward_id' => $id,
+                'pe_outward_item_id' => $sub['pe_outward_item_id'],
                 'qty' => $sub['qty'],
             ]);
         }
@@ -428,14 +451,14 @@ class Upsert extends Component
 
     public function setDelete()
     {
-        DB::table('pe_outward_items')->where('pe_outward_id', '=', $this->vid)->delete();
-        DB::table('pe_outwards')->where('id', '=', $this->vid)->delete();
+        DB::table('pe_inward_items')->where('pe_inward_id', '=', $this->vid)->delete();
+        DB::table('pe_inwards')->where('id', '=', $this->vid)->delete();
         $this->getRoute();
     }
 
     public function getRoute(): void
     {
-        $this->redirect(route('peoutwards'));
+        $this->redirect(route('peinwards'));
     }
 
 
@@ -443,7 +466,7 @@ class Upsert extends Component
     {
         $this->getContactList();
         $this->getJobcardList();
-        $this->getCuttingList();
+        $this->getPeOutwardList();
         return view('livewire.erp.production.pe-inward.upsert');
     }
 }

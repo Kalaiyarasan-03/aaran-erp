@@ -19,14 +19,9 @@ class PeInward extends Model
             : static::where('vno', '=', $searches);
     }
 
-    public function order(): BelongsTo
+    public function jobcard(): BelongsTo
     {
-        return $this->belongsTo(Order::class);
-    }
-
-    public function style(): BelongsTo
-    {
-        return $this->belongsTo(Style::class);
+        return $this->belongsTo(Jobcard::class);
     }
     public function contact(): BelongsTo
     {

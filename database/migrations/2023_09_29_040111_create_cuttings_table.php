@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('order_id')->references('id')->on('orders');
             $table->foreignId('jobcard_id')->references('id')->on('jobcards');
             $table->string('cutting_master');
-            $table->decimal('cutting_qty',11,3);
+            $table->decimal('total_qty',11,3);
             $table->string('active_id', 3)->nullable();
             $table->foreignId('user_id')->references('id')->on('users');
             $table->timestamps();
@@ -24,9 +24,9 @@ return new class extends Migration
         Schema::create('cutting_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('cutting_id')->references('id')->on('cuttings');
-            $table->foreignId('colour_id')->references('id')->on('colours');
-            $table->foreignId('size_id')->references('id')->on('sizes');
+            $table->foreignId('jobcard_item_id')->references('id')->on('jobcard_items');
             $table->decimal('qty',11,3);
+            $table->string('active_id', 3)->nullable();
         });
     }
 

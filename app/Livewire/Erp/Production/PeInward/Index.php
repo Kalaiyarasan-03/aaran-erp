@@ -2,37 +2,38 @@
 
 namespace App\Livewire\Erp\Production\PeInward;
 
-use App\Models\Erp\PeOutward;
-use Livewire\Component;
+use App\Livewire\Trait\EntriesIndexAbstract;
+use App\Models\Erp\PeInward;
 
-class Index extends Component
+class Index  extends EntriesIndexAbstract
 {
     public function create(): void
     {
-        $this->redirect(route('peoutwards.upsert',['0']));
+        $this->redirect(route('peinwards.upsert',['0']));
     }
 
     public function getList()
     {
-        return PeOutward::search($this->searches)
+        return PeInward::search($this->searches)
             ->select('orders.vname as order_name',
                 'styles.vname as style_name',
                 'contacts.vname as contact_name',
-                'pe_outwards.total_qty as total_qty',
-                'pe_outwards.*'
-
+                'pe_inwards.total_qty as total_qty',
+                'pe_inwards.*'
             )
-            ->join('contacts', 'contacts.id', '=', 'pe_outwards.contact_id')
-            ->join('jobcards', 'jobcards.id', '=', 'pe_outwards.jobcard_id')
+            ->join('contacts', 'contacts.id', '=', 'pe_inwards.contact_id')
+            ->join('jobcards', 'jobcards.id', '=', 'pe_inwards.jobcard_id')
             ->join('orders', 'orders.id', '=', 'jobcards.order_id')
             ->join('styles', 'styles.id', '=', 'jobcards.style_id')
-            ->where('pe_outwards.active_id', '=', $this->activeRecord)
+            ->where('pe_inwards.active_id', '=', $this->activeRecord)
             ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
             ->paginate($this->perPage);
     }
 
     public function render()
     {
-        return view('livewire.erp.production.pe-inward.index');
+        return view('livewire.erp.production.pe-inward.index')->with([
+            'list' => $this->getList()
+        ]);
     }
 }

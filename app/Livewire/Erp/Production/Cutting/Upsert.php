@@ -15,6 +15,7 @@ use Livewire\Component;
 class Upsert extends Component
 {
     public Cutting $cutting;
+
     public mixed $vid='';
     public mixed $vno = '';
     public mixed $vdate = '';
