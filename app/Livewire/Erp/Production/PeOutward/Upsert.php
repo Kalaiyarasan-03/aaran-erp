@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Erp\Production\PeOutward;
 
-use App\Models\Erp\Jobcard;
-use App\Models\Erp\PeOutward;
-use App\Models\Erp\PeOutwardItem;
+use App\Models\Erp\Production\Jobcard;
+use App\Models\Erp\Production\PeOutward;
+use App\Models\Erp\Production\PeOutwardItem;
 use App\Models\Master\Contact;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -190,7 +190,8 @@ class Upsert extends Component
     public function getCuttingList(): void
     {
         $data = DB::table('cuttings')
-            ->select('cuttings.id as cutting_id',
+            ->select('cuttings.*',
+                'cuttings.id as cutting_id',
                 'cuttings.vno as vno',
                 'colours.id as colour_id',
                 'colours.vname as colour_name',
@@ -199,9 +200,11 @@ class Upsert extends Component
                 'cutting_items.qty'
             )
             ->join('cutting_items', 'cuttings.id', '=', 'cutting_items.cutting_id')
-            ->join('colours', 'colours.id', '=', 'cutting_items.colour_id')
-            ->join('sizes', 'sizes.id', '=', 'cutting_items.size_id')
-            ->where('jobcard_id', '=', $this->jobcard_id)
+            ->join('jobcards', 'jobcards.id', '=', 'cuttings.jobcard_id')
+            ->join('jobcard_items', 'jobcard_items.jobcard_id', '=', 'jobcards.id')
+            ->join('colours', 'colours.id', '=', 'jobcard_items.colour_id')
+            ->join('sizes', 'sizes.id', '=', 'jobcard_items.size_id')
+            ->where('cuttings.jobcard_id', '=', $this->jobcard_id)
             ->get()
             ->transform(function ($data) {
                 return [
@@ -424,9 +427,7 @@ class Upsert extends Component
         foreach ($this->itemList as $sub) {
             PeOutwardItem::create([
                 'pe_outward_id' => $id,
-                'cutting_id' => $sub['cutting_id'],
-                'colour_id' => $sub['colour_id'],
-                'size_id' => $sub['size_id'],
+                'jobcard_item_id' => $sub['jobcard_item_id'],
                 'qty' => $sub['qty'],
             ]);
         }

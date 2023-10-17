@@ -2,8 +2,9 @@
 
 namespace App\Livewire\Erp\Fabrication\FabricLot;
 
+
 use App\Livewire\Trait\CommonTrait;
-use App\Models\Erp\Production\FabricLot;
+use App\Models\Erp\Fabrication\FabricLot;
 use Livewire\Component;
 
 class Index extends Component
@@ -56,12 +57,14 @@ class Index extends Component
 
     public function getList()
     {
+
         $this->sortField = 'id';
 
         return FabricLot::search($this->searches)
             ->where('active_id', '=', $this->activeRecord)
             ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
             ->paginate($this->perPage);
+
     }
 
     public function reRender(): void
