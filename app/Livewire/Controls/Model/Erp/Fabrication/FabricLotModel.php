@@ -2,7 +2,8 @@
 
 namespace App\Livewire\Controls\Model\Erp\Fabrication;
 
-use App\Models\Erp\Production\FabricLot;
+
+use App\Models\Erp\Fabrication\FabricLot;
 use Livewire\Component;
 
 class FabricLotModel extends Component

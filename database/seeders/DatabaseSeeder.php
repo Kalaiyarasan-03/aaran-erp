@@ -17,8 +17,8 @@ class DatabaseSeeder extends Seeder
         S09_ColourSeeder::run();
         S10_SizeSeeder::run();
         S12_ContactSeeder::run();
-        S14_OrderSeeder::run();
-        S15_StyleSeeder::run();
-        S16_FabricLotSeeder::run();
+//        S14_OrderSeeder::run();
+//        S15_StyleSeeder::run();
+//        S16_FabricLotSeeder::run();
     }
 }

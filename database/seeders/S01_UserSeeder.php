@@ -21,7 +21,7 @@ class S01_UserSeeder extends Seeder
 
         User::create([
             'name' => 'Adal',
-            'email' => 'adal@aaran.com',
+            'email' => 'adal@aaran.org',
             'password' => bcrypt('123456789'),
             'email_verified_at'=> now(),
             'active_id' => '1',
@@ -30,7 +30,7 @@ class S01_UserSeeder extends Seeder
 
         User::create([
             'name' => 'Karthi',
-            'email' => 'karthi@aaran.com',
+            'email' => 'karthi@aaran.org',
             'password' => bcrypt('123456789'),
             'email_verified_at'=> now(),
             'active_id' => '1',
