@@ -117,7 +117,7 @@
 
                 <div class="flex flex-col gap-3">
                     <div class="flex flex-col gap-2">
-                        <label for="vno" class="gray-label">Job Card No</label>
+                        <label for="vno" class="gray-label">Challan No</label>
                         <input id="vno" wire:model="vno" class="purple-textbox">
                     </div>
                     <div class="flex flex-col gap-2">

@@ -3,6 +3,7 @@
 namespace App\Livewire\Erp\Production\PeOutward;
 
 use App\Livewire\Trait\EntriesIndexAbstract;
+use App\Models\Erp\Production\PeOutward;
 
 class Index extends EntriesIndexAbstract
 {
@@ -13,7 +14,7 @@ class Index extends EntriesIndexAbstract
 
     public function getList()
     {
-        return \App\Models\Erp\Production\PeOutward::search($this->searches)
+        return PeOutward::search($this->searches)
             ->select('orders.vname as order_name',
                 'styles.vname as style_name',
                 'contacts.vname as contact_name',
