@@ -201,6 +201,7 @@
                                                         {{ $highlightJobcardItem === $i ? 'bg-yellow-100' : '' }}"
                                                         wire:click="setJobcardItem(
                                                                                 '{{$jobcardItem['jobcard_item_id']}}','{{$jobcardItem['fabric_lot_no']}}',
+                                                                                '{{$jobcardItem['colour_id']}}','{{$jobcardItem['size_id']}}','{{$jobcardItem['fabric_lot_id']}}',
                                                                                 '{{$jobcardItem['colour_name']}}','{{$jobcardItem['size_name']}}',
                                                                                 '{{$jobcardItem['qty']}}' )"
                                                         x-on:click="isTyped = false">
@@ -210,6 +211,7 @@
                                                         <td class="px-2 border border-gray-300 text-center "
                                                             wire:click="setJobcardItem(
                                                                                 '{{$jobcardItem['jobcard_item_id']}}','{{$jobcardItem['fabric_lot_no']}}',
+                                                                                '{{$jobcardItem['colour_id']}}','{{$jobcardItem['size_id']}}','{{$jobcardItem['fabric_lot_id']}}',
                                                                                 '{{$jobcardItem['colour_name']}}','{{$jobcardItem['size_name']}}',
                                                                                 '{{$jobcardItem['qty']}}' )"
                                                             x-on:click="isTyped = false">
@@ -222,6 +224,7 @@
                                                         <td class="px-2 border border-gray-300 text-center "
                                                             wire:click="setJobcardItem(
                                                                                 '{{$jobcardItem['jobcard_item_id']}}','{{$jobcardItem['fabric_lot_no']}}',
+                                                                                '{{$jobcardItem['colour_id']}}','{{$jobcardItem['size_id']}}','{{$jobcardItem['fabric_lot_id']}}',
                                                                                 '{{$jobcardItem['colour_name']}}','{{$jobcardItem['size_name']}}',
                                                                                 '{{$jobcardItem['qty']}}' )"
                                                             x-on:click="isTyped = false">
@@ -234,6 +237,7 @@
                                                         <td class="px-2 text-center border border-gray-300"
                                                             wire:click="setJobcardItem(
                                                                                 '{{$jobcardItem['jobcard_item_id']}}','{{$jobcardItem['fabric_lot_no']}}',
+                                                                                '{{$jobcardItem['colour_id']}}','{{$jobcardItem['size_id']}}','{{$jobcardItem['fabric_lot_id']}}',
                                                                                 '{{$jobcardItem['colour_name']}}','{{$jobcardItem['size_name']}}',
                                                                                 '{{$jobcardItem['qty']}}' )"
                                                             x-on:click="isTyped = false">
@@ -245,6 +249,7 @@
                                                         <td class="px-2 text-center border border-gray-300"
                                                             wire:click="setJobcardItem(
                                                                                 '{{$jobcardItem['jobcard_item_id']}}','{{$jobcardItem['fabric_lot_no']}}',
+                                                                                '{{$jobcardItem['colour_id']}}','{{$jobcardItem['size_id']}}','{{$jobcardItem['fabric_lot_id']}}',
                                                                                 '{{$jobcardItem['colour_name']}}','{{$jobcardItem['size_name']}}',
                                                                                 '{{$jobcardItem['qty']}}' )"
                                                             x-on:click="isTyped = false">

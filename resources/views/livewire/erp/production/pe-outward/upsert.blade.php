@@ -174,6 +174,8 @@
                                         <table class="w-full">
                                             <thead>
                                             <tr class="h-8 text-xs bg-gray-100 border border-gray-300">
+                                                <th class="px-2 text-center border border-gray-300">Cutting No</th>
+                                                <th class="px-2 text-center border border-gray-300">Lot No</th>
                                                 <th class="px-2 text-center border border-gray-300">COLOUR</th>
                                                 <th class="px-2 text-center border border-gray-300">SIZE</th>
                                                 <th class="px-2 text-center border border-gray-300">QTY</th>
@@ -186,52 +188,23 @@
 
                                             @if(isset($cuttingCollection))
                                                 @forelse ($cuttingCollection as $i => $cutting)
-                                                    <div hidden="hidden" wire:key="{{ $cutting['cutting_id'] }}"></div>
+                                                    <div hidden="hidden"
+                                                         wire:key="{{ $cutting['cutting_item_id'] }}"></div>
                                                     <tr class="cursor-pointer px-3 hover:font-bold hover:bg-yellow-100 border-b border-gray-300 h-8
                                                         {{ $highlightJobcard === $i ? 'bg-yellow-100' : '' }}"
-                                                        wire:click="sendCuttingItem(
-                                                                                '{{$cutting['jobcard_item_id']}}','{{$cutting['cutting_no']}}',
-                                                                                '{{$cutting['cutting_id']}}','{{$cutting['colour_name']}}',
-                                                                                '{{$cutting['size_name']}}','{{$cutting['qty']}}'"
+                                                        wire:click="setCuttingItem(
+                                                                                '{{$cutting['jobcard_item_id']}}',
+                                                                                '{{$cutting['cutting_item_id']}}','{{$cutting['cutting_no']}}',
+                                                                                '{{$cutting['colour_id']}}','{{$cutting['size_name']}}',
+                                                                                '{{$cutting['size_id']}}','{{$cutting['size_name']}}',
+                                                                                '{{$cutting['qty']}}')"
                                                         x-on:click="isTyped = false">
 
-                                                        {{--                                                        <tr class="border border-gray-400 hover:bg-blue-300 cursor-pointer">--}}
-
-                                                        {{-- for colour--}}
-                                                        <td class="px-2 text-left border border-gray-300 "
-                                                            wire:click="sendCuttingItem(
-                                                                               '{{$cutting['jobcard_item_id']}}','{{$cutting['cutting_no']}}',
-                                                                                '{{$cutting['cutting_id']}}','{{$cutting['colour_name']}}',
-                                                                                '{{$cutting['size_name']}}','{{$cutting['qty']}}'"
-                                                            x-on:click="isTyped = false">
-
-                                                            {{$cutting['colour_name']}}
-
-                                                        </td>
-
-                                                        {{-- for Size--}}
-                                                        <td class="px-2 text-left border border-gray-300"
-                                                            wire:click="sendCuttingItem(
-                                                                            '{{$cutting['jobcard_item_id']}}','{{$cutting['cutting_no']}}',
-                                                                                '{{$cutting['cutting_id']}}','{{$cutting['colour_name']}}',
-                                                                                '{{$cutting['size_name']}}','{{$cutting['qty']}}'"
-                                                            x-on:click="isTyped = false">
-
-                                                            {{$cutting['size_name']}}
-                                                        </td>
-
-                                                        {{-- for Qty--}}
-                                                        <td class="px-2 text-left border border-gray-300"
-                                                            wire:click="sendCuttingItem(
-                                                                          '{{$cutting['jobcard_item_id']}}','{{$cutting['cutting_no']}}',
-                                                                                '{{$cutting['cutting_id']}}','{{$cutting['colour_name']}}',
-                                                                                '{{$cutting['size_name']}}','{{$cutting['qty']}}'"
-                                                            x-on:click="isTyped = false">
-
-                                                            {{$cutting['qty']}}
-
-                                                        </td>
-
+                                                        <td class="px-2 text-center border border-gray-300">{{$cutting['cutting_no']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$cutting['fabric_lot_name']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$cutting['colour_name']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$cutting['size_name']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$cutting['qty']}}</td>
                                                     </tr>
 
                                                 @empty
@@ -240,8 +213,8 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="3">
-                                                            <a href="{{route('jobcards.upsert',['0'])}}" role="button"
+                                                        <td colspan="5">
+                                                            <a href="{{route('cuttings.upsert',['0'])}}" role="button"
                                                                class="flex items-center justify-center bg-green-500 w-full h-8 text-white text-center">
                                                                 Not found , Want to create new
                                                             </a>
@@ -262,14 +235,14 @@
             </div>
 
 
-            <div class="w-full">
-                <label for="colour_name"></label>
-                <input id="colour_name" wire:model="colour_name" class="w-full border-gray-200" placeholder="Colour">
-            </div>
-            <div class="w-full">
-                <label for="size_name"></label>
-                <input id="size_name" wire:model="size_name" class="w-full border-gray-200" placeholder="Size">
-            </div>
+            {{--            <div class="w-full">--}}
+            {{--                <label for="colour_name"></label>--}}
+            {{--                <input id="colour_name" wire:model="colour_name" class="w-full border-gray-200" placeholder="Colour">--}}
+            {{--            </div>--}}
+            {{--            <div class="w-full">--}}
+            {{--                <label for="size_name"></label>--}}
+            {{--                <input id="size_name" wire:model="size_name" class="w-full border-gray-200" placeholder="Size">--}}
+            {{--            </div>--}}
             <div class="w-full">
                 <label for="cutting_qty"></label>
                 <input id="cutting_qty" wire:model="qty" class="w-full border-gray-200" placeholder="Qty">
@@ -338,7 +311,7 @@
 
             <div class="mt-5 flex gap-3">
                 <label for="receiver_details" class="gray-label">Receiver Details</label>
-                <input id="receiver_details"  wire:model="receiver_details" class="purple-textbox w-[32rem]" />
+                <input id="receiver_details" wire:model="receiver_details" class="purple-textbox w-[32rem]"/>
             </div>
 
 

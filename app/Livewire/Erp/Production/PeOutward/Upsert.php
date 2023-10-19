@@ -135,7 +135,7 @@ class Upsert extends Component
         $this->jobcardTyped = false;
     }
     //
-    //Cutting
+    // Cutting item
     //
     public string $cutting_id = '';
     public string $cutting_no = '';
@@ -162,11 +162,16 @@ class Upsert extends Component
         $this->highlightCutting--;
     }
 
-    public function setCutting($name, $id): void
+    public function setCuttingItem($jobcard_item_id, $cutting_item_id, $cutting_no, $colour_id, $colour_name, $size_id, $size_name, $qty): void
     {
-        $this->cutting_no = $name;
-        $this->cutting_id = $id;
-        $this->getCuttingList();
+        $this->jobcard_item_id = $jobcard_item_id;
+        $this->cutting_item_id = $cutting_item_id;
+        $this->cutting_no = $cutting_no;
+        $this->colour_id = $colour_id;
+        $this->colour_name = $colour_name;
+        $this->size_id = $size_id;
+        $this->size_name = $size_name;
+        $this->qty = $qty;
     }
 
     public function enterCutting(): void
@@ -177,35 +182,50 @@ class Upsert extends Component
         $this->cuttingCollection = Collection::empty();
         $this->highlightCutting = 0;
 
-        $this->cutting_no = $obj['vname'] ?? '';;
-        $this->cutting_id = $obj['id'] ?? '';;
+        $this->jobcard_item_id = $obj['jobcard_item_id'] ?? '';;
+        $this->cutting_item_id = $obj['cutting_item_id'] ?? '';;
+        $this->cutting_no = $obj['cutting_no'] ?? '';;
+        $this->colour_id = $obj['colour_id'] ?? '';;
+        $this->colour_name = $obj['colour_name'] ?? '';;
+        $this->size_id = $obj['size_id'] ?? '';;
+        $this->size_name = $obj['size_name'] ?? '';;
+        $this->qty = $obj['qty'] ?? '';;
     }
 
     public function getCuttingList(): void
     {
 
-        $data = DB::table('jobcards')
+        $data = DB::table('cutting_items')
             ->select(
-                'jobcard_items.id as jobcard_item_id',
+                'cutting_items.id',
+                'cutting_items.jobcard_item_id',
+                'cutting_items.cutting_id',
+                'cutting_items.fabric_lot_id',
+                'cutting_items.colour_id',
+                'cutting_items.size_id',
                 'cuttings.vno as cutting_no',
-                'cuttings.id as cutting_id',
+                'fabric_lots.vname as fabric_lot_name',
                 'colours.vname as colour_name',
                 'sizes.vname as size_name',
                 'cutting_items.qty'
             )
-            ->join('jobcard_items', 'jobcard_items.jobcard_id', '=', 'jobcards.id')
-//            ->join('cuttings', 'cuttings.jobcard_id', '=', 'jobcards.id')
-            ->join('cutting_items', 'cutting_items.cutting_id', '=', 'cuttings.id')
-            ->join('colours', 'jobcard_items.colour_id', '=', 'colours.id')
-            ->join('sizes', 'jobcard_items.size_id', '=', 'sizes.id')
-            ->where('jobcards.id', '=', $this->jobcard_id)
+            ->join('cuttings', 'cuttings.id', '=', 'cutting_items.cutting_id')
+            ->join('jobcard_items', 'jobcard_items.id', '=', 'cutting_items.jobcard_item_id')
+            ->join('fabric_lots', 'fabric_lots.id', '=', 'cutting_items.fabric_lot_id')
+            ->join('colours', 'colours.id', '=', 'cutting_items.colour_id')
+            ->join('sizes', 'sizes.id', '=', 'cutting_items.size_id')
+            ->where('jobcard_items.jobcard_id', '=', $this->jobcard_id)
             ->get()
             ->transform(function ($data) {
                 return [
                     'jobcard_item_id' => $data->jobcard_item_id,
+                    'cutting_item_id' => $data->id,
                     'cutting_no' => $data->cutting_no,
-                    'cutting_id' => $data->cutting_id,
+                    'fabric_lot_id' => $data->fabric_lot_id,
+                    'fabric_lot_name' => $data->fabric_lot_name,
+                    'colour_id' => $data->colour_id,
                     'colour_name' => $data->colour_name,
+                    'size_id' => $data->size_id,
                     'size_name' => $data->size_name,
                     'qty' => $data->qty + 0,
                 ];
@@ -242,15 +262,28 @@ class Upsert extends Component
             $this->total_qty = $obj->total_qty;
             $this->receiver_details = $obj->receiver_details;
 
-            $data = DB::table('pe_outward_items')->where('pe_outward_id', '=', $id)
-                ->join('cuttings', 'cuttings.id', '=', 'pe_outward_items.cutting_id')
-                ->join('colours', 'colours.id', '=', 'pe_outward_items.colour_id')
-                ->join('sizes', 'sizes.id', '=', 'pe_outward_items.size_id')
-                ->select('pe_outward_items.*', 'cuttings.vno as cutting_no', 'colours.vname as colour_name', 'sizes.vname as size_name')
+            $data = DB::table('pe_outward_items')
+                ->select(
+                    'pe_outward_items.id',
+                    'pe_outward_items.jobcard_item_id',
+                    'pe_outward_items.cutting_item_id',
+                    'cuttings.vno as cutting_no',
+                    'pe_outward_items.colour_id',
+                    'pe_outward_items.size_id',
+                    'colours.vname as colour_name',
+                    'sizes.vname as size_name',
+                    'cutting_items.qty'
+                )
+                ->join('cutting_items', 'cutting_items.id', '=', 'pe_outward_items.cutting_item_id')
+                ->join('cuttings', 'cuttings.id', '=', 'cutting_items.cutting_id')
+                ->join('colours', 'colours.id', '=', 'cutting_items.colour_id')
+                ->join('sizes', 'sizes.id', '=', 'cutting_items.size_id')
+                ->where('pe_outward_id', '=', $id)
                 ->get()
                 ->transform(function ($data) {
                     return [
-                        'cutting_id' => $data->cutting_id,
+                        'jobcard_item_id' => $data->jobcard_item_id,
+                        'cutting_item_id' => $data->cutting_item_id,
                         'cutting_no' => $data->cutting_no,
                         'colour_id' => $data->colour_id,
                         'colour_name' => $data->colour_name,
@@ -261,7 +294,6 @@ class Upsert extends Component
                 });
 
             $this->itemList = $data;
-
         }
     }
 
@@ -269,23 +301,14 @@ class Upsert extends Component
     public string $itemIndex = "";
     public $itemList = [];
 
-    public $colour_name;
+    public $jobcard_item_id;
+    public $cutting_item_id;
     public $colour_id;
-    public $size_name;
+    public $colour_name;
     public $size_id;
+    public $size_name;
     public $qty;
 
-    public function sendCuttingItem($cutting_no, $cutting_id, $colour_name, $colour_id, $size_name, $size_id, $qty): void
-    {
-
-        $this->cutting_no = $cutting_no;
-        $this->cutting_id = $cutting_id;
-        $this->colour_name = $colour_name;
-        $this->colour_id = $colour_id;
-        $this->size_name = $size_name;
-        $this->size_id = $size_id;
-        $this->qty = $qty;
-    }
 
     public function addItems(): void
     {
@@ -295,6 +318,8 @@ class Upsert extends Component
                 !(empty($this->qty))
             ) {
                 $this->itemList[] = [
+                    'jobcard_item_id' => $this->jobcard_item_id,
+                    'cutting_item_id' => $this->cutting_item_id,
                     'cutting_id' => $this->cutting_id,
                     'cutting_no' => $this->cutting_no,
                     'colour_id' => $this->colour_id,
@@ -303,11 +328,11 @@ class Upsert extends Component
                     'size_name' => $this->size_name,
                     'qty' => $this->qty,
                 ];
-                $this->calculateTotal();
-                $this->resetsItems();
             }
         } else {
             $this->itemList[$this->itemIndex] = [
+                'jobcard_item_id' => $this->jobcard_item_id,
+                'cutting_item_id' => $this->cutting_item_id,
                 'cutting_id' => $this->cutting_id,
                 'cutting_no' => $this->cutting_no,
                 'colour_id' => $this->colour_id,
@@ -316,21 +341,23 @@ class Upsert extends Component
                 'size_name' => $this->size_name,
                 'qty' => $this->qty,
             ];
-            $this->calculateTotal();
-            $this->resetsItems();
-            $this->render();
         }
-//        $this->emit('getfocus');
+        $this->calculateTotal();
+        $this->resetsItems();
+        $this->render();
+        //$this->emit('getfocus');
     }
 
     public function resetsItems(): void
     {
-        $this->cutting_no = '';
+        $this->jobcard_item_id = '';
+        $this->cutting_item_id = '';
         $this->cutting_id = '';
-        $this->colour_name = '';
+        $this->cutting_no = '';
         $this->colour_id = '';
-        $this->size_name = '';
+        $this->colour_name = '';
         $this->size_id = '';
+        $this->size_name = '';
         $this->qty = '';
     }
 
@@ -338,12 +365,13 @@ class Upsert extends Component
     {
         $this->itemIndex = $index;
         $items = $this->itemList[$index];
+        $this->jobcard_item_id = $items['jobcard_item_id'];
+        $this->cutting_item_id = $items['cutting_item_id'];
         $this->cutting_no = $items['cutting_no'];
-        $this->cutting_id = $items['cutting_id'];
-        $this->colour_name = $items['colour_name'];
         $this->colour_id = $items['colour_id'];
-        $this->size_name = $items['size_name'];
+        $this->colour_name = $items['colour_name'];
         $this->size_id = $items['size_id'];
+        $this->size_name = $items['size_name'];
         $this->qty = $items['qty'] + 0;
     }
 
@@ -363,7 +391,6 @@ class Upsert extends Component
             }
         }
     }
-
 
     public function save(): string
     {
@@ -418,7 +445,11 @@ class Upsert extends Component
             PeOutwardItem::create([
                 'pe_outward_id' => $id,
                 'jobcard_item_id' => $sub['jobcard_item_id'],
+                'cutting_item_id' => $sub['cutting_item_id'],
+                'colour_id' => $sub['colour_id'],
+                'size_id' => $sub['size_id'],
                 'qty' => $sub['qty'],
+                'active_id' => '1',
             ]);
         }
     }

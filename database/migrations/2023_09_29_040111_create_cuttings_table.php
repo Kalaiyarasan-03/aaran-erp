@@ -25,6 +25,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cutting_id')->references('id')->on('cuttings');
             $table->foreignId('jobcard_item_id')->references('id')->on('jobcard_items');
+            $table->foreignId('fabric_lot_id')->references('id')->on('fabric_lots');
+            $table->foreignId('colour_id')->references('id')->on('colours');
+            $table->foreignId('size_id')->references('id')->on('sizes');
             $table->decimal('qty',11,3);
             $table->string('active_id', 3)->nullable();
         });

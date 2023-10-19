@@ -27,6 +27,8 @@ return new class extends Migration
             $table->foreignId('section_outward_id')->references('id')->on('section_outwards');
             $table->foreignId('jobcard_item_id')->references('id')->on('jobcard_items');
             $table->foreignId('pe_inward_item_id')->references('id')->on('pe_inward_items');
+            $table->foreignId('colour_id')->references('id')->on('colours');
+            $table->foreignId('size_id')->references('id')->on('sizes');
             $table->decimal('qty',11,3);
             $table->string('active_id', 3)->nullable();
         });

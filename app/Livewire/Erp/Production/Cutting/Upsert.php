@@ -192,18 +192,24 @@ class Upsert extends Component
         $this->highlightJobcardItem = 0;
 
         $this->jobcard_item_id = $obj['jobcard_item_id'] ?? '';
+        $this->fabric_lot_id = $obj['fabric_lot_id'] ?? '';
         $this->fabric_lot_no = $obj['fabric_lot_no'] ?? '';
+        $this->colour_id = $obj['colour_id'] ?? '';
         $this->colour_name = $obj['colour_name'] ?? '';
+        $this->size_id = $obj['size_id'] ?? '';
         $this->size_name = $obj['size_name'] ?? '';
         $this->qty = $obj['qty'] ?? '';
     }
 
-    public function setJobcardItem($id, $lot, $colour, $size, $qty): void
+    public function setJobcardItem($id, $lot, $lot_id, $colour_id, $size_id, $colour, $size, $qty): void
     {
         $this->jobcard_item_id = $id;
+        $this->fabric_lot_id = $lot_id;
         $this->fabric_lot_no = $lot;
+        $this->colour_id = $colour_id;
         $this->colour_name = $colour;
         $this->size_name = $size;
+        $this->size_id = $size_id;
         $this->qty = $qty + 0;
         $this->getJobcardItemList();
     }
@@ -211,7 +217,11 @@ class Upsert extends Component
     public function getJobcardItemList(): void
     {
         $data = DB::table('jobcard_items')
-            ->select('jobcard_items.*',
+            ->select('jobcard_items.id',
+                'jobcard_items.fabric_lot_id',
+                'jobcard_items.colour_id',
+                'jobcard_items.size_id',
+                'jobcard_items.qty',
                 'fabric_lots.vname as fabric_lot_no',
                 'colours.vname as colour_name',
                 'sizes.vname as size_name'
@@ -224,8 +234,11 @@ class Upsert extends Component
             ->transform(function ($data) {
                 return [
                     'jobcard_item_id' => $data->id,
+                    'fabric_lot_id' => $data->fabric_lot_id,
                     'fabric_lot_no' => $data->fabric_lot_no,
+                    'colour_id' => $data->colour_id,
                     'colour_name' => $data->colour_name,
+                    'size_id' => $data->size_id,
                     'size_name' => $data->size_name,
                     'qty' => $data->qty + 0,
                 ];
@@ -246,8 +259,11 @@ class Upsert extends Component
     public mixed $total_qty = 0;
     public string $itemIndex = "";
     public $itemList = [];
+    public mixed $fabric_lot_id;
     public mixed $fabric_lot_no;
+    public mixed $colour_id;
     public mixed $colour_name;
+    public mixed $size_id;
     public mixed $size_name;
     public mixed $qty;
 
@@ -275,6 +291,11 @@ class Upsert extends Component
 
             $data = DB::table('cutting_items')
                 ->select('cutting_items.*',
+                    'cutting_items.jobcard_item_id',
+                    'cutting_items.fabric_lot_id',
+                    'cutting_items.colour_id',
+                    'cutting_items.size_id',
+                    'cutting_items.qty',
                     'fabric_lots.vname as fabric_lot_no',
                     'colours.vname as colour_name',
                     'sizes.vname as size_name'
@@ -289,8 +310,11 @@ class Upsert extends Component
                 ->transform(function ($data) {
                     return [
                         'jobcard_item_id' => $data->jobcard_item_id,
+                        'fabric_lot_id' => $data->fabric_lot_id,
                         'fabric_lot_no' => $data->fabric_lot_no,
+                        'colour_id' => $data->colour_id,
                         'colour_name' => $data->colour_name,
+                        'size_id' => $data->size_id,
                         'size_name' => $data->size_name,
                         'qty' => $data->qty,
                     ];
@@ -314,9 +338,11 @@ class Upsert extends Component
             ) {
                 $this->itemList[] = [
                     'jobcard_item_id' => $this->jobcard_item_id,
+                    'fabric_lot_id' => $this->fabric_lot_id,
                     'fabric_lot_no' => $this->fabric_lot_no,
-                    'fabric_lot_id' => $this->jobcard_item_id,
+                    'colour_id' => $this->colour_id,
                     'colour_name' => $this->colour_name,
+                    'size_id' => $this->size_id,
                     'size_name' => $this->size_name,
                     'qty' => $this->qty,
                 ];
@@ -324,9 +350,11 @@ class Upsert extends Component
         } else {
             $this->itemList[$this->itemIndex] = [
                 'jobcard_item_id' => $this->jobcard_item_id,
+                'fabric_lot_id' => $this->fabric_lot_id,
                 'fabric_lot_no' => $this->fabric_lot_no,
-                'fabric_lot_id' => $this->jobcard_item_id,
+                'colour_id' => $this->colour_id,
                 'colour_name' => $this->colour_name,
+                'size_id' => $this->size_id,
                 'size_name' => $this->size_name,
                 'qty' => $this->qty,
             ];
@@ -342,9 +370,12 @@ class Upsert extends Component
     public function resetsItems(): void
     {
         $this->itemIndex = '';
-        $this->fabric_lot_no = '';
         $this->jobcard_item_id = '';
+        $this->fabric_lot_id = '';
+        $this->fabric_lot_no = '';
+        $this->colour_id = '';
         $this->colour_name = '';
+        $this->size_id = '';
         $this->size_name = '';
         $this->qty = '';
         $this->calculateTotal();
@@ -355,9 +386,12 @@ class Upsert extends Component
         $this->itemIndex = $index;
 
         $items = $this->itemList[$index];
-        $this->fabric_lot_no = $items['fabric_lot_no'];
         $this->jobcard_item_id = $items['jobcard_item_id'];
+        $this->fabric_lot_id = $items['fabric_lot_id'];
+        $this->fabric_lot_no = $items['fabric_lot_no'];
+        $this->colour_id = $items['colour_id'];
         $this->colour_name = $items['colour_name'];
+        $this->size_id = $items['size_id'];
         $this->size_name = $items['size_name'];
         $this->qty = $items['qty'] + 0;
         $this->calculateTotal();
@@ -437,6 +471,9 @@ class Upsert extends Component
             CuttingItem::create([
                 'cutting_id' => $id,
                 'jobcard_item_id' => $sub['jobcard_item_id'],
+                'fabric_lot_id' => $sub['fabric_lot_id'],
+                'colour_id' => $sub['colour_id'],
+                'size_id' => $sub['size_id'],
                 'qty' => $sub['qty'],
                 'active_id' => '1'
             ]);

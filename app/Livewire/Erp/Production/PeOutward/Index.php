@@ -17,10 +17,10 @@ class Index extends EntriesIndexAbstract
         return PeOutward::search($this->searches)
             ->select('orders.vname as order_name',
                 'styles.vname as style_name',
+                'jobcards.vno as jobcard_no',
                 'contacts.vname as contact_name',
                 'pe_outwards.total_qty as total_qty',
                 'pe_outwards.*'
-
             )
             ->join('contacts', 'contacts.id', '=', 'pe_outwards.contact_id')
             ->join('jobcards', 'jobcards.id', '=', 'pe_outwards.jobcard_id')
