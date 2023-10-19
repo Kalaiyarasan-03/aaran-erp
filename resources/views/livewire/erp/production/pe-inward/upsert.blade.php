@@ -1,5 +1,5 @@
 <div>
-    <x-slot name="header">Printing & Emb Inward Note Details</x-slot>
+    <x-slot name="header">Printing & Emb Outward Note Details</x-slot>
 
     <x-forms.m-panel>
 
@@ -24,6 +24,7 @@
                                 wire:keydown.arrow-up="decrementContact"
                                 wire:keydown.arrow-down="incrementContact"
                                 wire:keydown.enter="enterContact"
+
                                 class="block w-full purple-textbox"
                             />
 
@@ -138,22 +139,22 @@
 
             {{--cutting--------------------------------------------------------------------------------------------}}
             <div class="w-full">
-                <label for="pe_outward_no"></label>
-                <div x-data="{isTyped: @entangle('peOutwardTyped')}" @click.away="isTyped = false">
+                <label for="cutting_no"></label>
+                <div x-data="{isTyped: @entangle('cuttingTyped')}" @click.away="isTyped = false">
                     <div class="relative">
                         <input
-                            id="pe_outward_no"
+                            id="cutting_no"
                             type="search"
-                            wire:model.live="pe_outward_no"
+                            wire:model.live="cutting_no"
                             autocomplete="off"
-                            placeholder="Outward Ref.."
+                            placeholder="Cutting Ref.."
                             @focus="isTyped = true"
                             @keydown.escape.window="isTyped = false"
                             @keydown.tab.window="isTyped = false"
                             @keydown.enter.prevent="isTyped = false"
-                            wire:keydown.arrow-up="decrementPeOutward"
-                            wire:keydown.arrow-down="incrementPeOutward"
-                            wire:keydown.enter="enterPeOutward"
+                            wire:keydown.arrow-up="decrementCutting"
+                            wire:keydown.arrow-down="incrementCutting"
+                            wire:keydown.enter="enterCutting"
                             class="block w-full purple-textbox-no-rounded"
                         />
 
@@ -173,7 +174,8 @@
                                         <table class="w-full">
                                             <thead>
                                             <tr class="h-8 text-xs bg-gray-100 border border-gray-300">
-                                                <th class="px-2 text-center border border-gray-300">Dc No</th>
+                                                <th class="px-2 text-center border border-gray-300">Cutting No</th>
+                                                <th class="px-2 text-center border border-gray-300">Lot No</th>
                                                 <th class="px-2 text-center border border-gray-300">COLOUR</th>
                                                 <th class="px-2 text-center border border-gray-300">SIZE</th>
                                                 <th class="px-2 text-center border border-gray-300">QTY</th>
@@ -184,69 +186,25 @@
                                             <tbody>
 
 
-                                            @if(isset($peOutwardCollection))
-                                                @forelse ($peOutwardCollection as $i => $peOutward)
+                                            @if(isset($cuttingCollection))
+                                                @forelse ($cuttingCollection as $i => $cutting)
                                                     <div hidden="hidden"
-                                                         wire:key="{{ $peOutward['pe_outward_id'] }}"></div>
+                                                         wire:key="{{ $cutting['cutting_item_id'] }}"></div>
                                                     <tr class="cursor-pointer px-3 hover:font-bold hover:bg-yellow-100 border-b border-gray-300 h-8
-                                                        {{ $highlightPeOutward === $i ? 'bg-yellow-100' : '' }}"
-                                                        wire:click="sendPeOutwardItem(
-                                                                                '{{$peOutward['pe_outward_id']}}','{{$peOutward['pe_outward_no']}}',
-                                                                                '{{$peOutward['colour_name']}}','{{$peOutward['colour_id']}}',
-                                                                                '{{$peOutward['size_name']}}','{{$peOutward['size_id']}}',
-                                                                                '{{$peOutward['qty']}}','{{$peOutward['pe_outward_item_id']}}')"
+                                                        {{ $highlightJobcard === $i ? 'bg-yellow-100' : '' }}"
+                                                        wire:click="setCuttingItem(
+                                                                                '{{$cutting['jobcard_item_id']}}',
+                                                                                '{{$cutting['cutting_item_id']}}','{{$cutting['cutting_no']}}',
+                                                                                '{{$cutting['colour_id']}}','{{$cutting['size_name']}}',
+                                                                                '{{$cutting['size_id']}}','{{$cutting['size_name']}}',
+                                                                                '{{$cutting['qty']}}')"
                                                         x-on:click="isTyped = false">
 
-                                                        {{-- for Outward Ref--}}
-                                                        <td class="px-2 text-left border border-gray-300 "
-                                                            wire:click="sendPeOutwardItem(
-                                                                                '{{$peOutward['pe_outward_id']}}','{{$peOutward['pe_outward_no']}}',
-                                                                                '{{$peOutward['colour_name']}}','{{$peOutward['colour_id']}}',
-                                                                                '{{$peOutward['size_name']}}','{{$peOutward['size_id']}}',
-                                                                                '{{$peOutward['qty']}}','{{$peOutward['pe_outward_item_id']}}')"
-                                                            x-on:click="isTyped = false">
-
-                                                            {{$peOutward['colour_name']}}
-                                                        </td>
-
-                                                        {{-- for colour--}}
-                                                        <td class="px-2 text-left border border-gray-300 "
-                                                            wire:click="sendPeOutwardItem(
-                                                                                '{{$peOutward['pe_outward_id']}}','{{$peOutward['pe_outward_no']}}',
-                                                                                '{{$peOutward['colour_name']}}','{{$peOutward['colour_id']}}',
-                                                                                '{{$peOutward['size_name']}}','{{$peOutward['size_id']}}',
-                                                                                 '{{$peOutward['qty']}}','{{$peOutward['pe_outward_item_id']}}')"
-                                                            x-on:click="isTyped = false">
-
-                                                            {{$peOutward['colour_name']}}
-
-                                                        </td>
-
-                                                        {{-- for Size--}}
-                                                        <td class="px-2 text-left border border-gray-300"
-                                                            wire:click="sendPeOutwardItem(
-                                                                            '{{$peOutward['pe_outward_id']}}','{{$peOutward['pe_outward_no']}}',
-                                                                            '{{$peOutward['colour_name']}}','{{$peOutward['colour_id']}}',
-                                                                            '{{$peOutward['size_name']}}','{{$peOutward['size_id']}}',
-                                                                           '{{$peOutward['qty']}}','{{$peOutward['pe_outward_item_id']}}')"
-                                                            x-on:click="isTyped = false">
-
-                                                            {{$peOutward['size_name']}}
-                                                        </td>
-
-                                                        {{-- for Qty--}}
-                                                        <td class="px-2 text-left border border-gray-300"
-                                                            wire:click="sendPeOutwardItem(
-                                                                            '{{$peOutward['pe_outward_id']}}','{{$peOutward['pe_outward_no']}}',
-                                                                            '{{$peOutward['colour_name']}}','{{$peOutward['colour_id']}}',
-                                                                            '{{$peOutward['size_name']}}','{{$peOutward['size_id']}}',
-                                                                           '{{$peOutward['qty']}}','{{$peOutward['pe_outward_item_id']}}')"
-                                                            x-on:click="isTyped = false">
-
-                                                            {{$peOutward['qty']}}
-
-                                                        </td>
-
+                                                        <td class="px-2 text-center border border-gray-300">{{$cutting['cutting_no']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$cutting['fabric_lot_name']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$cutting['colour_name']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$cutting['size_name']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$cutting['qty']}}</td>
                                                     </tr>
 
                                                 @empty
@@ -255,8 +213,8 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="4">
-                                                            <a href="{{route('peoutwards.upsert',['0'])}}" role="button"
+                                                        <td colspan="5">
+                                                            <a href="{{route('cuttings.upsert',['0'])}}" role="button"
                                                                class="flex items-center justify-center bg-green-500 w-full h-8 text-white text-center">
                                                                 Not found , Want to create new
                                                             </a>
@@ -277,15 +235,15 @@
             </div>
 
 
-            <div class="w-full hidden">
-                <label for="colour_name"></label>
-                <input id="colour_name" wire:model="colour_name" class="w-full border-gray-200" placeholder="Colour">
-            </div>
-            <div class="w-full hidden">
-                <label for="size_name"></label>
-                <input id="size_name" wire:model="size_name" class="w-full border-gray-200" placeholder="Size">
-            </div>
-            <div class="w-[32rem]">
+            {{--            <div class="w-full">--}}
+            {{--                <label for="colour_name"></label>--}}
+            {{--                <input id="colour_name" wire:model="colour_name" class="w-full border-gray-200" placeholder="Colour">--}}
+            {{--            </div>--}}
+            {{--            <div class="w-full">--}}
+            {{--                <label for="size_name"></label>--}}
+            {{--                <input id="size_name" wire:model="size_name" class="w-full border-gray-200" placeholder="Size">--}}
+            {{--            </div>--}}
+            <div class="w-full">
                 <label for="cutting_qty"></label>
                 <input id="cutting_qty" wire:model="qty" class="w-full border-gray-200" placeholder="Qty">
             </div>
@@ -302,7 +260,7 @@
                     <thead>
                     <tr class="h-8 text-xs bg-gray-100 border border-gray-300">
                         <th class="w-12 px-2 text-center border border-gray-300">#</th>
-                        <th class="px-2 text-center border border-gray-300">Our Dc no</th>
+                        <th class="px-2 text-center border border-gray-300">CUTTING</th>
                         <th class="px-2 text-center border border-gray-300">COLOUR</th>
                         <th class="px-2 text-center border border-gray-300">SIZE</th>
                         <th class="px-2 text-center border border-gray-300">QTY</th>
@@ -321,7 +279,7 @@
                                     {{$index+1}}
                                 </button>
                             </td>
-                            <td class="px-2 text-left border border-gray-300">{{$row['pe_outward_no']}}</td>
+                            <td class="px-2 text-left border border-gray-300">{{$row['cutting_no']}}</td>
                             <td class="px-2 text-center border border-gray-300">{{$row['colour_name']}}</td>
                             <td class="px-2 text-center border border-gray-300">{{$row['size_name']}}</td>
                             <td class="px-2 text-center border border-gray-300">{{floatval($row['qty'])}}</td>

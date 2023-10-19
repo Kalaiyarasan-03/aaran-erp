@@ -3,13 +3,13 @@
 namespace App\Livewire\Erp\Production\PeInward;
 
 use App\Livewire\Trait\EntriesIndexAbstract;
-use App\Models\Erp\PeInward;
+use App\Models\Erp\Production\PeInward;
 
 class Index  extends EntriesIndexAbstract
 {
     public function create(): void
     {
-        $this->redirect(route('peinwards.upsert',['0']));
+        $this->redirect(route('peoutwards.upsert', ['0']));
     }
 
     public function getList()
@@ -17,8 +17,9 @@ class Index  extends EntriesIndexAbstract
         return PeInward::search($this->searches)
             ->select('orders.vname as order_name',
                 'styles.vname as style_name',
+                'jobcards.vno as jobcard_no',
                 'contacts.vname as contact_name',
-                'pe_inwards.total_qty as total_qty',
+                'pe_outwards.total_qty as total_qty',
                 'pe_inwards.*'
             )
             ->join('contacts', 'contacts.id', '=', 'pe_inwards.contact_id')
