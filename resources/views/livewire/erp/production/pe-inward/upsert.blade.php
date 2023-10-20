@@ -1,5 +1,5 @@
 <div>
-    <x-slot name="header">Printing & Emb Outward Note Details</x-slot>
+    <x-slot name="header">Printing & Emb Inward Note Details</x-slot>
 
     <x-forms.m-panel>
 
@@ -139,22 +139,22 @@
 
             {{--cutting--------------------------------------------------------------------------------------------}}
             <div class="w-full">
-                <label for="cutting_no"></label>
-                <div x-data="{isTyped: @entangle('cuttingTyped')}" @click.away="isTyped = false">
+                <label for="pe_outward_no"></label>
+                <div x-data="{isTyped: @entangle('outwardTyped')}" @click.away="isTyped = false">
                     <div class="relative">
                         <input
-                            id="cutting_no"
+                            id="pe_outward_no"
                             type="search"
-                            wire:model.live="cutting_no"
+                            wire:model.live="pe_outward_no"
                             autocomplete="off"
                             placeholder="Cutting Ref.."
                             @focus="isTyped = true"
                             @keydown.escape.window="isTyped = false"
                             @keydown.tab.window="isTyped = false"
                             @keydown.enter.prevent="isTyped = false"
-                            wire:keydown.arrow-up="decrementCutting"
-                            wire:keydown.arrow-down="incrementCutting"
-                            wire:keydown.enter="enterCutting"
+                            wire:keydown.arrow-up="decrementPeOutward"
+                            wire:keydown.arrow-down="incrementPeOutward"
+                            wire:keydown.enter="enterPeOutward"
                             class="block w-full purple-textbox-no-rounded"
                         />
 
@@ -174,8 +174,8 @@
                                         <table class="w-full">
                                             <thead>
                                             <tr class="h-8 text-xs bg-gray-100 border border-gray-300">
-                                                <th class="px-2 text-center border border-gray-300">Cutting No</th>
-                                                <th class="px-2 text-center border border-gray-300">Lot No</th>
+                                                <th class="px-2 text-center border border-gray-300">Outward No</th>
+{{--                                                <th class="px-2 text-center border border-gray-300">Lot No</th>--}}
                                                 <th class="px-2 text-center border border-gray-300">COLOUR</th>
                                                 <th class="px-2 text-center border border-gray-300">SIZE</th>
                                                 <th class="px-2 text-center border border-gray-300">QTY</th>
@@ -260,7 +260,7 @@
                     <thead>
                     <tr class="h-8 text-xs bg-gray-100 border border-gray-300">
                         <th class="w-12 px-2 text-center border border-gray-300">#</th>
-                        <th class="px-2 text-center border border-gray-300">CUTTING</th>
+                        <th class="px-2 text-center border border-gray-300">Outward Dc No</th>
                         <th class="px-2 text-center border border-gray-300">COLOUR</th>
                         <th class="px-2 text-center border border-gray-300">SIZE</th>
                         <th class="px-2 text-center border border-gray-300">QTY</th>

@@ -9,7 +9,7 @@ class Index  extends EntriesIndexAbstract
 {
     public function create(): void
     {
-        $this->redirect(route('peoutwards.upsert', ['0']));
+        $this->redirect(route('peinwards.upsert', ['0']));
     }
 
     public function getList()

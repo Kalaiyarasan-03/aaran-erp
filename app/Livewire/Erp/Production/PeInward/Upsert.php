@@ -195,22 +195,16 @@ class Upsert extends Component
 
         $data = DB::table('pe_outward_items')
             ->select(
-                'pe_outward_items.id',
-                'pe_outward_items.jobcard_item_id',
-                'pe_outward_items.cutting_item_id',
-                'pe_outward_items.colour_id',
-                'pe_outward_items.size_id',
+                'pe_outward_items.*',
                 'pe_outwards.vno as pe_outward_no',
                 'colours.vname as colour_name',
                 'sizes.vname as size_name',
-                'cutting_items.qty'
             )
-            ->join('pe_outwards', 'pe_outwards.id', '=', 'pe_outward_items.cutting_id')
+            ->join('pe_outwards', 'pe_outwards.id', '=', 'pe_outward_items.pe_outward_id')
             ->join('jobcard_items', 'jobcard_items.id', '=', 'pe_outward_items.jobcard_item_id')
-            ->join('fabric_lots', 'fabric_lots.id', '=', 'pe_outward_items.fabric_lot_id')
             ->join('colours', 'colours.id', '=', 'pe_outward_items.colour_id')
             ->join('sizes', 'sizes.id', '=', 'pe_outward_items.size_id')
-            ->where('jobcard_items.jobcard_id', '=', $this->jobcard_id)
+            ->where('pe_outwards.jobcard_id', '=', $this->jobcard_id)
             ->get()
             ->transform(function ($data) {
                 return [
@@ -258,15 +252,9 @@ class Upsert extends Component
 
             $data = DB::table('pe_inward_items')
                 ->select(
-                    'pe_inward_items.id',
-                    'pe_inward_items.jobcard_item_id',
-                    'pe_inward_items.cutting_item_id',
-                    'pe_inwards.vno as pe_inward_no',
-                    'pe_outward_items.colour_id',
-                    'pe_outward_items.size_id',
+                    'pe_inward_items.*',
                     'colours.vname as colour_name',
                     'sizes.vname as size_name',
-                    'cutting_items.qty'
                 )
                 ->join('pe_outward_items', 'pe_outward_items.id', '=', 'pe_inward_items.pe_outward_item_id')
                 ->join('pe_outwards', 'pe_outwards.id', '=', 'pe_outward_items.pe_outward_id')
