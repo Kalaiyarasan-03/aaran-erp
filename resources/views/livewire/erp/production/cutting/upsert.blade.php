@@ -200,68 +200,25 @@
                                                     <tr class="cursor-pointer px-3 hover:font-bold hover:bg-yellow-100 border-b border-gray-300 h-8
                                                         {{ $highlightJobcardItem === $i ? 'bg-yellow-100' : '' }}"
                                                         wire:click="setJobcardItem(
-                                                                                '{{$jobcardItem['jobcard_item_id']}}','{{$jobcardItem['fabric_lot_no']}}',
-                                                                                '{{$jobcardItem['colour_id']}}','{{$jobcardItem['size_id']}}','{{$jobcardItem['fabric_lot_id']}}',
-                                                                                '{{$jobcardItem['colour_name']}}','{{$jobcardItem['size_name']}}',
+                                                                                '{{$jobcardItem['jobcard_item_id']}}',
+                                                                                '{{$jobcardItem['fabric_lot_id']}}','{{$jobcardItem['fabric_lot_no']}}',
+                                                                                '{{$jobcardItem['colour_id']}}','{{$jobcardItem['colour_name']}}',
+                                                                                '{{$jobcardItem['size_id']}}','{{$jobcardItem['size_name']}}',
                                                                                 '{{$jobcardItem['qty']}}' )"
                                                         x-on:click="isTyped = false">
 
 
                                                         {{-- for Lot--}}
-                                                        <td class="px-2 border border-gray-300 text-center "
-                                                            wire:click="setJobcardItem(
-                                                                                '{{$jobcardItem['jobcard_item_id']}}','{{$jobcardItem['fabric_lot_no']}}',
-                                                                                '{{$jobcardItem['colour_id']}}','{{$jobcardItem['size_id']}}','{{$jobcardItem['fabric_lot_id']}}',
-                                                                                '{{$jobcardItem['colour_name']}}','{{$jobcardItem['size_name']}}',
-                                                                                '{{$jobcardItem['qty']}}' )"
-                                                            x-on:click="isTyped = false">
-
-                                                            {{$jobcardItem['fabric_lot_no']}}
-
-                                                        </td>
-
-                                                        {{-- for colour--}}
-                                                        <td class="px-2 border border-gray-300 text-center "
-                                                            wire:click="setJobcardItem(
-                                                                                '{{$jobcardItem['jobcard_item_id']}}','{{$jobcardItem['fabric_lot_no']}}',
-                                                                                '{{$jobcardItem['colour_id']}}','{{$jobcardItem['size_id']}}','{{$jobcardItem['fabric_lot_id']}}',
-                                                                                '{{$jobcardItem['colour_name']}}','{{$jobcardItem['size_name']}}',
-                                                                                '{{$jobcardItem['qty']}}' )"
-                                                            x-on:click="isTyped = false">
-
-                                                            {{$jobcardItem['colour_name']}}
-
-                                                        </td>
-
-                                                        {{-- for Size--}}
-                                                        <td class="px-2 text-center border border-gray-300"
-                                                            wire:click="setJobcardItem(
-                                                                                '{{$jobcardItem['jobcard_item_id']}}','{{$jobcardItem['fabric_lot_no']}}',
-                                                                                '{{$jobcardItem['colour_id']}}','{{$jobcardItem['size_id']}}','{{$jobcardItem['fabric_lot_id']}}',
-                                                                                '{{$jobcardItem['colour_name']}}','{{$jobcardItem['size_name']}}',
-                                                                                '{{$jobcardItem['qty']}}' )"
-                                                            x-on:click="isTyped = false">
-
-                                                            {{$jobcardItem['size_name']}}
-                                                        </td>
-
-                                                        {{-- for Qty--}}
-                                                        <td class="px-2 text-center border border-gray-300"
-                                                            wire:click="setJobcardItem(
-                                                                                '{{$jobcardItem['jobcard_item_id']}}','{{$jobcardItem['fabric_lot_no']}}',
-                                                                                '{{$jobcardItem['colour_id']}}','{{$jobcardItem['size_id']}}','{{$jobcardItem['fabric_lot_id']}}',
-                                                                                '{{$jobcardItem['colour_name']}}','{{$jobcardItem['size_name']}}',
-                                                                                '{{$jobcardItem['qty']}}' )"
-                                                            x-on:click="isTyped = false">
-
-                                                            {{$jobcardItem['qty']}}
-
-                                                        </td>
-
+                                                        <td class="px-2 border border-gray-300 text-center ">{{$jobcardItem['fabric_lot_no']}}</td>
+                                                        <td class="px-2 border border-gray-300 text-center ">{{$jobcardItem['colour_name']}}</td>
+                                                        <td class="px-2 border border-gray-300 text-center ">{{$jobcardItem['size_name']}}</td>
+                                                        <td class="px-2 border border-gray-300 text-center ">{{$jobcardItem['qty']}}</td>
                                                     </tr>
-
                                                 @empty
-                                                    ss
+                                                    <a href="{{route('jobcards.upsert',['0'])}}" role="button"
+                                                       class="flex items-center justify-center bg-green-500 w-full h-8 text-white text-center">
+                                                        Not found , Want to create new
+                                                    </a>
                                                 @endforelse
                                             @endif
 

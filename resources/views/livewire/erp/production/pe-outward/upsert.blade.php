@@ -195,7 +195,7 @@
                                                         wire:click="setCuttingItem(
                                                                                 '{{$cutting['jobcard_item_id']}}',
                                                                                 '{{$cutting['cutting_item_id']}}','{{$cutting['cutting_no']}}',
-                                                                                '{{$cutting['colour_id']}}','{{$cutting['size_name']}}',
+                                                                                '{{$cutting['colour_id']}}','{{$cutting['colour_name']}}',
                                                                                 '{{$cutting['size_id']}}','{{$cutting['size_name']}}',
                                                                                 '{{$cutting['qty']}}')"
                                                         x-on:click="isTyped = false">

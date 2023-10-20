@@ -201,15 +201,15 @@ class Upsert extends Component
         $this->qty = $obj['qty'] ?? '';
     }
 
-    public function setJobcardItem($id, $lot, $lot_id, $colour_id, $size_id, $colour, $size, $qty): void
+    public function setJobcardItem($jobcard_item_id, $fabric_lot_id, $fabric_lot_no, $colour_id, $colour_name,$size_id, $size_name, $qty): void
     {
-        $this->jobcard_item_id = $id;
-        $this->fabric_lot_id = $lot_id;
-        $this->fabric_lot_no = $lot;
+        $this->jobcard_item_id = $jobcard_item_id;
+        $this->fabric_lot_id = $fabric_lot_id;
+        $this->fabric_lot_no = $fabric_lot_no;
         $this->colour_id = $colour_id;
-        $this->colour_name = $colour;
-        $this->size_name = $size;
+        $this->colour_name = $colour_name;
         $this->size_id = $size_id;
+        $this->size_name = $size_name;
         $this->qty = $qty + 0;
         $this->getJobcardItemList();
     }
