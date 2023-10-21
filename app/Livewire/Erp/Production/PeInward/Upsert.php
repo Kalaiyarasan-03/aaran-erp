@@ -72,7 +72,6 @@ class Upsert extends Component
         $this->contact_id = $v['id'];
         $this->contact_name = $v['name'];
         $this->contactTyped = false;
-
     }
     //
     // Job Card
@@ -253,6 +252,7 @@ class Upsert extends Component
             $data = DB::table('pe_inward_items')
                 ->select(
                     'pe_inward_items.*',
+                    'pe_outwards.vno as pe_outward_no',
                     'colours.vname as colour_name',
                     'sizes.vname as size_name',
                 )
@@ -266,7 +266,7 @@ class Upsert extends Component
                     return [
                         'jobcard_item_id' => $data->jobcard_item_id,
                         'pe_outward_item_id' => $data->pe_outward_item_id,
-                        'pe_outward_no' => $data->pe_outward,
+                        'pe_outward_no' => $data->pe_outward_no,
                         'colour_id' => $data->colour_id,
                         'colour_name' => $data->colour_name,
                         'size_id' => $data->size_id,
@@ -445,7 +445,7 @@ class Upsert extends Component
 
     public function getRoute(): void
     {
-        $this->redirect(route('pe_inwards'));
+        $this->redirect(route('peinwards'));
     }
 
 

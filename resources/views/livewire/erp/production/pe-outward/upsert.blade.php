@@ -271,6 +271,10 @@
 
                     <tbody>
 
+                    @php
+                        $totalQty = 0;
+                    @endphp
+
                     @foreach($itemList as $index => $row)
                         <tr class="border border-gray-400">
                             <td class="text-center border border-gray-300 bg-gray-100">
@@ -291,7 +295,7 @@
                             </td>
                         </tr>
                         @php
-                            $total_qty += $row['qty']+0
+                            $totalQty += $row['qty']+0
                         @endphp
 
                     @endforeach
@@ -301,7 +305,7 @@
                     <tfoot class="mt-2">
                     <tr class="h-8 text-sm border border-gray-400 bg-gray-50">
                         <td colspan="4" class="px-2 text-xs text-right border border-gray-300">&nbsp;TOTALS&nbsp;&nbsp;&nbsp;</td>
-                        <td class="px-2 text-center border border-gray-300">{{$total_qty}}</td>
+                        <td class="px-2 text-center border border-gray-300">{{$totalQty}}</td>
                     </tr>
                     </tfoot>
 

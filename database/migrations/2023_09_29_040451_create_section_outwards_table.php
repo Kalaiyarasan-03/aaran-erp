@@ -13,8 +13,7 @@ return new class extends Migration
             $table->integer('vno');
             $table->date('vdate');
             $table->foreignId('contact_id')->references('id')->on('contacts');
-            $table->foreignId('order_id')->references('id')->on('orders');
-            $table->foreignId('style_id')->references('id')->on('styles');
+            $table->foreignId('jobcard_id')->references('id')->on('jobcards');
             $table->decimal('total_qty',11,3);
             $table->string('receiver_details');
             $table->string('active_id', 3)->nullable();

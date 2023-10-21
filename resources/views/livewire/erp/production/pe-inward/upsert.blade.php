@@ -147,7 +147,7 @@
                             type="search"
                             wire:model.live="pe_outward_no"
                             autocomplete="off"
-                            placeholder="Cutting Ref.."
+                            placeholder="Printing & Embroidery Dc Ref.."
                             @focus="isTyped = true"
                             @keydown.escape.window="isTyped = false"
                             @keydown.tab.window="isTyped = false"
@@ -186,25 +186,24 @@
                                             <tbody>
 
 
-                                            @if(isset($cuttingCollection))
-                                                @forelse ($cuttingCollection as $i => $cutting)
+                                            @if(isset($peOutwardCollection))
+                                                @forelse ($peOutwardCollection as $i => $peOutward)
                                                     <div hidden="hidden"
-                                                         wire:key="{{ $cutting['cutting_item_id'] }}"></div>
+                                                         wire:key="{{ $peOutward['pe_outward_item_id'] }}"></div>
                                                     <tr class="cursor-pointer px-3 hover:font-bold hover:bg-yellow-100 border-b border-gray-300 h-8
                                                         {{ $highlightJobcard === $i ? 'bg-yellow-100' : '' }}"
-                                                        wire:click="setCuttingItem(
-                                                                                '{{$cutting['jobcard_item_id']}}',
-                                                                                '{{$cutting['cutting_item_id']}}','{{$cutting['cutting_no']}}',
-                                                                                '{{$cutting['colour_id']}}','{{$cutting['size_name']}}',
-                                                                                '{{$cutting['size_id']}}','{{$cutting['size_name']}}',
-                                                                                '{{$cutting['qty']}}')"
+                                                        wire:click="setPeOutwardItem(
+                                                                                '{{$peOutward['jobcard_item_id']}}',
+                                                                                '{{$peOutward['pe_outward_item_id']}}','{{$peOutward['pe_outward_no']}}',
+                                                                                '{{$peOutward['colour_id']}}','{{$peOutward['colour_name']}}',
+                                                                                '{{$peOutward['size_id']}}','{{$peOutward['size_name']}}',
+                                                                                '{{$peOutward['qty']}}')"
                                                         x-on:click="isTyped = false">
 
-                                                        <td class="px-2 text-center border border-gray-300">{{$cutting['cutting_no']}}</td>
-                                                        <td class="px-2 text-center border border-gray-300">{{$cutting['fabric_lot_name']}}</td>
-                                                        <td class="px-2 text-center border border-gray-300">{{$cutting['colour_name']}}</td>
-                                                        <td class="px-2 text-center border border-gray-300">{{$cutting['size_name']}}</td>
-                                                        <td class="px-2 text-center border border-gray-300">{{$cutting['qty']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$peOutward['pe_outward_no']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$peOutward['colour_name']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$peOutward['size_name']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$peOutward['qty']}}</td>
                                                     </tr>
 
                                                 @empty
@@ -271,6 +270,10 @@
 
                     <tbody>
 
+                    @php
+                        $totalQty =0;
+                    @endphp
+
                     @foreach($itemList as $index => $row)
                         <tr class="border border-gray-400">
                             <td class="text-center border border-gray-300 bg-gray-100">
@@ -279,7 +282,7 @@
                                     {{$index+1}}
                                 </button>
                             </td>
-                            <td class="px-2 text-left border border-gray-300">{{$row['cutting_no']}}</td>
+                            <td class="px-2 text-left border border-gray-300">{{$row['pe_outward_no']}}</td>
                             <td class="px-2 text-center border border-gray-300">{{$row['colour_name']}}</td>
                             <td class="px-2 text-center border border-gray-300">{{$row['size_name']}}</td>
                             <td class="px-2 text-center border border-gray-300">{{floatval($row['qty'])}}</td>
@@ -291,7 +294,7 @@
                             </td>
                         </tr>
                         @php
-                            $total_qty += $row['qty']+0
+                            $totalQty += $row['qty']+0
                         @endphp
 
                     @endforeach
@@ -301,7 +304,7 @@
                     <tfoot class="mt-2">
                     <tr class="h-8 text-sm border border-gray-400 bg-gray-50">
                         <td colspan="4" class="px-2 text-xs text-right border border-gray-300">&nbsp;TOTALS&nbsp;&nbsp;&nbsp;</td>
-                        <td class="px-2 text-center border border-gray-300">{{$total_qty}}</td>
+                        <td class="px-2 text-center border border-gray-300">{{$totalQty}}</td>
                     </tr>
                     </tfoot>
 
