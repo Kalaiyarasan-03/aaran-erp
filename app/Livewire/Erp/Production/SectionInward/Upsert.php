@@ -3,6 +3,8 @@
 namespace App\Livewire\Erp\Production\SectionInward;
 
 use App\Models\Erp\Production\Jobcard;
+use App\Models\Erp\Production\SectionInward;
+use App\Models\Erp\Production\SectionInwardItem;
 use App\Models\Erp\Production\SectionOutward;
 use App\Models\Erp\Production\SectionOutwardItem;
 use App\Models\Master\Contact;
@@ -137,29 +139,29 @@ class Upsert extends Component
     //
     public string $section_outward_id = '';
     public string $section_outward_no = '';
-    public Collection $peInwardCollection;
-    public int $highlightPeInward = 0;
-    public bool $inwardTyped = false;
+    public Collection $sectionOutwardCollection;
+    public int $highlightSectionOutward = 0;
+    public bool $sectionTyped = false;
 
-    public function incrementPeInward(): void
+    public function incrementSectionOutward(): void
     {
-        if ($this->highlightPeInward === count($this->peInwardCollection) - 1) {
-            $this->highlightPeInward = 0;
+        if ($this->highlightSectionOutward === count($this->sectionOutwardCollection) - 1) {
+            $this->highlightSectionOutward = 0;
             return;
         }
-        $this->highlightPeInward++;
+        $this->highlightSectionOutward++;
     }
 
-    public function decrementPeInward(): void
+    public function decrementSectionOutward(): void
     {
-        if ($this->highlightPeInward === 0) {
-            $this->highlightPeInward = count($this->peInwardCollection) - 1;
+        if ($this->highlightSectionOutward === 0) {
+            $this->highlightSectionOutward = count($this->sectionOutwardCollection) - 1;
             return;
         }
-        $this->highlightPeInward--;
+        $this->highlightSectionOutward--;
     }
 
-    public function setPeInwardItem($jobcard_item_id, $section_outward_item_id, $section_outward_no, $colour_id, $colour_name, $size_id, $size_name, $qty): void
+    public function setSectionOutwardItem($jobcard_item_id, $section_outward_item_id, $section_outward_no, $colour_id, $colour_name, $size_id, $size_name, $qty): void
     {
         $this->jobcard_item_id = $jobcard_item_id;
         $this->section_outward_item_id = $section_outward_item_id;
@@ -171,13 +173,13 @@ class Upsert extends Component
         $this->qty = $qty;
     }
 
-    public function enterPeInward(): void
+    public function enterSectionOutward(): void
     {
-        $obj = $this->peInwardCollection[$this->highlightPeInward] ?? null;
+        $obj = $this->sectionOutwardCollection[$this->highlightSectionOutward] ?? null;
 
         $this->section_outward_no = '';
-        $this->peInwardCollection = Collection::empty();
-        $this->highlightPeInward = 0;
+        $this->sectionOutwardCollection = Collection::empty();
+        $this->highlightSectionOutward = 0;
 
         $this->jobcard_item_id = $obj['jobcard_item_id'] ?? '';;
         $this->section_outward_item_id = $obj['section_outward_item_id'] ?? '';;
@@ -189,7 +191,7 @@ class Upsert extends Component
         $this->qty = $obj['qty'] ?? '';;
     }
 
-    public function getPeInwardList(): void
+    public function getSectionOutwardList(): void
     {
 
         $data = DB::table('section_outward_items')
@@ -218,7 +220,7 @@ class Upsert extends Component
                 ];
             });
 
-        $this->peInwardCollection = $data;
+        $this->sectionOutwardCollection = $data;
 
     }
     //
@@ -380,7 +382,7 @@ class Upsert extends Component
 
             if ($this->vid == "") {
 
-                $obj = SectionOutward::create([
+                $obj = SectionInward::create([
                     'vno' => $this->vno,
                     'vdate' => $this->vdate,
                     'contact_id' => $this->contact_id,
@@ -395,7 +397,7 @@ class Upsert extends Component
                 $message = "Saved";
 
             } else {
-                $obj = SectionOutward::find($this->vid);
+                $obj = SectionInward::find($this->vid);
                 $obj->vno = $this->vno;
                 $obj->vdate = $this->vdate;
                 $obj->contact_id = $this->contact_id;
@@ -424,7 +426,7 @@ class Upsert extends Component
     public function saveItem($id): void
     {
         foreach ($this->itemList as $sub) {
-            SectionOutwardItem::create([
+            SectionInwardItem::create([
                 'section_inward_id' => $id,
                 'jobcard_item_id' => $sub['jobcard_item_id'],
                 'section_outward_item_id' => $sub['section_outward_item_id'],
@@ -453,7 +455,7 @@ class Upsert extends Component
     {
         $this->getContactList();
         $this->getJobcardList();
-        $this->getPeInwardList();
+        $this->getSectionOutwardList();
         return view('livewire.erp.production.section-inward.upsert');
     }
 }

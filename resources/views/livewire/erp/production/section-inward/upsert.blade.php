@@ -139,22 +139,22 @@
 
             {{--cutting--------------------------------------------------------------------------------------------}}
             <div class="w-full">
-                <label for="pe_outward_no"></label>
-                <div x-data="{isTyped: @entangle('outwardTyped')}" @click.away="isTyped = false">
+                <label for="section_outward_no"></label>
+                <div x-data="{isTyped: @entangle('sectionTyped')}" @click.away="isTyped = false">
                     <div class="relative">
                         <input
-                            id="pe_outward_no"
+                            id="section_outward_no"
                             type="search"
-                            wire:model.live="pe_outward_no"
+                            wire:model.live="section_outward_no"
                             autocomplete="off"
-                            placeholder="Cutting Ref.."
+                            placeholder="Section Outward Ref.."
                             @focus="isTyped = true"
                             @keydown.escape.window="isTyped = false"
                             @keydown.tab.window="isTyped = false"
                             @keydown.enter.prevent="isTyped = false"
-                            wire:keydown.arrow-up="decrementPeOutward"
-                            wire:keydown.arrow-down="incrementPeOutward"
-                            wire:keydown.enter="enterPeOutward"
+                            wire:keydown.arrow-up="decrementSectionOutward"
+                            wire:keydown.arrow-down="incrementSectionOutward"
+                            wire:keydown.enter="enterSectionOutward"
                             class="block w-full purple-textbox-no-rounded"
                         />
 
@@ -186,24 +186,24 @@
                                             <tbody>
 
 
-                                            @if(isset($peOutwardCollection))
-                                                @forelse ($peOutwardCollection as $i => $peOutward)
+                                            @if(isset($sectionOutwardCollection))
+                                                @forelse ($sectionOutwardCollection as $i => $sectionOutward)
                                                     <div hidden="hidden"
-                                                         wire:key="{{ $peOutward['pe_outward_item_id'] }}"></div>
+                                                         wire:key="{{ $sectionOutward['section_outward_item_id'] }}"></div>
                                                     <tr class="cursor-pointer px-3 hover:font-bold hover:bg-yellow-100 border-b border-gray-300 h-8
-                                                        {{ $highlightJobcard === $i ? 'bg-yellow-100' : '' }}"
-                                                        wire:click="setPeOutwardItem(
-                                                                                '{{$peOutward['jobcard_item_id']}}',
-                                                                                '{{$peOutward['pe_outward_item_id']}}','{{$peOutward['pe_outward_no']}}',
-                                                                                '{{$peOutward['colour_id']}}','{{$peOutward['colour_name']}}',
-                                                                                '{{$peOutward['size_id']}}','{{$peOutward['size_name']}}',
-                                                                                '{{$peOutward['qty']}}')"
+                                                        {{ $highlightSectionOutward === $i ? 'bg-yellow-100' : '' }}"
+                                                        wire:click="setSectionOutwardItem(
+                                                                                '{{$sectionOutward['jobcard_item_id']}}',
+                                                                                '{{$sectionOutward['section_outward_item_id']}}','{{$sectionOutward['section_outward_no']}}',
+                                                                                '{{$sectionOutward['colour_id']}}','{{$sectionOutward['colour_name']}}',
+                                                                                '{{$sectionOutward['size_id']}}','{{$sectionOutward['size_name']}}',
+                                                                                '{{$sectionOutward['qty']}}')"
                                                         x-on:click="isTyped = false">
 
-                                                        <td class="px-2 text-center border border-gray-300">{{$peOutward['pe_outward_no']}}</td>
-                                                        <td class="px-2 text-center border border-gray-300">{{$peOutward['colour_name']}}</td>
-                                                        <td class="px-2 text-center border border-gray-300">{{$peOutward['size_name']}}</td>
-                                                        <td class="px-2 text-center border border-gray-300">{{$peOutward['qty']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$sectionOutward['section_outward_no']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$sectionOutward['colour_name']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$sectionOutward['size_name']}}</td>
+                                                        <td class="px-2 text-center border border-gray-300">{{$sectionOutward['qty']}}</td>
                                                     </tr>
 
                                                 @empty
@@ -213,7 +213,7 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="5">
-                                                            <a href="{{route('cuttings.upsert',['0'])}}" role="button"
+                                                            <a href="{{route('sectioninwards.upsert',['0'])}}" role="button"
                                                                class="flex items-center justify-center bg-green-500 w-full h-8 text-white text-center">
                                                                 Not found , Want to create new
                                                             </a>
@@ -282,7 +282,7 @@
                                     {{$index+1}}
                                 </button>
                             </td>
-                            <td class="px-2 text-left border border-gray-300">{{$row['pe_outward_no']}}</td>
+                            <td class="px-2 text-left border border-gray-300">{{$row['section_outward_no']}}</td>
                             <td class="px-2 text-center border border-gray-300">{{$row['colour_name']}}</td>
                             <td class="px-2 text-center border border-gray-300">{{$row['size_name']}}</td>
                             <td class="px-2 text-center border border-gray-300">{{floatval($row['qty'])}}</td>

@@ -19,7 +19,7 @@ class Index extends EntriesIndexAbstract
                 'styles.vname as style_name',
                 'jobcards.vno as jobcard_no',
                 'contacts.vname as contact_name',
-                'pe_outwards.*'
+                'section_inwards.*'
             )
             ->join('contacts', 'contacts.id', '=', 'section_inwards.contact_id')
             ->join('jobcards', 'jobcards.id', '=', 'section_inwards.jobcard_id')
