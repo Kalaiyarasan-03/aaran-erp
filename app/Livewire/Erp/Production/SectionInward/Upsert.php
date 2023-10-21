@@ -3,8 +3,8 @@
 namespace App\Livewire\Erp\Production\SectionInward;
 
 use App\Models\Erp\Production\Jobcard;
-use App\Models\Erp\Production\PeInward;
-use App\Models\Erp\Production\PeInwardItem;
+use App\Models\Erp\Production\SectionOutward;
+use App\Models\Erp\Production\SectionOutwardItem;
 use App\Models\Master\Contact;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -133,37 +133,37 @@ class Upsert extends Component
         $this->jobcardTyped = false;
     }
     //
-    // pe outward item
+    // pe inward item
     //
-    public string $pe_outward_id = '';
-    public string $pe_outward_no = '';
-    public Collection $peOutwardCollection;
-    public int $highlightPeOutward = 0;
-    public bool $outwardTyped = false;
+    public string $section_outward_id = '';
+    public string $section_outward_no = '';
+    public Collection $peInwardCollection;
+    public int $highlightPeInward = 0;
+    public bool $inwardTyped = false;
 
-    public function incrementPeOutward(): void
+    public function incrementPeInward(): void
     {
-        if ($this->highlightPeOutward === count($this->peOutwardCollection) - 1) {
-            $this->highlightPeOutward = 0;
+        if ($this->highlightPeInward === count($this->peInwardCollection) - 1) {
+            $this->highlightPeInward = 0;
             return;
         }
-        $this->highlightPeOutward++;
+        $this->highlightPeInward++;
     }
 
-    public function decrementPeOutward(): void
+    public function decrementPeInward(): void
     {
-        if ($this->highlightPeOutward === 0) {
-            $this->highlightPeOutward = count($this->peOutwardCollection) - 1;
+        if ($this->highlightPeInward === 0) {
+            $this->highlightPeInward = count($this->peInwardCollection) - 1;
             return;
         }
-        $this->highlightPeOutward--;
+        $this->highlightPeInward--;
     }
 
-    public function setPeOutwardItem($jobcard_item_id, $pe_outward_item_id, $pe_outward_no, $colour_id, $colour_name, $size_id, $size_name, $qty): void
+    public function setPeInwardItem($jobcard_item_id, $section_outward_item_id, $section_outward_no, $colour_id, $colour_name, $size_id, $size_name, $qty): void
     {
         $this->jobcard_item_id = $jobcard_item_id;
-        $this->pe_outward_item_id = $pe_outward_item_id;
-        $this->pe_outward_no = $pe_outward_no;
+        $this->section_outward_item_id = $section_outward_item_id;
+        $this->section_outward_no = $section_outward_no;
         $this->colour_id = $colour_id;
         $this->colour_name = $colour_name;
         $this->size_id = $size_id;
@@ -171,17 +171,17 @@ class Upsert extends Component
         $this->qty = $qty;
     }
 
-    public function enterPeOutward(): void
+    public function enterPeInward(): void
     {
-        $obj = $this->peOutwardCollection[$this->highlightPeOutward] ?? null;
+        $obj = $this->peInwardCollection[$this->highlightPeInward] ?? null;
 
-        $this->pe_outward_no = '';
-        $this->peOutwardCollection = Collection::empty();
-        $this->highlightPeOutward = 0;
+        $this->section_outward_no = '';
+        $this->peInwardCollection = Collection::empty();
+        $this->highlightPeInward = 0;
 
         $this->jobcard_item_id = $obj['jobcard_item_id'] ?? '';;
-        $this->pe_outward_item_id = $obj['pe_outward_item_id'] ?? '';;
-        $this->pe_outward_no = $obj['pe_outward_no'] ?? '';;
+        $this->section_outward_item_id = $obj['section_outward_item_id'] ?? '';;
+        $this->section_outward_no = $obj['section_outward_no'] ?? '';;
         $this->colour_id = $obj['colour_id'] ?? '';;
         $this->colour_name = $obj['colour_name'] ?? '';;
         $this->size_id = $obj['size_id'] ?? '';;
@@ -189,27 +189,27 @@ class Upsert extends Component
         $this->qty = $obj['qty'] ?? '';;
     }
 
-    public function getPeOutwardList(): void
+    public function getPeInwardList(): void
     {
 
-        $data = DB::table('pe_outward_items')
+        $data = DB::table('section_outward_items')
             ->select(
-                'pe_outward_items.*',
-                'pe_outwards.vno as pe_outward_no',
+                'section_outward_items.*',
+                'section_outwards.vno as section_outward_no',
                 'colours.vname as colour_name',
                 'sizes.vname as size_name',
             )
-            ->join('pe_outwards', 'pe_outwards.id', '=', 'pe_outward_items.pe_outward_id')
-            ->join('jobcard_items', 'jobcard_items.id', '=', 'pe_outward_items.jobcard_item_id')
-            ->join('colours', 'colours.id', '=', 'pe_outward_items.colour_id')
-            ->join('sizes', 'sizes.id', '=', 'pe_outward_items.size_id')
-            ->where('pe_outwards.jobcard_id', '=', $this->jobcard_id)
+            ->join('section_outwards', 'section_outwards.id', '=', 'section_outward_items.section_outward_id')
+            ->join('jobcard_items', 'jobcard_items.id', '=', 'section_outward_items.jobcard_item_id')
+            ->join('colours', 'colours.id', '=', 'section_outward_items.colour_id')
+            ->join('sizes', 'sizes.id', '=', 'section_outward_items.size_id')
+            ->where('section_outwards.jobcard_id', '=', $this->jobcard_id)
             ->get()
             ->transform(function ($data) {
                 return [
                     'jobcard_item_id' => $data->jobcard_item_id,
-                    'pe_outward_item_id' => $data->id,
-                    'pe_outward_no' => $data->pe_outward_no,
+                    'section_outward_item_id' => $data->id,
+                    'section_outward_no' => $data->section_outward_no,
                     'colour_id' => $data->colour_id,
                     'colour_name' => $data->colour_name,
                     'size_id' => $data->size_id,
@@ -218,7 +218,7 @@ class Upsert extends Component
                 ];
             });
 
-        $this->peOutwardCollection = $data;
+        $this->peInwardCollection = $data;
 
     }
     //
@@ -233,12 +233,12 @@ class Upsert extends Component
 
     public function mount($id)
     {
-        $this->vno = PeInward::nextNo();
+        $this->vno = SectionOutward::nextNo();
         $this->vdate = Carbon::parse(Carbon::now())->format('Y-m-d');
 
         if ($id != 0) {
 
-            $obj = PeInward::find($id);
+            $obj = SectionOutward::find($id);
             $this->vid = $obj->id;
             $this->vno = $obj->vno;
             $this->vdate = $obj->vdate;
@@ -249,24 +249,24 @@ class Upsert extends Component
             $this->total_qty = $obj->total_qty;
             $this->receiver_details = $obj->receiver_details;
 
-            $data = DB::table('pe_inward_items')
+            $data = DB::table('section_inward_items')
                 ->select(
-                    'pe_inward_items.*',
-                    'pe_outwards.vno as pe_outward_no',
+                    'section_inward_items.*',
+                    'section_outwards.vno as section_outward_no',
                     'colours.vname as colour_name',
                     'sizes.vname as size_name',
                 )
-                ->join('pe_outward_items', 'pe_outward_items.id', '=', 'pe_inward_items.pe_outward_item_id')
-                ->join('pe_outwards', 'pe_outwards.id', '=', 'pe_outward_items.pe_outward_id')
-                ->join('colours', 'colours.id', '=', 'pe_inward_items.colour_id')
-                ->join('sizes', 'sizes.id', '=', 'pe_inward_items.size_id')
-                ->where('pe_inward_id', '=', $id)
+                ->join('section_outward_items', 'section_outward_items.id', '=', 'section_inward_items.section_outward_item_id')
+                ->join('section_outwards', 'section_outwards.id', '=', 'section_outward_items.section_outward_id')
+                ->join('colours', 'colours.id', '=', 'section_inward_items.colour_id')
+                ->join('sizes', 'sizes.id', '=', 'section_inward_items.size_id')
+                ->where('section_inward_id', '=', $id)
                 ->get()
                 ->transform(function ($data) {
                     return [
                         'jobcard_item_id' => $data->jobcard_item_id,
-                        'pe_outward_item_id' => $data->pe_outward_item_id,
-                        'pe_outward_no' => $data->pe_outward_no,
+                        'section_outward_item_id' => $data->section_outward_item_id,
+                        'section_outward_no' => $data->section_outward_no,
                         'colour_id' => $data->colour_id,
                         'colour_name' => $data->colour_name,
                         'size_id' => $data->size_id,
@@ -284,7 +284,7 @@ class Upsert extends Component
     public $itemList = [];
 
     public $jobcard_item_id;
-    public $pe_outward_item_id;
+    public $section_outward_item_id;
     public $colour_id;
     public $colour_name;
     public $size_id;
@@ -301,9 +301,9 @@ class Upsert extends Component
             ) {
                 $this->itemList[] = [
                     'jobcard_item_id' => $this->jobcard_item_id,
-                    'pe_outward_item_id' => $this->pe_outward_item_id,
-                    'pe_outward_id' => $this->pe_outward_id,
-                    'pe_outward_no' => $this->pe_outward_no,
+                    'section_outward_item_id' => $this->section_outward_item_id,
+                    'section_outward_id' => $this->section_outward_id,
+                    'section_outward_no' => $this->section_outward_no,
                     'colour_id' => $this->colour_id,
                     'colour_name' => $this->colour_name,
                     'size_id' => $this->size_id,
@@ -314,9 +314,9 @@ class Upsert extends Component
         } else {
             $this->itemList[$this->itemIndex] = [
                 'jobcard_item_id' => $this->jobcard_item_id,
-                'pe_outward_item_id' => $this->pe_outward_item_id,
-                'pe_outward_id' => $this->pe_outward_id,
-                'pe_outward_no' => $this->pe_outward_no,
+                'section_outward_item_id' => $this->section_outward_item_id,
+                'section_outward_id' => $this->section_outward_id,
+                'section_outward_no' => $this->section_outward_no,
                 'colour_id' => $this->colour_id,
                 'colour_name' => $this->colour_name,
                 'size_id' => $this->size_id,
@@ -333,9 +333,9 @@ class Upsert extends Component
     public function resetsItems(): void
     {
         $this->jobcard_item_id = '';
-        $this->pe_outward_item_id = '';
-        $this->pe_outward_id = '';
-        $this->pe_outward_no = '';
+        $this->section_outward_item_id = '';
+        $this->section_outward_id = '';
+        $this->section_outward_no = '';
         $this->colour_id = '';
         $this->colour_name = '';
         $this->size_id = '';
@@ -348,8 +348,8 @@ class Upsert extends Component
         $this->itemIndex = $index;
         $items = $this->itemList[$index];
         $this->jobcard_item_id = $items['jobcard_item_id'];
-        $this->pe_outward_item_id = $items['pe_outward_item_id'];
-        $this->pe_outward_no = $items['pe_outward_no'];
+        $this->section_outward_item_id = $items['section_outward_item_id'];
+        $this->section_outward_no = $items['section_outward_no'];
         $this->colour_id = $items['colour_id'];
         $this->colour_name = $items['colour_name'];
         $this->size_id = $items['size_id'];
@@ -380,7 +380,7 @@ class Upsert extends Component
 
             if ($this->vid == "") {
 
-                $obj = PeInward::create([
+                $obj = SectionOutward::create([
                     'vno' => $this->vno,
                     'vdate' => $this->vdate,
                     'contact_id' => $this->contact_id,
@@ -395,7 +395,7 @@ class Upsert extends Component
                 $message = "Saved";
 
             } else {
-                $obj = PeInward::find($this->vid);
+                $obj = SectionOutward::find($this->vid);
                 $obj->vno = $this->vno;
                 $obj->vdate = $this->vdate;
                 $obj->contact_id = $this->contact_id;
@@ -406,7 +406,7 @@ class Upsert extends Component
                 $obj->user_id = \Auth::id();
                 $obj->save();
 
-                DB::table('pe_inward_items')->where('pe_inward_id', '=', $obj->id)->delete();
+                DB::table('section_inward_items')->where('section_inward_id', '=', $obj->id)->delete();
                 $this->saveItem($obj->id);
                 $message = "Updated";
             }
@@ -424,10 +424,10 @@ class Upsert extends Component
     public function saveItem($id): void
     {
         foreach ($this->itemList as $sub) {
-            PeInwardItem::create([
-                'pe_inward_id' => $id,
+            SectionOutwardItem::create([
+                'section_inward_id' => $id,
                 'jobcard_item_id' => $sub['jobcard_item_id'],
-                'pe_outward_item_id' => $sub['pe_outward_item_id'],
+                'section_outward_item_id' => $sub['section_outward_item_id'],
                 'colour_id' => $sub['colour_id'],
                 'size_id' => $sub['size_id'],
                 'qty' => $sub['qty'],
@@ -436,16 +436,16 @@ class Upsert extends Component
         }
     }
 
-    public function setDelete()
+    public function setDelete(): void
     {
-        DB::table('pe_inward_items')->where('pe_inward_id', '=', $this->vid)->delete();
-        DB::table('pe_inward_items')->where('id', '=', $this->vid)->delete();
+        DB::table('section_inward_items')->where('section_inward_id', '=', $this->vid)->delete();
+        DB::table('section_inwards')->where('id', '=', $this->vid)->delete();
         $this->getRoute();
     }
 
     public function getRoute(): void
     {
-        $this->redirect(route('peinwards'));
+        $this->redirect(route('sectioninwards'));
     }
 
 
@@ -453,7 +453,7 @@ class Upsert extends Component
     {
         $this->getContactList();
         $this->getJobcardList();
-        $this->getPeOutwardList();
+        $this->getPeInwardList();
         return view('livewire.erp.production.section-inward.upsert');
     }
 }

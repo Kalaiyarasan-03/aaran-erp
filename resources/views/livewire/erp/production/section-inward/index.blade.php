@@ -18,21 +18,21 @@
                     <x-table.row>
 
                         <x-table.cell>
-                            <a href="{{route('peinwards.upsert',[$row->id])}}"
+                            <a href="{{route('sectioninwards.upsert',[$row->id])}}"
                                class="flex px-3 text-gray-600 truncate text-xl text-left">
                                 {{ $row->vno }}
                             </a>
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('peinwards.upsert',[$row->id])}}"
+                            <a href="{{route('sectioninwards.upsert',[$row->id])}}"
                                class="flex flex-col px-3 text-gray-600 truncate text-xl text-left">
                                 {{date('d-m-Y', strtotime($row->vdate))}}
                             </a>
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('peinwards.upsert',[$row->id])}}"
+                            <a href="{{route('sectioninwards.upsert',[$row->id])}}"
                                class="flex flex-col px-3">
                                 <div class="text-gray-600 truncate text-xl text-left">
                                     {{ $row->order_name }}
@@ -41,7 +41,7 @@
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('peinwards.upsert',[$row->id])}}"
+                            <a href="{{route('sectioninwards.upsert',[$row->id])}}"
                                class="flex flex-col px-3">
                                 <div class="text-gray-600 truncate text-xl text-left">
                                     {{ $row->style_name }}
@@ -50,7 +50,7 @@
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('peinwards.upsert',[$row->id])}}"
+                            <a href="{{route('sectioninwards.upsert',[$row->id])}}"
                                class="flex flex-col px-3">
                                 <div class="text-gray-600 truncate text-xl text-left">
                                     {{ $row->jobcard_no }}
@@ -59,14 +59,14 @@
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('peinwards.upsert',[$row->id])}}"
+                            <a href="{{route('sectioninwards.upsert',[$row->id])}}"
                                class="flex flex-col px-3 text-gray-600 truncate text-xl text-left">
                                 {{ $row->contact_name }}
                             </a>
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('peinwards.upsert',[$row->id])}}"
+                            <a href="{{route('sectioninwards.upsert',[$row->id])}}"
                                class="flex flex-col px-3 text-gray-600 truncate text-xl text-center">
                                 {{ $row->total_qty + 0 }}
                             </a>

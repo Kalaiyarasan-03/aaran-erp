@@ -9,7 +9,7 @@ class Index extends EntriesIndexAbstract
 {
     public function create(): void
     {
-        $this->redirect(route('peoutwards.upsert', ['0']));
+        $this->redirect(route('sectioninwards.upsert', ['0']));
     }
 
     public function getList()
@@ -19,14 +19,13 @@ class Index extends EntriesIndexAbstract
                 'styles.vname as style_name',
                 'jobcards.vno as jobcard_no',
                 'contacts.vname as contact_name',
-                'pe_outwards.total_qty as total_qty',
                 'pe_outwards.*'
             )
-            ->join('contacts', 'contacts.id', '=', 'pe_outwards.contact_id')
-            ->join('jobcards', 'jobcards.id', '=', 'pe_outwards.jobcard_id')
+            ->join('contacts', 'contacts.id', '=', 'section_inwards.contact_id')
+            ->join('jobcards', 'jobcards.id', '=', 'section_inwards.jobcard_id')
             ->join('orders', 'orders.id', '=', 'jobcards.order_id')
             ->join('styles', 'styles.id', '=', 'jobcards.style_id')
-            ->where('pe_outwards.active_id', '=', $this->activeRecord)
+            ->where('section_inwards.active_id', '=', $this->activeRecord)
             ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
             ->paginate($this->perPage);
     }

@@ -342,8 +342,8 @@ class Upsert extends Component
                 'qty' => $this->qty,
             ];
         }
-        $this->calculateTotal();
         $this->resetsItems();
+        $this->calculateTotal();
         $this->render();
         //$this->emit('getfocus');
     }
@@ -359,6 +359,7 @@ class Upsert extends Component
         $this->size_id = '';
         $this->size_name = '';
         $this->qty = '';
+        $this->calculateTotal();
     }
 
     public function changeItems($index): void
@@ -373,6 +374,7 @@ class Upsert extends Component
         $this->size_id = $items['size_id'];
         $this->size_name = $items['size_name'];
         $this->qty = $items['qty'] + 0;
+        $this->calculateTotal();
     }
 
     public function removeItems($index): void
@@ -382,7 +384,7 @@ class Upsert extends Component
         $this->calculateTotal();
     }
 
-    public function calculateTotal()
+    public function calculateTotal(): void
     {
         if ($this->itemList) {
             $this->total_qty = 0;
