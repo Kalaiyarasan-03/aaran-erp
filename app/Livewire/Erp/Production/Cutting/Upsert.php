@@ -199,9 +199,14 @@ class Upsert extends Component
         $this->size_id = $obj['size_id'] ?? '';
         $this->size_name = $obj['size_name'] ?? '';
         $this->qty = $obj['qty'] ?? '';
+
+        $this->jobcardItemName = $this->fabric_lot_no . ' - ' . $this->colour_name . ' - ' . $this->size_name;
     }
 
-    public function setJobcardItem($jobcard_item_id, $fabric_lot_id, $fabric_lot_no, $colour_id, $colour_name,$size_id, $size_name, $qty): void
+
+    public $jobcardItemName = '';
+
+    public function setJobcardItem($jobcard_item_id, $fabric_lot_id, $fabric_lot_no, $colour_id, $colour_name, $size_id, $size_name, $qty): void
     {
         $this->jobcard_item_id = $jobcard_item_id;
         $this->fabric_lot_id = $fabric_lot_id;
@@ -211,6 +216,9 @@ class Upsert extends Component
         $this->size_id = $size_id;
         $this->size_name = $size_name;
         $this->qty = $qty + 0;
+
+        $this->jobcardItemName = $fabric_lot_no . ' - ' . $colour_name . ' - ' . $size_name;
+
         $this->getJobcardItemList();
     }
 
@@ -378,6 +386,7 @@ class Upsert extends Component
         $this->size_id = '';
         $this->size_name = '';
         $this->qty = '';
+        $this->jobcardItemName = '';
         $this->calculateTotal();
     }
 
@@ -395,6 +404,8 @@ class Upsert extends Component
         $this->size_name = $items['size_name'];
         $this->qty = $items['qty'] + 0;
         $this->calculateTotal();
+
+        $this->jobcardItemName = $this->fabric_lot_no . ' - ' . $this->colour_name . ' - ' . $this->size_name;
     }
 
     public function removeItems($index): void
@@ -454,12 +465,14 @@ class Upsert extends Component
                 $this->saveItem($obj->id);
                 $message = "Updated";
             }
-            $this->getRoute();
             $this->vno = '';
             $this->vdate = '';
             $this->order_id = '';
             $this->jobcard_id = '';
             $this->total_qty = '';
+            $this->jobcardItemName = '';
+
+            $this->getRoute();
             return $message;
         }
         return '';

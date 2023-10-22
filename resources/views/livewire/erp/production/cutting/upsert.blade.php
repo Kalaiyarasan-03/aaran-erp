@@ -157,7 +157,7 @@
                         <input
                             id="jobcard_item_id"
                             type="search"
-                            wire:model.live="jobcard_item_id"
+                            wire:model.live="jobcardItemName"
                             autocomplete="off"
                             placeholder="Job Card List.."
                             @focus="isTyped = true"

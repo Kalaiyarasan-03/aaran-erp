@@ -264,15 +264,10 @@ class Upsert extends Component
 
             $data = DB::table('pe_outward_items')
                 ->select(
-                    'pe_outward_items.id',
-                    'pe_outward_items.jobcard_item_id',
-                    'pe_outward_items.cutting_item_id',
+                    'pe_outward_items.*',
                     'cuttings.vno as cutting_no',
-                    'pe_outward_items.colour_id',
-                    'pe_outward_items.size_id',
                     'colours.vname as colour_name',
-                    'sizes.vname as size_name',
-                    'cutting_items.qty'
+                    'sizes.vname as size_name'
                 )
                 ->join('cutting_items', 'cutting_items.id', '=', 'pe_outward_items.cutting_item_id')
                 ->join('cuttings', 'cuttings.id', '=', 'cutting_items.cutting_id')

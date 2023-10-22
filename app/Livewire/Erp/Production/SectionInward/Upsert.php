@@ -235,12 +235,12 @@ class Upsert extends Component
 
     public function mount($id)
     {
-        $this->vno = SectionOutward::nextNo();
+        $this->vno = SectionInward::nextNo();
         $this->vdate = Carbon::parse(Carbon::now())->format('Y-m-d');
 
         if ($id != 0) {
 
-            $obj = SectionOutward::find($id);
+            $obj = SectionInward::find($id);
             $this->vid = $obj->id;
             $this->vno = $obj->vno;
             $this->vdate = $obj->vdate;
