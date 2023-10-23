@@ -207,8 +207,7 @@
                                                                                 '{{$jobcardItem['colour_id']}}','{{$jobcardItem['colour_name']}}',
                                                                                 '{{$jobcardItem['size_id']}}','{{$jobcardItem['size_name']}}',
                                                                                 '{{$jobcardItem['qty']}}' )"
-                                                                x-on:click="isTyped = false"
-                                                            >
+                                                                x-on:click="isTyped = false">
 
                                                                 {{-- for Lot--}}
                                                                 <td class="px-2 border border-gray-300 text-center ">{{$jobcardItem['fabric_lot_no']}}</td>

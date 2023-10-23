@@ -225,11 +225,7 @@ class Upsert extends Component
     public function getJobcardItemList(): void
     {
         $data = DB::table('jobcard_items')
-            ->select('jobcard_items.id',
-                'jobcard_items.fabric_lot_id',
-                'jobcard_items.colour_id',
-                'jobcard_items.size_id',
-                'jobcard_items.qty',
+            ->select('jobcard_items.*',
                 'fabric_lots.vname as fabric_lot_no',
                 'colours.vname as colour_name',
                 'sizes.vname as size_name'
@@ -248,7 +244,7 @@ class Upsert extends Component
                     'colour_name' => $data->colour_name,
                     'size_id' => $data->size_id,
                     'size_name' => $data->size_name,
-                    'qty' => $data->qty + 0,
+                    'qty' => $data->cutting_qty + 0,
                 ];
             });
 
@@ -490,6 +486,12 @@ class Upsert extends Component
                 'qty' => $sub['qty'],
                 'active_id' => '1'
             ]);
+
+            $max = CuttingItem::where('jobcard_item_id', $sub['jobcard_item_id'])->max('qty');
+
+            $item = JobcardItem::find($sub['jobcard_item_id']);
+            $item->cutting_qty =  $item->qty - $max;
+            $item->save();
         }
     }
 

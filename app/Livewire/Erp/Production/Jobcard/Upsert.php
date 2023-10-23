@@ -529,7 +529,7 @@ class Upsert extends Component
                 'colour_id' => $sub['colour_id'],
                 'size_id' => $sub['size_id'],
                 'qty' => $sub['qty'],
-                'cutting_qty' => '0',
+                'cutting_qty' => $sub['qty'],
                 'pe_out_qty' => '0',
                 'pe_in_qty' => '0',
                 'se_out_qty' => '0',
