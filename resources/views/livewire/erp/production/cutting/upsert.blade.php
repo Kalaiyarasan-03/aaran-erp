@@ -136,7 +136,7 @@
                 <div class="flex flex-col gap-3">
                     <div class="flex flex-col gap-2">
                         <label for="cutting_master" class="gray-label">Cutting Master</label>
-                        <input id="cutting_master" wire:model="cutting_master"  class="purple-textbox">
+                        <input id="cutting_master" wire:model="cutting_master" class="purple-textbox">
                     </div>
                 </div>
 
@@ -147,99 +147,107 @@
             Add Items
         </section>
 
-        <section class="flex flex-row w-full gap-0.5">
+        <form wire:submit="addItems">
+            <section class="flex flex-row w-full gap-0.5">
 
-            {{--Job details -------------------------------------------------------------------------------------}}
-            <div class="w-full">
-                <label for="jobcard_item_id"></label>
-                <div x-data="{isTyped: @entangle('jobcardItemTyped')}" @click.away="isTyped = false">
-                    <div class="relative">
-                        <input
-                            id="jobcard_item_id"
-                            type="search"
-                            wire:model.live="jobcardItemName"
-                            autocomplete="off"
-                            placeholder="Job Card List.."
-                            @focus="isTyped = true"
-                            @keydown.escape.window="isTyped = false"
-                            @keydown.tab.window="isTyped = false"
-                            @keydown.enter.prevent="isTyped = false"
-                            wire:keydown.arrow-up="decrementJobcardItem"
-                            wire:keydown.arrow-down="incrementJobcardItem"
-                            wire:keydown.enter="enterJobcardItem"
-                            class="block w-full purple-textbox-no-rounded"
-                        />
+                {{--Job details -------------------------------------------------------------------------------------}}
+                <div class="w-full">
+                    <label for="jobcard_item_id"></label>
+                    <div x-data="{isTyped: @entangle('jobcardItemTyped')}" @click.away="isTyped = false">
+                        <div class="relative">
+                            <input
+                                id="jobcard_item_id"
+                                type="search"
+                                wire:model.live="jobcardItemName"
+                                autocomplete="off"
+                                placeholder="Job Card List.."
+                                @focus="isTyped = true"
+                                @keydown.escape.window="isTyped = false"
+                                @keydown.tab.window="isTyped = false"
+                                @keydown.enter.prevent="isTyped = false"
+                                wire:keydown.arrow-up="decrementJobcardItem"
+                                wire:keydown.arrow-down="incrementJobcardItem"
+                                wire:keydown.enter="enterJobcardItem"
+                                class="block w-full purple-textbox-no-rounded"
+                            />
 
-                        <div x-show="isTyped"
-                             x-transition:leave="transition ease-in duration-100"
-                             x-transition:leave-start="opacity-100"
-                             x-transition:leave-end="opacity-0"
-                             x-cloak>
-                            <div class="absolute z-20 w-full mt-2">
-                                <div class="block py-1 shadow-md w-full
+                            <div x-show="isTyped"
+                                 x-transition:leave="transition ease-in duration-100"
+                                 x-transition:leave-start="opacity-100"
+                                 x-transition:leave-end="opacity-0"
+                                 x-cloak>
+                                <div class="absolute z-20 w-full mt-2">
+                                    <div class="block py-1 shadow-md w-full
                                     rounded-lg border-transparent flex-1 appearance-none border
                                      bg-white text-gray-800 ring-1 ring-purple-600">
-                                    <div class="overflow-y-scroll h-96">
+                                        <div class="overflow-y-scroll h-96">
 
-                                        <table class="w-full">
-                                            <thead>
-                                            <tr class="h-8 text-xs bg-gray-100 border border-gray-300">
-                                                <th class="px-2 text-center border border-gray-300">Lot</th>
-                                                <th class="px-2 text-center border border-gray-300">COLOUR</th>
-                                                <th class="px-2 text-center border border-gray-300">SIZE</th>
-                                                <th class="px-2 text-center border border-gray-300">QTY</th>
-                                            </tr>
+                                            <table class="w-full">
+                                                <thead>
+                                                <tr class="h-8 text-xs bg-gray-100 border border-gray-300">
+                                                    <th class="px-2 text-center border border-gray-300">Lot</th>
+                                                    <th class="px-2 text-center border border-gray-300">COLOUR</th>
+                                                    <th class="px-2 text-center border border-gray-300">SIZE</th>
+                                                    <th class="px-2 text-center border border-gray-300">QTY</th>
+                                                </tr>
 
-                                            </thead>
+                                                </thead>
 
-                                            <tbody>
+                                                <tbody>
 
-                                            @if($jobcardItemCollection)
-                                                @forelse ($jobcardItemCollection as $i => $jobcardItem)
+                                                @if($jobcardItemCollection)
+                                                    @forelse ($jobcardItemCollection as $i => $jobcardItem)
 
-                                                    <tr class="cursor-pointer px-3 hover:font-bold hover:bg-yellow-100 border-b border-gray-300 h-8
+
+                                                            <tr class="cursor-pointer px-3 hover:font-bold hover:bg-yellow-100 border-b border-gray-300 h-8
                                                         {{ $highlightJobcardItem === $i ? 'bg-yellow-100' : '' }}"
-                                                        wire:click="setJobcardItem(
+                                                                wire:click="setJobcardItem(
                                                                                 '{{$jobcardItem['jobcard_item_id']}}',
                                                                                 '{{$jobcardItem['fabric_lot_id']}}','{{$jobcardItem['fabric_lot_no']}}',
                                                                                 '{{$jobcardItem['colour_id']}}','{{$jobcardItem['colour_name']}}',
                                                                                 '{{$jobcardItem['size_id']}}','{{$jobcardItem['size_name']}}',
                                                                                 '{{$jobcardItem['qty']}}' )"
-                                                        x-on:click="isTyped = false">
+                                                                x-on:click="isTyped = false"
+                                                            >
+
+                                                                {{-- for Lot--}}
+                                                                <td class="px-2 border border-gray-300 text-center ">{{$jobcardItem['fabric_lot_no']}}</td>
+                                                                <td class="px-2 border border-gray-300 text-center ">{{$jobcardItem['colour_name']}}</td>
+                                                                <td class="px-2 border border-gray-300 text-center ">{{$jobcardItem['size_name']}}</td>
+                                                                <td class="px-2 border border-gray-300 text-center ">{{$jobcardItem['qty']}}</td>
+                                                            </tr>
 
 
-                                                        {{-- for Lot--}}
-                                                        <td class="px-2 border border-gray-300 text-center ">{{$jobcardItem['fabric_lot_no']}}</td>
-                                                        <td class="px-2 border border-gray-300 text-center ">{{$jobcardItem['colour_name']}}</td>
-                                                        <td class="px-2 border border-gray-300 text-center ">{{$jobcardItem['size_name']}}</td>
-                                                        <td class="px-2 border border-gray-300 text-center ">{{$jobcardItem['qty']}}</td>
-                                                    </tr>
-                                                @empty
-                                                    <a href="{{route('jobcards.upsert',['0'])}}" role="button"
-                                                       class="flex items-center justify-center bg-green-500 w-full h-8 text-white text-center">
-                                                        Not found , Want to create new
-                                                    </a>
-                                                @endforelse
-                                            @endif
+                                                    @empty
+                                                        <a href="{{route('jobcards.upsert',['0'])}}" role="button"
+                                                           class="flex items-center justify-center bg-green-500 w-full h-8 text-white text-center">
+                                                            Not found , Want to create new
+                                                        </a>
+                                                    @endforelse
+                                                @endif
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            {{--Qty -------------------------------------------------------------------------------------}}
-            <div class="w-full">
-                <label for="qty"></label>
-                <input id="qty" wire:model="qty" class="block w-full purple-textbox-no-rounded" placeholder="Qty">
-            </div>
+                {{--Qty -------------------------------------------------------------------------------------}}
+                <div class="w-full">
+                    <label for="qty"></label>
+                    <input x-data x-ref="qty" id="qty" wire:model="qty" class="block w-full purple-textbox-no-rounded"
+                           placeholder="Qty">
+                </div>
 
-            <button wire:click="addItems" class="px-3 bg-green-500 text-white font-semibold tracking-wider ">Add
-            </button>
-        </section>
+                <button type="submit" class="px-3 bg-green-500 text-white font-semibold tracking-wider ">Add
+                </button>
+
+
+            </section>
+        </form>
 
         <section>
 
