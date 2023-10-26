@@ -361,6 +361,7 @@ class Upsert extends Component
         $this->size_id = $items['size_id'];
         $this->size_name = $items['size_name'];
         $this->qty = $items['qty'] + 0;
+        $this->calculateTotal();
     }
 
     public function removeItems($index): void
