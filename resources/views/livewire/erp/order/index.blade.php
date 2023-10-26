@@ -5,35 +5,36 @@
         <x-forms.top-controls :show-filters="$showFilters"/>
 
         <x-forms.table :list="$list">
+
             <x-slot name="table_header">
                 <x-table.ths-slno wire:click.prevent="sortBy('vname')">Sl.no</x-table.ths-slno>
                 <x-table.ths wire:click.prevent="sortBy('vname')">Order No</x-table.ths>
                 <x-table.ths wire:click.prevent="sortBy('vname')">Description</x-table.ths>
                 <x-table.heading class="w-[12rem]">Action</x-table.heading>
             </x-slot>
+
             <x-slot name="table_body">
                 @forelse ($list as $index =>  $row)
                     <x-table.row>
 
                         <x-table.cell>
-                            <a href="{{route('orders.style',[$row->id])}}"
+                            <a href="{{route('orders.show',[$row->id])}}"
                                class="flex px-3 text-gray-600 truncate text-xl text-left">
                                 {{ $index + 1 }}
                             </a>
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('orders.style',[$row->id])}}"
+                            <a href="{{route('orders.show',[$row->id])}}"
                                class="flex flex-col px-3">
                                 <div class="text-gray-600 truncate text-xl text-left">
                                     {{ $row->vname }}
                                 </div>
                             </a>
-
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('orders.style',[$row->id])}}"
+                            <a href="{{route('orders.show',[$row->id])}}"
                                class="flex flex-col px-3 text-gray-600 truncate text-xl text-left">
                                 {{ $row->desc }}
                             </a>
