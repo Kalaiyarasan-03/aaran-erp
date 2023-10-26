@@ -2,7 +2,9 @@
 
 namespace App\Livewire\Erp\Production\PeOutward;
 
+use App\Models\Erp\Production\CuttingItem;
 use App\Models\Erp\Production\Jobcard;
+use App\Models\Erp\Production\JobcardItem;
 use App\Models\Erp\Production\PeOutward;
 use App\Models\Erp\Production\PeOutwardItem;
 use App\Models\Master\Contact;
@@ -197,17 +199,11 @@ class Upsert extends Component
 
         $data = DB::table('cutting_items')
             ->select(
-                'cutting_items.id',
-                'cutting_items.jobcard_item_id',
-                'cutting_items.cutting_id',
-                'cutting_items.fabric_lot_id',
-                'cutting_items.colour_id',
-                'cutting_items.size_id',
+                'cutting_items.*',
                 'cuttings.vno as cutting_no',
                 'fabric_lots.vname as fabric_lot_name',
                 'colours.vname as colour_name',
-                'sizes.vname as size_name',
-                'cutting_items.qty'
+                'sizes.vname as size_name'
             )
             ->join('cuttings', 'cuttings.id', '=', 'cutting_items.cutting_id')
             ->join('jobcard_items', 'jobcard_items.id', '=', 'cutting_items.jobcard_item_id')
@@ -227,7 +223,7 @@ class Upsert extends Component
                     'colour_name' => $data->colour_name,
                     'size_id' => $data->size_id,
                     'size_name' => $data->size_name,
-                    'qty' => $data->qty + 0,
+                    'qty' => $data->pending_qty + 0,
                 ];
             });
 
@@ -446,8 +442,22 @@ class Upsert extends Component
                 'colour_id' => $sub['colour_id'],
                 'size_id' => $sub['size_id'],
                 'qty' => $sub['qty'],
+                'pending_qty' => $sub['qty'],
                 'active_id' => '1',
             ]);
+
+            $sum = PeOutwardItem::where('jobcard_item_id', $sub['jobcard_item_id'])->sum('qty');
+
+            $item = JobcardItem::find($sub['jobcard_item_id']);
+            $item->pe_out_qty =  $item->qty - $sum;
+            $item->save();
+
+            $sum_1 = PeOutwardItem::where('cutting_item_id', $sub['cutting_item_id'])->sum('qty');
+
+            $item_1 = CuttingItem::find($sub['cutting_item_id']);
+            $item_1->pending_qty =  $item_1->qty - $sum_1;
+            $item_1->save();
+
         }
     }
 

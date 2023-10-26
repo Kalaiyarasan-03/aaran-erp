@@ -3,6 +3,9 @@
 namespace App\Livewire\Erp\Production\SectionInward;
 
 use App\Models\Erp\Production\Jobcard;
+use App\Models\Erp\Production\JobcardItem;
+use App\Models\Erp\Production\PeInwardItem;
+use App\Models\Erp\Production\PeOutwardItem;
 use App\Models\Erp\Production\SectionInward;
 use App\Models\Erp\Production\SectionInwardItem;
 use App\Models\Erp\Production\SectionOutward;
@@ -216,7 +219,7 @@ class Upsert extends Component
                     'colour_name' => $data->colour_name,
                     'size_id' => $data->size_id,
                     'size_name' => $data->size_name,
-                    'qty' => $data->qty + 0,
+                    'qty' => $data->pending_qty + 0,
                 ];
             });
 
@@ -433,8 +436,21 @@ class Upsert extends Component
                 'colour_id' => $sub['colour_id'],
                 'size_id' => $sub['size_id'],
                 'qty' => $sub['qty'],
+                'pending_qty' => $sub['qty'],
                 'active_id' => '1',
             ]);
+
+            $sum = SectionInwardItem::where('jobcard_item_id', $sub['jobcard_item_id'])->sum('qty');
+
+            $item = JobcardItem::find($sub['jobcard_item_id']);
+            $item->se_in_qty =  $item->qty - $sum;
+            $item->save();
+
+            $sum_1 = SectionInwardItem::where('section_outward_item_id', $sub['section_outward_item_id'])->sum('qty');
+
+            $item_1 = SectionOutward::find($sub['jobcard_item_id']);
+            $item_1->pending_qty =  $item_1->qty - $sum_1;
+            $item_1->save();
         }
     }
 

@@ -484,13 +484,13 @@ class Upsert extends Component
                 'colour_id' => $sub['colour_id'],
                 'size_id' => $sub['size_id'],
                 'qty' => $sub['qty'],
+                'pending_qty' => $sub['qty'],
                 'active_id' => '1'
             ]);
 
-            $max = CuttingItem::where('jobcard_item_id', $sub['jobcard_item_id'])->max('qty');
-
+            $sum = CuttingItem::where('jobcard_item_id', $sub['jobcard_item_id'])->sum('qty');
             $item = JobcardItem::find($sub['jobcard_item_id']);
-            $item->cutting_qty =  $item->qty - $max;
+            $item->cutting_qty =  $item->qty - $sum;
             $item->save();
         }
     }

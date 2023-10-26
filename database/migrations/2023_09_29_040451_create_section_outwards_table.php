@@ -29,6 +29,7 @@ return new class extends Migration
             $table->foreignId('colour_id')->references('id')->on('colours');
             $table->foreignId('size_id')->references('id')->on('sizes');
             $table->decimal('qty',11,3);
+            $table->decimal('pending_qty',11,3);
             $table->string('active_id', 3)->nullable();
         });
     }
