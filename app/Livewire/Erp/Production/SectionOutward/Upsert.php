@@ -451,7 +451,7 @@ class Upsert extends Component
 
             $sum_1 = SectionOutwardItem::where('pe_inward_item_id', $sub['pe_inward_item_id'])->sum('qty');
 
-            $item_1 = PeInwardItem::find($sub['jobcard_item_id']);
+            $item_1 = PeInwardItem::find($sub['pe_inward_item_id']);
             $item_1->pending_qty =  $item_1->qty - $sum_1;
             $item_1->save();
         }
