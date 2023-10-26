@@ -16,14 +16,14 @@
                     <x-table.row>
 
                         <x-table.cell>
-                            <a href="{{route('orders.show',[$row->id])}}"
+                            <a href="{{route('orders.style',[$row->id])}}"
                                class="flex px-3 text-gray-600 truncate text-xl text-left">
                                 {{ $index + 1 }}
                             </a>
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('orders.show',[$row->id])}}"
+                            <a href="{{route('orders.style',[$row->id])}}"
                                class="flex flex-col px-3">
                                 <div class="text-gray-600 truncate text-xl text-left">
                                     {{ $row->vname }}
@@ -33,7 +33,7 @@
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('orders.show',[$row->id])}}"
+                            <a href="{{route('orders.style',[$row->id])}}"
                                class="flex flex-col px-3 text-gray-600 truncate text-xl text-left">
                                 {{ $row->desc }}
                             </a>
