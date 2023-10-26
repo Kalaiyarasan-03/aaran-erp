@@ -4,6 +4,8 @@ namespace App\Livewire\Erp\Order;
 
 use App\Livewire\Trait\CommonTrait;
 use App\Models\Erp\Order;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class Index extends Component
@@ -18,19 +20,19 @@ class Index extends Component
 
             if ($this->vid == "") {
                 Order::create([
-                    'vname' => \Str::upper($this->vname),
-                    'desc' => \Str::ucfirst($this->desc),
+                    'vname' => Str::upper($this->vname),
+                    'desc' => Str::ucfirst($this->desc),
                     'active_id' => $this->active_id,
-                    'user_id' => \Auth::id(),
+                    'user_id' => Auth::id(),
                 ]);
                 $message = "Saved";
 
             } else {
                 $obj = Order::find($this->vid);
-                $obj->vname = \Str::upper($this->vname);
-                $obj->desc = \Str::ucfirst($this->desc);
+                $obj->vname = Str::upper($this->vname);
+                $obj->desc = Str::ucfirst($this->desc);
                 $obj->active_id = $this->active_id ?: '0';
-                $obj->user_id = \Auth::id();
+                $obj->user_id = Auth::id();
                 $obj->save();
                 $message = "Updated";
             }
