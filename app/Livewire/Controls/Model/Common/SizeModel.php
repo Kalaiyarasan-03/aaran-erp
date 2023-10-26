@@ -3,6 +3,7 @@
 namespace App\Livewire\Controls\Model\Common;
 
 use App\Models\Common\Size;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class SizeModel extends Component
@@ -20,7 +21,7 @@ class SizeModel extends Component
     {
         if ($this->vname != '') {
             $obj = Size::create([
-                'vname' => \Str::upper($this->vname),
+                'vname' => Str::upper($this->vname),
                 'active_id' => '1'
             ]);
             $this->dispatch('refresh-size-item', ['name' => $this->vname, 'id' => $obj->id]);

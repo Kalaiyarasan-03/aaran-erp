@@ -3,6 +3,8 @@
 namespace App\Livewire\Controls\Model\Erp;
 
 use App\Models\Erp\Order;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class OrderModel extends Component
@@ -21,10 +23,10 @@ class OrderModel extends Component
     {
         if ($this->vname != '') {
             $obj = Order::create([
-                'vname' => \Str::upper($this->vname),
-                'desc' => \Str::ucfirst($this->desc),
+                'vname' => Str::upper($this->vname),
+                'desc' => Str::ucfirst($this->desc),
                 'active_id' => '1',
-                'user_id' => \Auth::id()
+                'user_id' => Auth::id()
             ]);
             $this->dispatch('refresh-order-item', ['name' => $this->vname, 'id' => $obj->id]);
             $this->dispatch('refresh-order', ['name' => $this->vname, 'id' => $obj->id]);

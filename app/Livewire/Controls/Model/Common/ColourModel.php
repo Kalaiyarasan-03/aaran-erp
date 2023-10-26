@@ -3,6 +3,7 @@
 namespace App\Livewire\Controls\Model\Common;
 
 use App\Models\Common\Colour;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class ColourModel extends Component
@@ -20,7 +21,7 @@ class ColourModel extends Component
     {
         if ($this->vname != '') {
             $obj = Colour::create([
-                'vname' => \Str::ucfirst($this->vname),
+                'vname' => Str::ucfirst($this->vname),
                 'active_id' => '1'
             ]);
             $this->dispatch('refresh-colour-item', ['name' => $this->vname, 'id' => $obj->id]);
