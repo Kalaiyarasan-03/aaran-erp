@@ -21,14 +21,14 @@
                     <x-table.row>
 
                         <x-table.cell>
-                            <a href="{{route('peoutwards.upsert',[$row->id])}}"
+                            <a href="{{route('orders.job-details',[$row->id])}}"
                                class="flex px-3 text-gray-600 truncate text-xl text-left">
                                 {{ $index+1 }}
                             </a>
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('peoutwards.upsert',[$row->id])}}"
+                            <a href="{{route('orders.job-details',[$row->id])}}"
                                class="flex flex-col px-3">
                                 <div class="text-gray-600 truncate text-xl text-left">
                                     {{ $row->style_name }}
@@ -37,7 +37,7 @@
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('peoutwards.upsert',[$row->id])}}"
+                            <a href="{{route('orders.job-details',[$row->id])}}"
                                class="flex flex-col px-3">
                                 <div class="text-gray-600 truncate text-xl text-left">
                                     {{ $row->vno }}
@@ -46,14 +46,14 @@
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('peoutwards.upsert',[$row->id])}}"
+                            <a href="{{route('orders.job-details',[$row->id])}}"
                                class="flex flex-col px-3 text-gray-600 truncate text-xl text-left">
                                 {{date('d-m-Y', strtotime($row->vdate))}}
                             </a>
                         </x-table.cell>
 
                         <x-table.cell>
-                            <a href="{{route('peoutwards.upsert',[$row->id])}}"
+                            <a href="{{route('orders.job-details',[$row->id])}}"
                                class="flex flex-col px-3 text-gray-600 truncate text-xl text-right">
                                 {{ $row->total_qty }}
                             </a>

@@ -11,6 +11,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('orders', App\Livewire\Erp\Order\Index::class)->name('orders');
     Route::get('orders/{id}/style', App\Livewire\Erp\Order\Style::class)->name('orders.style');
+    Route::get('orders/{id}/job-details', App\Livewire\Erp\Order\JobDetails::class)->name('orders.job-details');
 
     Route::get('styles', App\Livewire\Erp\Style\Index::class)->name('styles');
     Route::get('fabriclots', App\Livewire\Erp\Fabrication\FabricLot\Index::class)->name('fabriclots');

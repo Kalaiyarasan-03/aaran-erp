@@ -41,7 +41,7 @@
 
 .gray-label
 {
-    @apply pt-3 text-gray-500;
+    @apply pt-3 text-gray-500 px-3;
 }
 
 .error-label

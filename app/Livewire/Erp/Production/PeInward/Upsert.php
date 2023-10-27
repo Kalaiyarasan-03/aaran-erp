@@ -229,6 +229,8 @@ class Upsert extends Component
     //
     public string $vno = '';
     public string $vdate = '';
+    public string $contact_dc = '';
+    public string $dc_date = '';
     public mixed $total_qty = 0;
     public mixed $receiver_details = '';
     public string $active_id = '1';
@@ -238,6 +240,7 @@ class Upsert extends Component
     {
         $this->vno = PeInward::nextNo();
         $this->vdate = Carbon::parse(Carbon::now())->format('Y-m-d');
+        $this->dc_date = Carbon::parse(Carbon::now())->format('Y-m-d');
 
         if ($id != 0) {
 
@@ -249,6 +252,8 @@ class Upsert extends Component
             $this->contact_name = $obj->contact->vname;
             $this->jobcard_id = $obj->jobcard_id;
             $this->jobcard_no = $obj->jobcard->vno;
+            $this->contact_dc = $obj->contact_dc;
+            $this->dc_date = $obj->dc_date;
             $this->total_qty = $obj->total_qty;
             $this->receiver_details = $obj->receiver_details;
 
@@ -388,6 +393,8 @@ class Upsert extends Component
                     'vdate' => $this->vdate,
                     'contact_id' => $this->contact_id,
                     'jobcard_id' => $this->jobcard_id,
+                    'contact_dc' => $this->contact_dc,
+                    'dc_date' => $this->dc_date,
                     'total_qty' => $this->total_qty,
                     'receiver_details' => $this->receiver_details,
                     'active_id' => $this->active_id,
@@ -403,6 +410,8 @@ class Upsert extends Component
                 $obj->vdate = $this->vdate;
                 $obj->contact_id = $this->contact_id;
                 $obj->jobcard_id = $this->jobcard_id;
+                $obj->contact_dc = $this->contact_dc;
+                $obj->dc_date = $this->dc_date;
                 $obj->total_qty = $this->total_qty;
                 $obj->receiver_details = $this->receiver_details;
                 $obj->active_id = $this->active_id ?: '0';
@@ -418,6 +427,8 @@ class Upsert extends Component
             $this->vdate = '';
             $this->contact_id = '';
             $this->jobcard_id = '';
+            $this->contact_dc = '';
+            $this->dc_date = '';
             $this->total_qty = '';
             return $message;
         }

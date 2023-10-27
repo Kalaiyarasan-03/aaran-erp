@@ -14,6 +14,8 @@ return new class extends Migration
             $table->date('vdate');
             $table->foreignId('contact_id')->references('id')->on('contacts');
             $table->foreignId('jobcard_id')->references('id')->on('jobcards');
+            $table->string('contact_dc');
+            $table->date('dc_date');
             $table->decimal('total_qty',11,3);
             $table->string('receiver_details');
             $table->string('active_id', 3)->nullable();

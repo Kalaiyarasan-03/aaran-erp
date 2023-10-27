@@ -4,10 +4,9 @@
     <x-forms.m-panel>
 
         <section class="grid grid-cols-2 gap-12">
-            <div class="flex flex-col gap-3">
 
-
-                <div class="flex flex-col gap-2">
+            <div class="flex flex-col">
+                <div class="flex flex-col gap-1">
                     <label for="contact_name" class="gray-label">Party Name</label>
                     <div x-data="{isTyped: @entangle('contactTyped')}" @click.away="isTyped = false">
                         <div class="relative">
@@ -60,8 +59,7 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="flex flex-col gap-2">
+                <div class="flex flex-col gap-1">
                     <label for="jobcard_no" class="gray-label">Job No</label>
                     <div x-data="{isTyped: @entangle('jobcardTyped')}" @click.away="isTyped = false">
                         <div class="relative">
@@ -116,17 +114,25 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
-            <div class="flex flex-col gap-3">
-                <div class="flex flex-col gap-2">
+
+            <div class="flex flex-col">
+                <div class="flex flex-col gap-1">
                     <label for="vno" class="gray-label">V.NO</label>
                     <input id="vno" wire:model="vno" class="purple-textbox">
                 </div>
-                <div class="flex flex-col gap-2">
+                <div class="flex flex-col gap-1">
                     <label for="date" class="gray-label">Date</label>
                     <input id="date" wire:model="vdate" type="date" class="purple-textbox">
+                </div>
+
+                <div class="flex flex-col gap-1">
+                    <label for="contact_dc" class="gray-label">Party Dc No</label>
+                    <input id="contact_dc" wire:model="contact_dc" class="purple-textbox">
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label for="dc_date" class="gray-label">Date</label>
+                    <input id="dc_date" wire:model="dc_date" type="date" class="purple-textbox">
                 </div>
             </div>
         </section>

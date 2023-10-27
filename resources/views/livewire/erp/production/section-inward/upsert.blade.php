@@ -128,6 +128,14 @@
                     <label for="date" class="gray-label">Date</label>
                     <input id="date" wire:model="vdate" type="date" class="purple-textbox">
                 </div>
+                <div class="flex flex-col gap-1">
+                    <label for="contact_dc" class="gray-label">Party Dc No</label>
+                    <input id="contact_dc" wire:model="contact_dc" class="purple-textbox">
+                </div>
+                <div class="flex flex-col gap-1">
+                    <label for="dc_date" class="gray-label">Date</label>
+                    <input id="dc_date" wire:model="dc_date" type="date" class="purple-textbox">
+                </div>
             </div>
         </section>
 
