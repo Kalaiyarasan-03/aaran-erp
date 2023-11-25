@@ -8,6 +8,7 @@ use App\Models\Erp\Production\JobcardItem;
 use App\Models\Erp\Production\PeOutward;
 use App\Models\Erp\Production\PeOutwardItem;
 use App\Models\Master\Contact;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -472,6 +473,13 @@ class Upsert extends Component
     {
         $this->redirect(route('peoutwards'));
     }
+
+
+    public function print(){
+
+        $this->redirect(route('peoutwards.print',[$this->vid]));
+    }
+
 
 
     public function render()

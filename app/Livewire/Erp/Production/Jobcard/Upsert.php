@@ -6,7 +6,6 @@ use App\Models\Common\Colour;
 use App\Models\Common\Size;
 use App\Models\Erp\Fabrication\FabricLot;
 use App\Models\Erp\Order;
-use App\Models\Erp\PeInward;
 use App\Models\Erp\Production\Jobcard;
 use App\Models\Erp\Production\JobcardItem;
 use App\Models\Erp\Style;

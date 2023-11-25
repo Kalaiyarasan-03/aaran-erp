@@ -189,7 +189,7 @@ return [
         'ConvertTo' => App\Helper\ConvertTo::class,
         'Months' => App\Enums\Months::class,
         'Statuses' => App\Enums\Status::class,
-        'Actives' => App\Enums\Active::class
+        'Actives' => App\Enums\Active::class,
     ])->toArray(),
 
 ];
