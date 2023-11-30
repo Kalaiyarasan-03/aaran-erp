@@ -13,7 +13,18 @@ class PeOutwardController extends Controller
     public function __invoke($vid)
     {
         if($vid != ''){
-            $peout = PeOutward::find($vid);
+            $peout = PeOutward::select(
+                'pe_outwards.*',
+                'jobcards.vno as jobcard_no',
+                'orders.vname as order_name',
+                'styles.vname as style_name'
+            )
+                ->join('jobcards', 'jobcards.id', '=', 'pe_outwards.jobcard_id')
+                ->join('orders', 'orders.id', '=', 'jobcards.order_id')
+                ->join('styles', 'styles.id', '=', 'jobcards.style_id')
+                ->where('pe_outwards.id', '=', $vid)
+                ->get()->firstOrFail();
+
 
             $contact = Contact::printDetails($peout->contact_id);
 
