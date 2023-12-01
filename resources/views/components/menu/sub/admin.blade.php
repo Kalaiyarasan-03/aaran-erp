@@ -13,7 +13,7 @@
 
         <span class="inline-flex justify-center items-center">
                         <svg fill="currentColor" viewBox="0 0 20 20"
-                             :class="{'rotate-0': selected ==null, 'rotate-180': selected == 1}"
+                             :class="{'rotate-0': selected ==null, 'rotate-180': selected === 1}"
                              class="inline w-6 h-6 float-right transition-transform duration-500 transform md:-mt-1">
                             <path fill-rule="evenodd"
                                   d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -23,7 +23,7 @@
 
     </div>
 
-    <div x-show="selected == 1" class="p-1 flex flex-col">
+    <div x-show="selected === 1" class="p-1 flex flex-col">
 
         <ul class="grid-cols-1 grid bg-gray-800">
 

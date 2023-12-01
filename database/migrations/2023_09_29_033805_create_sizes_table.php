@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('sizes', function (Blueprint $table) {
             $table->id();
-            $table->string('vname');
+            $table->string('vname')->unique();
             $table->string('active_id', 3)->nullable();
         });
     }

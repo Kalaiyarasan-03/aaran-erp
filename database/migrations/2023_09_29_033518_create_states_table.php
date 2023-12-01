@@ -10,7 +10,8 @@ return new class extends Migration
     {
         Schema::create('states', function (Blueprint $table) {
             $table->id();
-            $table->string('vname');
+            $table->string('vname')->unique();
+            $table->string('state_code')->nullable();
             $table->string('active_id', 3)->nullable();
         });
     }

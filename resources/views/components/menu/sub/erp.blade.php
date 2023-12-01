@@ -1,4 +1,4 @@
-<!--  5 - Admin -->
+<!--  5 - Erp -->
 <li class="flex align-center flex-col cursor-pointer">
 
     <div

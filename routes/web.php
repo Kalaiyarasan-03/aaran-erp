@@ -40,3 +40,22 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 //Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 ////
 //});
+
+//Master
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('contacts', App\Livewire\Master\Contact\Index::class)->name('contacts');
+    Route::get('products', App\Livewire\Master\Product\Index::class)->name('products');
+});
+
+//Common
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('cities', App\Livewire\Common\CityList::class)->name('cities');
+    Route::get('states', App\Livewire\Common\StateList::class)->name('states');
+    Route::get('pincodes', App\Livewire\Common\PincodeList::class)->name('pincodes');
+    Route::get('categories', App\Livewire\Common\CategoryList::class)->name('categories');
+    Route::get('hsncodes', App\Livewire\Common\HsncodeList::class)->name('hsncodes');
+    Route::get('departments', App\Livewire\Common\DepartmentList::class)->name('departments');
+    Route::get('colours', App\Livewire\Common\ColourList::class)->name('colours');
+    Route::get('sizes', App\Livewire\Common\SizeList::class)->name('sizes');
+    Route::get('transports', App\Livewire\Common\TransportList::class)->name('transports');
+});
