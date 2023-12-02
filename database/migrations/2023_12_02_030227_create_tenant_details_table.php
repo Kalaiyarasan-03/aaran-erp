@@ -8,10 +8,10 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('contacts', function (Blueprint $table) {
+        Schema::create('tenant_details', function (Blueprint $table) {
             $table->id();
-            $table->string('vname');
-            $table->string('contact_person')->nullable();
+            $table->foreignId('tenant_id')->references('id')->on('tenants');
+            $table->string('vname')->unique();
             $table->string('mobile')->nullable();
             $table->string('whatsapp')->nullable();
             $table->string('landline')->nullable();
@@ -27,12 +27,11 @@ return new class extends Migration
             $table->string('active_id', 3)->nullable();
             $table->foreignId('user_id')->references('id')->on('users');
             $table->timestamps();
-            $table->unique(['vname', 'mobile']);
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('contacts');
+        Schema::dropIfExists('tenant_details');
     }
 };

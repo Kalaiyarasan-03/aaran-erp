@@ -159,7 +159,7 @@
         <th>#</th>
         <th>Order No</th>
         <th>Style No</th>
-        <th>Cutting No</th>
+        <th>Cutting Ref</th>
         <th>Colour</th>
         <th>Sizes</th>
         <th>Quantity</th>
@@ -173,8 +173,8 @@
             <td align="center">{{$obj->order_name}} </td>
             <td>{{$obj->style_name}} </td>
             <td align="center">&nbsp;{{$row['cutting_no']}}</td>
-            <td align="left">&nbsp;{{$row['colour_name']}}</td>
-            <td align="left">&nbsp;{{$row['size_name']}}</td>
+            <td align="center">&nbsp;{{$row['colour_name']}}</td>
+            <td align="center">&nbsp;{{$row['size_name']}}</td>
             <td align="right">&nbsp;{{$row['qty']}}</td>
         </tr>
 

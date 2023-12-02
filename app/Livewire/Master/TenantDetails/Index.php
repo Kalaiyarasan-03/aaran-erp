@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Livewire\Master\Contact;
+namespace App\Livewire\Master\TenantDetails;
 
 use App\Livewire\Trait\CommonTrait;
 use App\Models\Common\City;
 use App\Models\Common\Pincode;
 use App\Models\Common\State;
 use App\Models\Master\Contact;
+use App\Models\Master\TenantDetails;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -15,6 +16,7 @@ class Index extends Component
 {
     use CommonTrait;
 
+    public string $tenant_id = '';
     public string $mobile = '';
     public string $whatsapp = '';
     public string $email = '';
@@ -40,7 +42,8 @@ class Index extends Component
     {
         if ($this->vname != '') {
             if ($this->vid == "") {
-                Contact::create([
+                TenantDetails::create([
+                    'tenant_id' => $this->tenant_id,
                     'vname' => Str::ucfirst($this->vname),
                     'mobile' => $this->mobile,
                     'whatsapp' => $this->whatsapp,
@@ -57,7 +60,8 @@ class Index extends Component
                 $message = "Saved";
 
             } else {
-                $obj = Contact::find($this->vid);
+                $obj = TenantDetails::find($this->vid);
+                $obj->tenant_id = $this->tenant_id;
                 $obj->vname = Str::ucfirst($this->vname);
                 $obj->mobile = $this->mobile;
                 $obj->whatsapp = $this->whatsapp;
@@ -73,6 +77,7 @@ class Index extends Component
                 $obj->save();
                 $message = "Updated";
             }
+            $this->tenant_id = '';
             $this->vname = '';
             $this->mobile = '';
             $this->whatsapp = '';
@@ -92,8 +97,9 @@ class Index extends Component
     public function getObj($id)
     {
         if ($id) {
-            $obj = Contact::find($id);
+            $obj = TenantDetails::find($id);
             $this->vid = $obj->id;
+            $this->tenant_id = $obj->tenant_id;
             $this->vname = $obj->vname;
             $this->mobile = $obj->mobile;
             $this->whatsapp = $obj->whatsapp;
@@ -112,21 +118,21 @@ class Index extends Component
 
     public function getList()
     {
-        return Contact::search($this->searches)
+        return TenantDetails::search($this->searches)
             ->where('active_id', '=', $this->activeRecord)
             ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
             ->paginate($this->perPage);
     }
 
-    public function reRender()
+    public function reRender(): void
     {
         $this->render()->render();
     }
 
-    public function render()
+   public function render()
     {
-        return view('livewire.master.contact.index')->with([
-            'list' => $this->getList()
+        return view('livewire.master.tenant-details.index')->with([
+             'list' => $this->getList()
         ]);
     }
 }

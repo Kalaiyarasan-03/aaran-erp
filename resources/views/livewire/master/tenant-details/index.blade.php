@@ -1,5 +1,5 @@
 <div>
-    <x-slot name="header">Contacts</x-slot>
+    <x-slot name="header">Company Details</x-slot>
 
     <x-forms.m-panel>
         <x-forms.top-controls :show-filters="$showFilters"/>
