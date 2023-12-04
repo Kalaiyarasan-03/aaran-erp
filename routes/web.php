@@ -24,13 +24,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('peoutwards', App\Livewire\Erp\Production\PeOutward\Index::class)->name('peoutwards');
     Route::get('peoutwards/{id}/upsert', App\Livewire\Erp\Production\PeOutward\Upsert::class)->name('peoutwards.upsert');
-    Route::get('peoutwards/{id}/print', App\Http\Controllers\PeOutwardController::class)->name('peoutwards.print');
+    Route::get('peoutwards/{id}/print', App\Http\Controllers\Erp\Production\PeOutwardPrintController::class)->name('peoutwards.print');
 
     Route::get('peinwards', App\Livewire\Erp\Production\PeInward\Index::class)->name('peinwards');
     Route::get('peinwards/{id}/upsert', App\Livewire\Erp\Production\PeInward\Upsert::class)->name('peinwards.upsert');
 
     Route::get('sectionoutwards', App\Livewire\Erp\Production\SectionOutward\Index::class)->name('sectionoutwards');
     Route::get('sectionoutwards/{id}/upsert', App\Livewire\Erp\Production\SectionOutward\Upsert::class)->name('sectionoutwards.upsert');
+    Route::get('sectionoutwards/{id}/print', App\Http\Controllers\Erp\Production\SectionOutwardPrintController::class)->name('sectionoutwards.print');
 
     Route::get('sectioninwards', App\Livewire\Erp\Production\SectionInward\Index::class)->name('sectioninwards');
     Route::get('sectioninwards/{id}/upsert', App\Livewire\Erp\Production\SectionInward\Upsert::class)->name('sectioninwards.upsert');
@@ -45,6 +46,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('contacts', App\Livewire\Master\Contact\Index::class)->name('contacts');
     Route::get('products', App\Livewire\Master\Product\Index::class)->name('products');
+    Route::get('companies', App\Livewire\Master\TenantDetails\Index::class)->name('companies');
 });
 
 //Common

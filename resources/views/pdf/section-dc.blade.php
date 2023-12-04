@@ -17,7 +17,7 @@
         }
 
         th, td {
-            border: solid 1px #777;
+            border: solid 1px rgba(161, 161, 161, 0.9);
             border-collapse: collapse;
             padding: 2px;
             /*margin: 2px;*/
@@ -159,7 +159,6 @@
         <th>#</th>
         <th>Order No</th>
         <th>Style No</th>
-        <th>Cutting Ref</th>
         <th>Colour</th>
         <th>Sizes</th>
         <th>Quantity</th>
@@ -172,7 +171,6 @@
             <td width="12" align="center">{{$index+1}} </td>
             <td align="center">{{$obj->order_name}} </td>
             <td>{{$obj->style_name}} </td>
-            <td align="center">&nbsp;{{$row['cutting_no']}}</td>
             <td align="center">&nbsp;{{$row['colour_name']}}</td>
             <td align="center">&nbsp;{{$row['size_name']}}</td>
             <td align="right">&nbsp;{{$row['qty']}}</td>
@@ -189,7 +187,6 @@
             <td width="12" align="center">&nbsp;</td>
             <td width="12" align="center">&nbsp;</td>
             <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
         </tr>
 
     @endfor
@@ -197,17 +194,17 @@
 
 
     <tr>
-        <td colspan="7" align="center"></td>
+        <td colspan="6" align="center"></td>
     </tr>
     <tr>
-        <td colspan="3" align="left">Receiver Name : {{$obj->receiver_details}}</td>
+        <td colspan="2" align="left">Receiver Name : {{$obj->receiver_details}}</td>
         <td colspan="3" align="right">&nbsp;Total&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td align="right">&nbsp;{{$obj->total_qty}}</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 40px; text-align: left; vertical-align: top; padding-top: 5px ">Receiver Sign
         </td>
-        <td colspan="4" style="height: 40px; text-align: center; vertical-align: top; padding-top: 5px ">
+        <td colspan="3" style="height: 40px; text-align: center; vertical-align: top; padding-top: 5px ">
             for company </td>
     </tr>
     </tbody>

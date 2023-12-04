@@ -470,6 +470,12 @@ class Upsert extends Component
     }
 
 
+    public function print(): void
+    {
+
+        $this->redirect(route('sectionoutwards.print',[$this->vid]));
+    }
+
     public function render()
     {
         $this->getContactList();
