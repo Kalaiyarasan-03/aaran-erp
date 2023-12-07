@@ -170,7 +170,7 @@
         <tr>
             <td width="12" align="center">{{$index+1}} </td>
             <td align="center">{{$obj->order_name}} </td>
-            <td>{{$obj->style_name}} </td>
+            <td width="25">{{$obj->style_name}} </td>
             <td align="center">&nbsp;{{$row['cutting_no']}}</td>
             <td align="center">&nbsp;{{$row['colour_name']}}</td>
             <td align="center">&nbsp;{{$row['size_name']}}</td>
