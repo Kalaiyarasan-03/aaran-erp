@@ -28,6 +28,11 @@
                     <span class="text-gray-500 text-sm">Job&nbsp;Card&nbsp;Date&nbsp;:&nbsp;</span>
                     <span class="text-gray-800 text-xl">{{date('d-m-Y', strtotime($jobcard->vdate))}}</span>
                 </div>
+
+                <div>
+                    <span class="text-gray-500 text-sm">Time&nbsp;:&nbsp;</span>
+                    <span class="text-gray-800 text-xl">{{date('d-m-Y h:i a', strtotime($jobcard->created_at))}}</span>
+                </div>
             </div>
             <table class="w-full">
                 <thead>
@@ -74,6 +79,11 @@
             <div class="py-3 px-3">
                 <div>
                     <span class="text-gray-800 text-xl">Cutting Note</span>
+                </div>
+
+                <div>
+                    <span class="text-gray-500 text-sm">Time&nbsp;:&nbsp;</span>
+                    <span class="text-gray-800 text-xl">{{date('d-m-Y h:i a', strtotime($jobcard->created_at))}}</span>
                 </div>
             </div>
             <table class="w-full">
