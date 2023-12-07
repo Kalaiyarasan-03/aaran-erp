@@ -111,7 +111,7 @@
                         <td class="text-center border border-gray-300 bg-gray-100">
                             {{$index+1}}
                         </td>
-                        <td class="px-2 text-left border border-gray-300">{{$cut->cutting_no}}{{$cut->cutting_master}}</td>
+                        <td class="px-2 text-left border border-gray-300">{{$cut->cutting_no .' - '.}}{{$cut->cutting_master}}</td>
                         <td class="px-2 text-left border border-gray-300">{{date('d-m-Y', strtotime($cut->cutting_date))}}</td>
                         <td class="px-2 text-left border border-gray-300">{{$cut->fabric_lot_name}}</td>
                         <td class="px-2 text-center border border-gray-300">{{$cut->colour_name}}</td>
