@@ -174,7 +174,7 @@
             <td align="center">&nbsp;{{$row['cutting_no']}}</td>
             <td align="center">&nbsp;{{$row['colour_name']}}</td>
             <td align="center">&nbsp;{{$row['size_name']}}</td>
-            <td width="25" align="right">&nbsp;{{$row['qty']}}</td>
+            <td width="20" align="right">&nbsp;{{$row['qty']}}</td>
         </tr>
 
     @endforeach
