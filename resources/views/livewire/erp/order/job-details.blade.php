@@ -159,7 +159,7 @@
                         <td class="text-center border border-gray-300 bg-gray-100">
                             {{$index+1}}
                         </td>
-                        <td class="px-2 text-left border border-gray-300">{{$pe_out->pe_out_no}}</td>
+                        <td class="px-2 text-left border border-gray-300">{{$pe_out->pe_out_no . ' - '. $pe_out->contact_name }}</td>
                         <td class="px-2 text-left border border-gray-300">{{date('d-m-Y', strtotime($pe_out->pe_out_date))}}</td>
                         <td class="px-2 text-center border border-gray-300">{{$pe_out->colour_name}}</td>
                         <td class="px-2 text-center border border-gray-300">{{$pe_out->size_name}}</td>

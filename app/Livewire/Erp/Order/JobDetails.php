@@ -74,10 +74,14 @@ class JobDetails extends Component
             'sizes.vname as size_name',
             'pe_outwards.vno as pe_out_no',
             'pe_outwards.vdate as pe_out_date',
+            'pe_outwards.vdate as pe_out_date',
+            'pe_outwards.vdate as pe_out_date',
+            'contacts.vname as contact_name',
         ])
             ->join('pe_outwards', 'pe_outwards.id', '=', 'pe_outward_items.pe_outward_id')
             ->join('colours', 'colours.id', '=', 'pe_outward_items.colour_id')
             ->join('sizes', 'sizes.id', '=', 'pe_outward_items.size_id')
+            ->join('contacts', 'contacts.id', '=', 'pe_outwards.contact_id')
             ->where('pe_outwards.jobcard_id', '=', $this->jobcard->id)
             ->get();
 
