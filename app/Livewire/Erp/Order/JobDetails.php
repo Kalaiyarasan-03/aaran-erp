@@ -53,6 +53,7 @@ class JobDetails extends Component
             'sizes.vname as size_name',
             'cuttings.vno as cutting_no',
             'cuttings.vdate as cutting_date',
+            'cuttings.cutting_master as cutting_master',
         ])
             ->join('cuttings', 'cuttings.id', '=', 'cutting_items.cutting_id')
             ->join('fabric_lots', 'fabric_lots.id', '=', 'cutting_items.fabric_lot_id')
