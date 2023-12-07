@@ -9,10 +9,10 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         S01_UserSeeder::run();
-        S02_TenantSeeder::run();
         S03_CitySeeder::run();
         S04_StateSeeder::run();
         S05_PincodeSeeder::run();
+        S06_TenantSeeder::run();
 
         S09_ColourSeeder::run();
         S10_SizeSeeder::run();

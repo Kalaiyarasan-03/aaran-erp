@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Erp\Production\PeOutward;
 use App\Models\Erp\Production\SectionOutward;
 use App\Models\Master\Contact;
+use App\Models\Tenant;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,6 +30,7 @@ class SectionOutwardPrintController extends Controller
 
 
             $contact = Contact::printDetails($peout->contact_id);
+            $tenant = Tenant::printDetails(1);
 
             $data = DB::table('section_outward_items')
                 ->select(
@@ -59,6 +61,7 @@ class SectionOutwardPrintController extends Controller
             $pdf = PDF::loadView('pdf.section-dc',[
                 'obj' => $peout,
                 'list' => $peoutItem,
+                'cmp' => $tenant,
                 'contact' => $contact
             ])->setPaper($customPaper, 'landscape');
 

@@ -37,16 +37,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('sectioninwards/{id}/upsert', App\Livewire\Erp\Production\SectionInward\Upsert::class)->name('sectioninwards.upsert');
 });
 
-////Admin
-//Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-////
-//});
 
 //Master
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('contacts', App\Livewire\Master\Contact\Index::class)->name('contacts');
     Route::get('products', App\Livewire\Master\Product\Index::class)->name('products');
-    Route::get('companies', App\Livewire\Master\TenantDetails\Index::class)->name('companies');
+    Route::get('companies', App\Livewire\Master\Tenant\Index::class)->name('companies');
 });
 
 //Common

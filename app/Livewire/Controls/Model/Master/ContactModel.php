@@ -18,8 +18,8 @@ class ContactModel extends Component
     public string $pan = '';
     public string $email = '';
     public string $website = '';
-    public string $address_street = '';
-    public string $address_area = '';
+    public string $address_1 = '';
+    public string $address_2 = '';
     public string $city_id = '';
     public string $state_id = '';
     public string $pincode_id = '';
@@ -43,8 +43,8 @@ class ContactModel extends Component
                 'pan' => $this->pan,
                 'email' => $this->email,
                 'website' => $this->website,
-                'address_street' => $this->address_street,
-                'address_area' => $this->address_area,
+                'address_1' => $this->address_1,
+                'address_2' => $this->address_2,
                 'city_id' => $this->city_id,
                 'state_id' => $this->state_id,
                 'pincode_id' => $this->pincode_id,
@@ -69,8 +69,8 @@ class ContactModel extends Component
         $this->pan = "";
         $this->email = "";
         $this->website = "";
-        $this->address_street = "";
-        $this->address_area = "";
+        $this->address_1 = "";
+        $this->address_2 = "";
         $this->city_id = "";
         $this->state_id = "";
         $this->pincode_id = "";

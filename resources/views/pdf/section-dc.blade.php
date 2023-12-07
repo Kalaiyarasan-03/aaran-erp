@@ -113,10 +113,9 @@
     <tr>
         <td colspan="2">
             <div style="height: 65px;" class="bg-blue-400 ">
-                {{--                --}}{{--<img class="logoLeft" src=data:image/png;base64,{{$cmp->get('logo')}}"/>--}}
-                                <div style="text-align: center; width: 100%;" class="companyname">Amal Tex</div>
-                                <div style="text-align: center; width: 100%;" class="address1">address1</div>
-                                <div style="text-align: center; width: 100%;" class="address2">address2 + gst</div>
+                <div style="text-align: center; width: 100%;" class="companyname">{{$cmp->get('company_name')}}</div>
+                <div style="text-align: center; width: 100%;" class="address1">{{$cmp->get('address_1')}}</div>
+                <div style="text-align: center; width: 100%;" class="address2">{{$cmp->get('address_2')}}</div>
             </div>
         </td>
     </tr>
@@ -197,15 +196,16 @@
         <td colspan="6" align="center"></td>
     </tr>
     <tr>
-        <td colspan="2" align="left">Receiver Name : {{$obj->receiver_details}}</td>
-        <td colspan="3" align="right">&nbsp;Total&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="3" align="left">Receiver Name : {{$obj->receiver_details}}</td>
+        <td colspan="2" align="right">&nbsp;Total&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td align="right">&nbsp;{{$obj->total_qty}}</td>
     </tr>
     <tr>
         <td colspan="3" style="height: 40px; text-align: left; vertical-align: top; padding-top: 5px ">Receiver Sign
         </td>
         <td colspan="3" style="height: 40px; text-align: center; vertical-align: top; padding-top: 5px ">
-            for company </td>
+            &nbsp;for&nbsp;{{$cmp->get('company_name')}}
+        </td>
     </tr>
     </tbody>
 </table>

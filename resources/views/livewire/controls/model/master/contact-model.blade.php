@@ -9,8 +9,8 @@
         <x-input.lookup-text wire:model="pan" :label="'Pan'" :name="'pan'"/>
         <x-input.lookup-text wire:model="email" :label="'Email'" :name="'email'"/>
         <x-input.lookup-text wire:model="website" :label="'Website'" :name="'website'"/>
-        <x-input.lookup-text wire:model="address_street" :label="'Street'" :name="'address_street'"/>
-        <x-input.lookup-text wire:model="address_area" :label="'Area'" :name="'address_area'"/>
+        <x-input.lookup-text wire:model="address_1" :label="'Street'" :name="'address_street'"/>
+        <x-input.lookup-text wire:model="address_2" :label="'Area'" :name="'address_area'"/>
         <x-input.lookup-text wire:model="city_id" :label="'City'" :name="'city_id'"/>
         <x-input.lookup-text wire:model="state_id" :label="'State'" :name="'state_id'"/>
         <x-input.lookup-text wire:model="pincode_id" :label="'Pincode'" :name="'pincode_id'"/>

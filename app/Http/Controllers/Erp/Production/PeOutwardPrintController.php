@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Erp\Production;
 use App\Http\Controllers\Controller;
 use App\Models\Erp\Production\PeOutward;
 use App\Models\Master\Contact;
+use App\Models\Tenant;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PeOutwardPrintController extends Controller
@@ -28,6 +28,7 @@ class PeOutwardPrintController extends Controller
 
 
             $contact = Contact::printDetails($peout->contact_id);
+            $tenant = Tenant::printDetails(1);
 
             $data = DB::table('pe_outward_items')
                 ->select(
@@ -63,6 +64,7 @@ class PeOutwardPrintController extends Controller
             $pdf = PDF::loadView('pdf.pe-dc',[
                 'obj' => $peout,
                 'list' => $peoutItem,
+                'cmp' => $tenant,
                 'contact' => $contact
             ])->setPaper($customPaper, 'landscape');
 

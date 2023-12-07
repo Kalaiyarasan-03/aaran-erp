@@ -74,10 +74,10 @@
 
         .gst {
             position: fixed;
-            margin-top: 43px;
-            top: 46px !important;
+            margin-top: 32px;
+            top: 32px !important;
             font-weight: 400;
-            font-size: 16px;
+            font-size: 12px;
             text-align: center;
             font-family: sans-serif;
         }
@@ -113,10 +113,9 @@
     <tr>
         <td colspan="2">
             <div style="height: 65px;" class="bg-blue-400 ">
-                {{--                --}}{{--<img class="logoLeft" src=data:image/png;base64,{{$cmp->get('logo')}}"/>--}}
-                                <div style="text-align: center; width: 100%;" class="companyname">Amal Tex</div>
-                                <div style="text-align: center; width: 100%;" class="address1">address1</div>
-                                <div style="text-align: center; width: 100%;" class="address2">address2 + gst</div>
+                <div style="text-align: center; width: 100%;" class="companyname">{{$cmp->get('company_name')}}</div>
+                <div style="text-align: center; width: 100%;" class="address1">{{$cmp->get('address_1')}}</div>
+                <div style="text-align: center; width: 100%;" class="address2">{{$cmp->get('address_2')}}</div>
             </div>
         </td>
     </tr>
@@ -126,9 +125,9 @@
                 Delivery Challan
 
             </div>
-{{--            <div style="text-align: right; color: white; margin-top: -20px; margin-bottom: 4px">--}}
-{{--                Original copy&nbsp;&nbsp;&nbsp;&nbsp;--}}
-{{--            </div>--}}
+            {{--            <div style="text-align: right; color: white; margin-top: -20px; margin-bottom: 4px">--}}
+            {{--                Original copy&nbsp;&nbsp;&nbsp;&nbsp;--}}
+            {{--            </div>--}}
         </td>
     </tr>
     <tr>
@@ -195,7 +194,6 @@
     @endfor
 
 
-
     <tr>
         <td colspan="7" align="center"></td>
     </tr>
@@ -208,7 +206,8 @@
         <td colspan="3" style="height: 40px; text-align: left; vertical-align: top; padding-top: 5px ">Receiver Sign
         </td>
         <td colspan="4" style="height: 40px; text-align: center; vertical-align: top; padding-top: 5px ">
-            for company </td>
+            &nbsp;for&nbsp;{{$cmp->get('company_name')}}
+        </td>
     </tr>
     </tbody>
 </table>
