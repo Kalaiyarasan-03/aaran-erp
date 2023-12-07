@@ -85,6 +85,11 @@
                     <span class="text-gray-500 text-sm">Time&nbsp;:&nbsp;</span>
                     <span class="text-gray-800 text-xl">{{date('d-m-Y h:i a', strtotime($jobcard->created_at))}}</span>
                 </div>
+
+                <div>
+                    <span class="text-gray-500 text-sm">Time&nbsp;:&nbsp;</span>
+                    <span class="text-gray-800 text-xl">{{ $jobcard->user->name }}</span>
+                </div>
             </div>
             <table class="w-full">
                 <thead>

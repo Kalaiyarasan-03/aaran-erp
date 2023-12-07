@@ -4,6 +4,7 @@ namespace App\Models\Erp\Production;
 
 use App\Models\Erp\Order;
 use App\Models\Erp\Style;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -34,6 +35,11 @@ class Jobcard extends Model
     public function style(): BelongsTo
     {
         return $this->belongsTo(Style::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
 }
