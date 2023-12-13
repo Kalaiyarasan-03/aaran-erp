@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('tenants', function (Blueprint $table) {
             $table->id();
             $table->string('vname');
-            $table->string('display_name')->unique();
+            $table->string('display_name')->nullable();
             $table->string('address_1')->nullable();
             $table->string('address_2')->nullable();
             $table->foreignId('city_id')->references('id')->on('cities');
