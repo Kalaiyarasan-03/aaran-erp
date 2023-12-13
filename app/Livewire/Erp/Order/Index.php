@@ -16,29 +16,34 @@ class Index extends Component
 
     public function getSave(): string
     {
-        if ($this->vname != '') {
+        if (session()->has('tenant_id')) {
 
-            if ($this->vid == "") {
-                Order::create([
-                    'vname' => Str::upper($this->vname),
-                    'desc' => Str::ucfirst($this->desc),
-                    'active_id' => $this->active_id,
-                    'user_id' => Auth::id(),
-                ]);
-                $message = "Saved";
+            if ($this->vname != '') {
 
-            } else {
-                $obj = Order::find($this->vid);
-                $obj->vname = Str::upper($this->vname);
-                $obj->desc = Str::ucfirst($this->desc);
-                $obj->active_id = $this->active_id ?: '0';
-                $obj->user_id = Auth::id();
-                $obj->save();
-                $message = "Updated";
+                if ($this->vid == "") {
+                    Order::create([
+                        'vname' => Str::upper($this->vname),
+                        'desc' => Str::ucfirst($this->desc),
+                        'active_id' => $this->active_id,
+                        'tenant_id' => session()->get('tenant_id'),
+                        'user_id' => Auth::id(),
+                    ]);
+                    $message = "Saved";
+
+                } else {
+                    $obj = Order::find($this->vid);
+                    $obj->vname = Str::upper($this->vname);
+                    $obj->desc = Str::ucfirst($this->desc);
+                    $obj->active_id = $this->active_id ?: '0';
+                    $obj->tenant_id = session()->get('tenant_id');
+                    $obj->user_id = Auth::id();
+                    $obj->save();
+                    $message = "Updated";
+                }
+
+                $this->desc = '';
+                return $message;
             }
-
-            $this->desc = '';
-            return $message;
         }
         return '';
     }

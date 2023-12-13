@@ -427,49 +427,52 @@ class Upsert extends Component
 
     public function save(): string
     {
-        if ($this->order_id != '') {
+        if (session()->has('tenant_id')) {
 
-            if ($this->vid == "") {
+            if ($this->order_id != '') {
 
-                $obj = Cutting::create([
-                    'vno' => $this->vno,
-                    'vdate' => $this->vdate,
-                    'order_id' => $this->order_id,
-                    'jobcard_id' => $this->jobcard_id,
-                    'cutting_master' => $this->cutting_master,
-                    'total_qty' => $this->total_qty,
-                    'active_id' => '1',
-                    'user_id' => \Auth::id(),
-                ]);
-                $this->saveItem($obj->id);
+                if ($this->vid == "") {
 
-                $message = "Saved";
+                    $obj = Cutting::create([
+                        'vno' => $this->vno,
+                        'vdate' => $this->vdate,
+                        'order_id' => $this->order_id,
+                        'jobcard_id' => $this->jobcard_id,
+                        'cutting_master' => $this->cutting_master,
+                        'total_qty' => $this->total_qty,
+                        'active_id' => '1',
+                        'user_id' => \Auth::id(),
+                    ]);
+                    $this->saveItem($obj->id);
 
-            } else {
-                $obj = Cutting::find($this->vid);
-                $obj->vno = $this->vno;
-                $obj->vdate = $this->vdate;
-                $obj->order_id = $this->order_id;
-                $obj->jobcard_id = $this->jobcard_id;
-                $obj->cutting_master = $this->cutting_master;
-                $obj->total_qty = $this->total_qty;
-                $obj->active_id = '1';
-                $obj->user_id = \Auth::id();
-                $obj->save();
+                    $message = "Saved";
 
-                DB::table('cutting_items')->where('cutting_id', '=', $obj->id)->delete();
-                $this->saveItem($obj->id);
-                $message = "Updated";
+                } else {
+                    $obj = Cutting::find($this->vid);
+                    $obj->vno = $this->vno;
+                    $obj->vdate = $this->vdate;
+                    $obj->order_id = $this->order_id;
+                    $obj->jobcard_id = $this->jobcard_id;
+                    $obj->cutting_master = $this->cutting_master;
+                    $obj->total_qty = $this->total_qty;
+                    $obj->active_id = '1';
+                    $obj->user_id = \Auth::id();
+                    $obj->save();
+
+                    DB::table('cutting_items')->where('cutting_id', '=', $obj->id)->delete();
+                    $this->saveItem($obj->id);
+                    $message = "Updated";
+                }
+                $this->vno = '';
+                $this->vdate = '';
+                $this->order_id = '';
+                $this->jobcard_id = '';
+                $this->total_qty = '';
+                $this->jobcardItemName = '';
+
+                $this->getRoute();
+                return $message;
             }
-            $this->vno = '';
-            $this->vdate = '';
-            $this->order_id = '';
-            $this->jobcard_id = '';
-            $this->total_qty = '';
-            $this->jobcardItemName = '';
-
-            $this->getRoute();
-            return $message;
         }
         return '';
     }
@@ -490,7 +493,7 @@ class Upsert extends Component
 
             $sum = CuttingItem::where('jobcard_item_id', $sub['jobcard_item_id'])->sum('qty');
             $item = JobcardItem::find($sub['jobcard_item_id']);
-            $item->cutting_qty =  $item->qty - $sum;
+            $item->cutting_qty = $item->qty - $sum;
             $item->save();
         }
     }

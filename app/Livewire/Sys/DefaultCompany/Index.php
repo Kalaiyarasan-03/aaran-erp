@@ -60,6 +60,8 @@ class Index extends Component
             ]);
         }
         $this->showCompanies = false;
+
+        session()->put('tenant_id', $id);
     }
 
     public
@@ -68,6 +70,8 @@ class Index extends Component
         $obj = DefaultCompany::find(1);
         $obj->tenant_id = 0;
         $obj->save();
+
+        session()->put('tenant_id', 0);
 
         $this->showCompanies = true;
     }

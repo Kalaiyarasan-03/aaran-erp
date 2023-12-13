@@ -265,12 +265,14 @@ class Upsert extends Component
                     'section_outwards.vno as section_outward_no',
                     'colours.vname as colour_name',
                     'sizes.vname as size_name',
+                    'section_outwards.tenant_id as xtenant_id',
                 )
                 ->join('section_outward_items', 'section_outward_items.id', '=', 'section_inward_items.section_outward_item_id')
                 ->join('section_outwards', 'section_outwards.id', '=', 'section_outward_items.section_outward_id')
                 ->join('colours', 'colours.id', '=', 'section_inward_items.colour_id')
                 ->join('sizes', 'sizes.id', '=', 'section_inward_items.size_id')
                 ->where('section_inward_id', '=', $id)
+                ->where('section_outwards.tenant_id', '=', session()->has('tenant_id'))
                 ->get()
                 ->transform(function ($data) {
                     return [
@@ -386,53 +388,58 @@ class Upsert extends Component
 
     public function save(): string
     {
-        if ($this->contact_id != '') {
+        if (session()->has('tenant_id')) {
 
-            if ($this->vid == "") {
+            if ($this->contact_id != '') {
 
-                $obj = SectionInward::create([
-                    'vno' => $this->vno,
-                    'vdate' => $this->vdate,
-                    'contact_id' => $this->contact_id,
-                    'jobcard_id' => $this->jobcard_id,
-                    'contact_dc' => $this->contact_dc,
-                    'dc_date' => $this->dc_date,
-                    'total_qty' => $this->total_qty,
-                    'receiver_details' => $this->receiver_details,
-                    'active_id' => $this->active_id,
-                    'user_id' => \Auth::id(),
-                ]);
-                $this->saveItem($obj->id);
+                if ($this->vid == "") {
 
-                $message = "Saved";
+                    $obj = SectionInward::create([
+                        'vno' => $this->vno,
+                        'vdate' => $this->vdate,
+                        'contact_id' => $this->contact_id,
+                        'jobcard_id' => $this->jobcard_id,
+                        'contact_dc' => $this->contact_dc,
+                        'dc_date' => $this->dc_date,
+                        'total_qty' => $this->total_qty,
+                        'receiver_details' => $this->receiver_details,
+                        'active_id' => $this->active_id,
+                        'tenant_id' => session()->has('tenant_id'),
+                        'user_id' => \Auth::id(),
+                    ]);
+                    $this->saveItem($obj->id);
 
-            } else {
-                $obj = SectionInward::find($this->vid);
-                $obj->vno = $this->vno;
-                $obj->vdate = $this->vdate;
-                $obj->contact_id = $this->contact_id;
-                $obj->jobcard_id = $this->jobcard_id;
-                $obj->contact_dc = $this->contact_dc;
-                $obj->dc_date = $this->dc_date;
-                $obj->total_qty = $this->total_qty;
-                $obj->receiver_details = $this->receiver_details;
-                $obj->active_id = $this->active_id ?: '0';
-                $obj->user_id = \Auth::id();
-                $obj->save();
+                    $message = "Saved";
 
-                DB::table('section_inward_items')->where('section_inward_id', '=', $obj->id)->delete();
-                $this->saveItem($obj->id);
-                $message = "Updated";
+                } else {
+                    $obj = SectionInward::find($this->vid);
+                    $obj->vno = $this->vno;
+                    $obj->vdate = $this->vdate;
+                    $obj->contact_id = $this->contact_id;
+                    $obj->jobcard_id = $this->jobcard_id;
+                    $obj->contact_dc = $this->contact_dc;
+                    $obj->dc_date = $this->dc_date;
+                    $obj->total_qty = $this->total_qty;
+                    $obj->receiver_details = $this->receiver_details;
+                    $obj->active_id = $this->active_id ?: '0';
+                    $obj->tenant_id = session()->has('tenant_id');
+                    $obj->user_id = \Auth::id();
+                    $obj->save();
+
+                    DB::table('section_inward_items')->where('section_inward_id', '=', $obj->id)->delete();
+                    $this->saveItem($obj->id);
+                    $message = "Updated";
+                }
+                $this->getRoute();
+                $this->vno = '';
+                $this->vdate = '';
+                $this->contact_id = '';
+                $this->jobcard_id = '';
+                $this->contact_dc = '';
+                $this->dc_date = '';
+                $this->total_qty = '';
+                return $message;
             }
-            $this->getRoute();
-            $this->vno = '';
-            $this->vdate = '';
-            $this->contact_id = '';
-            $this->jobcard_id = '';
-            $this->contact_dc = '';
-            $this->dc_date = '';
-            $this->total_qty = '';
-            return $message;
         }
         return '';
     }
@@ -454,13 +461,13 @@ class Upsert extends Component
             $sum = SectionInwardItem::where('jobcard_item_id', $sub['jobcard_item_id'])->sum('qty');
 
             $item = JobcardItem::find($sub['jobcard_item_id']);
-            $item->se_in_qty =  $item->qty - $sum;
+            $item->se_in_qty = $item->qty - $sum;
             $item->save();
 
             $sum_1 = SectionInwardItem::where('section_outward_item_id', $sub['section_outward_item_id'])->sum('qty');
 
             $item_1 = SectionOutwardItem::find($sub['section_outward_item_id']);
-            $item_1->pending_qty =  $item_1->qty - $sum_1;
+            $item_1->pending_qty = $item_1->qty - $sum_1;
             $item_1->save();
         }
     }

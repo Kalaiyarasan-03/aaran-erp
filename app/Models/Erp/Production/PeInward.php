@@ -12,8 +12,6 @@ class PeInward extends Model
 {
     use HasFactory;
 
-    use BelongsToTenant;
-
     protected $guarded = [];
 
     public static function search(string $searches)

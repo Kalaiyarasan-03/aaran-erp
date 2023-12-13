@@ -212,6 +212,7 @@ class Upsert extends Component
             ->join('colours', 'colours.id', '=', 'cutting_items.colour_id')
             ->join('sizes', 'sizes.id', '=', 'cutting_items.size_id')
             ->where('jobcard_items.jobcard_id', '=', $this->jobcard_id)
+            ->where('cutting_items.tenant_id', '=',  session()->get('tenant_id'))
             ->get()
             ->transform(function ($data) {
                 return [
@@ -317,7 +318,7 @@ class Upsert extends Component
                     'colour_id' => $this->colour_id,
                     'colour_name' => $this->colour_name,
                     'size_id' => $this->size_id,
-                    'size_name' => $this->size_name,
+                    'tenant_id' => session()->get('tenant_id'),
                     'qty' => $this->qty,
                 ];
             }
@@ -330,7 +331,7 @@ class Upsert extends Component
                 'colour_id' => $this->colour_id,
                 'colour_name' => $this->colour_name,
                 'size_id' => $this->size_id,
-                'size_name' => $this->size_name,
+                'tenant_id' => session()->get('tenant_id'),
                 'qty' => $this->qty,
             ];
         }
@@ -388,47 +389,51 @@ class Upsert extends Component
 
     public function save(): string
     {
-        if ($this->contact_id != '') {
+        if (session()->has('tenant_id')) {
 
-            if ($this->vid == "") {
+            if ($this->contact_id != '') {
 
-                $obj = PeOutward::create([
-                    'vno' => $this->vno,
-                    'vdate' => $this->vdate,
-                    'contact_id' => $this->contact_id,
-                    'jobcard_id' => $this->jobcard_id,
-                    'total_qty' => $this->total_qty,
-                    'receiver_details' => $this->receiver_details,
-                    'active_id' => $this->active_id,
-                    'user_id' => \Auth::id(),
-                ]);
-                $this->saveItem($obj->id);
+                if ($this->vid == "") {
 
-                $message = "Saved";
+                    $obj = PeOutward::create([
+                        'vno' => $this->vno,
+                        'vdate' => $this->vdate,
+                        'contact_id' => $this->contact_id,
+                        'jobcard_id' => $this->jobcard_id,
+                        'total_qty' => $this->total_qty,
+                        'receiver_details' => $this->receiver_details,
+                        'active_id' => $this->active_id,
+                        'tenant_id' => $this->tenant_id,
+                        'user_id' => \Auth::id(),
+                    ]);
+                    $this->saveItem($obj->id);
 
-            } else {
-                $obj = PeOutward::find($this->vid);
-                $obj->vno = $this->vno;
-                $obj->vdate = $this->vdate;
-                $obj->contact_id = $this->contact_id;
-                $obj->jobcard_id = $this->jobcard_id;
-                $obj->total_qty = $this->total_qty;
-                $obj->receiver_details = $this->receiver_details;
-                $obj->active_id = $this->active_id ?: '0';
-                $obj->user_id = \Auth::id();
-                $obj->save();
+                    $message = "Saved";
 
-                DB::table('pe_outward_items')->where('pe_outward_id', '=', $obj->id)->delete();
-                $this->saveItem($obj->id);
-                $message = "Updated";
+                } else {
+                    $obj = PeOutward::find($this->vid);
+                    $obj->vno = $this->vno;
+                    $obj->vdate = $this->vdate;
+                    $obj->contact_id = $this->contact_id;
+                    $obj->jobcard_id = $this->jobcard_id;
+                    $obj->total_qty = $this->total_qty;
+                    $obj->receiver_details = $this->receiver_details;
+                    $obj->active_id = $this->active_id ?: '0';
+                    $obj->user_id = \Auth::id();
+                    $obj->save();
+
+                    DB::table('pe_outward_items')->where('pe_outward_id', '=', $obj->id)->delete();
+                    $this->saveItem($obj->id);
+                    $message = "Updated";
+                }
+                $this->getRoute();
+                $this->vno = '';
+                $this->vdate = '';
+                $this->contact_id = '';
+                $this->jobcard_id = '';
+                $this->total_qty = '';
+                return $message;
             }
-            $this->getRoute();
-            $this->vno = '';
-            $this->vdate = '';
-            $this->contact_id = '';
-            $this->jobcard_id = '';
-            $this->total_qty = '';
-            return $message;
         }
         return '';
     }
@@ -450,13 +455,13 @@ class Upsert extends Component
             $sum = PeOutwardItem::where('jobcard_item_id', $sub['jobcard_item_id'])->sum('qty');
 
             $item = JobcardItem::find($sub['jobcard_item_id']);
-            $item->pe_out_qty =  $item->qty - $sum;
+            $item->pe_out_qty = $item->qty - $sum;
             $item->save();
 
             $sum_1 = PeOutwardItem::where('cutting_item_id', $sub['cutting_item_id'])->sum('qty');
 
             $item_1 = CuttingItem::find($sub['cutting_item_id']);
-            $item_1->pending_qty =  $item_1->qty - $sum_1;
+            $item_1->pending_qty = $item_1->qty - $sum_1;
             $item_1->save();
 
         }
@@ -475,11 +480,11 @@ class Upsert extends Component
     }
 
 
-    public function print(){
+    public function print()
+    {
 
-        $this->redirect(route('peoutwards.print',[$this->vid]));
+        $this->redirect(route('peoutwards.print', [$this->vid]));
     }
-
 
 
     public function render()
