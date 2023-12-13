@@ -13,6 +13,7 @@ class S14_OrderSeeder extends Seeder
             'vname' => 'SK-001',
             'desc' => 'SK-001 desc',
             'active_id' => '1',
+            'tenant_id' => '1',
             'user_id' => '1'
         ]);
 
@@ -20,6 +21,7 @@ class S14_OrderSeeder extends Seeder
             'vname' => 'SK-002',
             'desc' => 'SK-002 desc',
             'active_id' => '1',
+            'tenant_id' => '1',
             'user_id' => '1'
         ]);
 
@@ -27,6 +29,7 @@ class S14_OrderSeeder extends Seeder
             'vname' => 'SK-003',
             'desc' => 'SK-003 desc',
             'active_id' => '1',
+            'tenant_id' => '1',
             'user_id' => '1'
         ]);
     }

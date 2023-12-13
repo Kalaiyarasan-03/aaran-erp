@@ -13,6 +13,7 @@ class S15_StyleSeeder extends Seeder
             'vname' => 'Style - 1',
             'desc' => 'Style - 1 desc',
             'active_id' => '1',
+            'tenant_id' => '1',
             'user_id' => '1'
         ]);
 
@@ -20,6 +21,7 @@ class S15_StyleSeeder extends Seeder
             'vname' => 'Style - 2',
             'desc' => 'Style - 2 desc',
             'active_id' => '1',
+            'tenant_id' => '1',
             'user_id' => '1'
         ]);
 
@@ -27,6 +29,7 @@ class S15_StyleSeeder extends Seeder
             'vname' => 'Style - 3',
             'desc' => 'Style - 3 desc',
             'active_id' => '1',
+            'tenant_id' => '1',
             'user_id' => '1'
         ]);
     }

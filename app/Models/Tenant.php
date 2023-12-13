@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Common\City;
 use App\Models\Common\Pincode;
 use App\Models\Common\State;
+use App\Models\Sys\DefaultCompany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -46,6 +47,11 @@ class Tenant extends Model
     public function pincode(): BelongsTo
     {
         return $this->belongsTo(Pincode::class);
+    }
+
+    public function defaultCompany()
+    {
+        return $this->belongsTo(DefaultCompany::class);
     }
 
 

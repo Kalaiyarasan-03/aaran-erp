@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('total_qty',11,3);
             $table->string('receiver_details');
             $table->string('active_id', 3)->nullable();
+            $table->foreignId('tenant_id')->references('id')->on('tenants');
             $table->foreignId('user_id')->references('id')->on('users');
             $table->timestamps();
         });

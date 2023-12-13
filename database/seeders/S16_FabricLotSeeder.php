@@ -13,6 +13,7 @@ class S16_FabricLotSeeder extends Seeder
             'vname' => 'Lot- 1',
             'desc' => 'Lot - 1 desc',
             'active_id' => '1',
+            'tenant_id' => '1',
             'user_id' => '1'
         ]);
 
@@ -20,6 +21,7 @@ class S16_FabricLotSeeder extends Seeder
             'vname' => 'Lot- 2',
             'desc' => 'Lot -2 desc',
             'active_id' => '1',
+            'tenant_id' => '1',
             'user_id' => '1'
         ]);
 
@@ -27,6 +29,7 @@ class S16_FabricLotSeeder extends Seeder
             'vname' => 'Lot- 3',
             'desc' => 'Lot - 3 desc',
             'active_id' => '1',
+            'tenant_id' => '1',
             'user_id' => '1'
         ]);
     }

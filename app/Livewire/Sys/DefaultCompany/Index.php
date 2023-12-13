@@ -21,10 +21,12 @@ class Index extends Component
     {
         $defaultCompany = DefaultCompany::find(1);
 
-        if ($defaultCompany) {
+
+        if ($defaultCompany != null ) {
             if ($defaultCompany->tenant_id != 0) {
                 $this->tenant = Tenant::find($defaultCompany->tenant_id);
                 $this->company = $this->tenant->vname;
+                session()->put('tenant_id', $defaultCompany->tenant_id);
                 $this->showCompanies = false;
             } else {
                 $this->company = '';

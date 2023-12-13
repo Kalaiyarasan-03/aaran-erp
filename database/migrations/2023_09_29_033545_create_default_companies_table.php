@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('default_companies', function (Blueprint $table) {
             $table->id();
-            $table->integer('tenant_id');
+            $table->foreignId('tenant_id')->nullable();
             $table->integer('acyear');
         });
     }

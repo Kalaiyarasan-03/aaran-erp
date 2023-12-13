@@ -17,6 +17,7 @@ class S17_JobcardSeeder extends Seeder
             'style_id' => '1',
             'total_qty' => 200,
             'active_id' => '1',
+            'tenant_id' => '1',
             'user_id' => '1',
         ]);
 
@@ -46,6 +47,7 @@ class S17_JobcardSeeder extends Seeder
             'style_id' => '2',
             'total_qty' => 400,
             'active_id' => '1',
+            'tenant_id' => '1',
             'user_id' => '1',
         ]);
 
@@ -75,6 +77,7 @@ class S17_JobcardSeeder extends Seeder
             'style_id' => '3',
             'total_qty' => 600,
             'active_id' => '1',
+            'tenant_id' => '1',
             'user_id' => '1',
         ]);
 

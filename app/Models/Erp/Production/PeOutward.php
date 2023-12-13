@@ -3,6 +3,7 @@
 namespace App\Models\Erp\Production;
 
 use App\Models\Master\Contact;
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class PeOutward extends Model
 {
     use HasFactory;
+
+    use BelongsToTenant;
 
     protected $guarded = [];
 
