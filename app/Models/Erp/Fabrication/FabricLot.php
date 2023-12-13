@@ -2,15 +2,12 @@
 
 namespace App\Models\Erp\Fabrication;
 
-use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class FabricLot extends Model
 {
     use HasFactory;
-
-    use BelongsToTenant;
 
     public $timestamps = false;
 

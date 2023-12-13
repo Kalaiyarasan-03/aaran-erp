@@ -26,6 +26,7 @@ class Index extends EntriesIndexAbstract
             ->join('orders', 'orders.id', '=', 'jobcards.order_id')
             ->join('styles', 'styles.id', '=', 'jobcards.style_id')
             ->where('section_outwards.active_id', '=', $this->activeRecord)
+            ->where('section_outwards.tenant_id', '=', session()->get('tenant_id'))
             ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
             ->paginate($this->perPage);
     }

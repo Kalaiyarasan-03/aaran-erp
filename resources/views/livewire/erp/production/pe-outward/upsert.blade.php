@@ -6,7 +6,6 @@
         <section class="grid grid-cols-2 gap-12">
             <div class="flex flex-col gap-3">
 
-
                 <div class="flex flex-col gap-2">
                     <label for="contact_name" class="gray-label">Party Name</label>
                     <div x-data="{isTyped: @entangle('contactTyped')}" @click.away="isTyped = false">
@@ -51,6 +50,59 @@
                                                 @empty
                                                     @livewire('controls.model.master.contact-model',[$contact_name])
 
+                                                @endforelse
+                                            @endif
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label for="order_no" class="gray-label">Order No</label>
+                    <div x-data="{isTyped: @entangle('orderTyped')}" @click.away="isTyped = false">
+                        <div class="relative">
+                            <input
+                                id="order_no"
+                                type="search"
+                                wire:model.live="order_no"
+                                autocomplete="off"
+                                placeholder="Order No.."
+                                @focus="isTyped = true"
+                                @keydown.escape.window="isTyped = false"
+                                @keydown.tab.window="isTyped = false"
+                                @keydown.enter.prevent="isTyped = false"
+                                wire:keydown.arrow-up="decrementOrder"
+                                wire:keydown.arrow-down="incrementOrder"
+                                wire:keydown.enter="enterOrder"
+                                class="block w-full purple-textbox"
+                            />
+
+                            <div x-show="isTyped"
+                                 x-transition:leave="transition ease-in duration-100"
+                                 x-transition:leave-start="opacity-100"
+                                 x-transition:leave-end="opacity-0"
+                                 x-cloak
+                            >
+                                <div class="absolute z-20 w-full mt-2">
+                                    <div class="block py-1 shadow-md w-full
+                rounded-lg border-transparent flex-1 appearance-none border
+                                 bg-white text-gray-800 ring-1 ring-purple-600">
+                                        <ul class="overflow-y-scroll h-96">
+                                            @if($orderCollection)
+                                                @forelse ($orderCollection as $i => $order)
+
+                                                    <li class="cursor-pointer px-3 py-1 hover:font-bold hover:bg-yellow-100 border-b border-gray-300 h-8
+                                                        {{ $highlightOrder === $i ? 'bg-yellow-100' : '' }}"
+                                                        wire:click.prevent="setOrder('{{$order->vname}}','{{$order->id}}')"
+                                                        x-on:click="isTyped = false">
+                                                        {{ $order->vname }}
+                                                    </li>
+
+                                                @empty
+                                                    @livewire('controls.model.erp.order-model',[$order_no])
                                                 @endforelse
                                             @endif
                                         </ul>
@@ -116,7 +168,6 @@
                         </div>
                     </div>
                 </div>
-
 
             </div>
             <div class="flex flex-col gap-3">

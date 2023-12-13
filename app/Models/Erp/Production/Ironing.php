@@ -2,15 +2,12 @@
 
 namespace App\Models\Erp\Production;
 
-use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Ironing extends Model
 {
     use HasFactory;
-
-    use BelongsToTenant;
 
     protected $guarded = [];
 

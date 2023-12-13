@@ -310,6 +310,7 @@ class Upsert extends Component
                 ->join('colours', 'colours.id', '=', 'jobcard_items.colour_id')
                 ->join('sizes', 'sizes.id', '=', 'jobcard_items.size_id')
                 ->where('cutting_id', '=', $id)
+                ->where('cuttings.tenant_id', '=', session()->get('tenant_id'))
                 ->get()
                 ->transform(function ($data) {
                     return [
@@ -441,6 +442,7 @@ class Upsert extends Component
                         'cutting_master' => $this->cutting_master,
                         'total_qty' => $this->total_qty,
                         'active_id' => '1',
+                        'tenant_id' => session()->get('tenant_id'),
                         'user_id' => \Auth::id(),
                     ]);
                     $this->saveItem($obj->id);
@@ -456,6 +458,7 @@ class Upsert extends Component
                     $obj->cutting_master = $this->cutting_master;
                     $obj->total_qty = $this->total_qty;
                     $obj->active_id = '1';
+                    $obj->tenant_id = session()->get('tenant_id');
                     $obj->user_id = \Auth::id();
                     $obj->save();
 

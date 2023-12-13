@@ -64,7 +64,7 @@ class Upsert extends Component
     }
 
     #[On('refresh-order')]
-    public function refreshContact($v): void
+    public function refreshOrder($v): void
     {
         $this->order_id = $v['id'];
         $this->order_no = $v['name'];
@@ -366,6 +366,7 @@ class Upsert extends Component
                 ->join('colours', 'colours.id', '=', 'jobcard_items.colour_id')
                 ->join('sizes', 'sizes.id', '=', 'jobcard_items.size_id')
                 ->where('jobcard_id', '=', $id)
+                ->where('tenant_id', '=', session()->get('tenant_id'))
                 ->get()
                 ->transform(function ($data) {
                     return [
@@ -489,6 +490,7 @@ class Upsert extends Component
                         'style_id' => $this->style_id,
                         'total_qty' => $this->total_qty,
                         'active_id' => '1',
+                        'tenant_id' => session()->get('tenant_id'),
                         'user_id' => \Auth::id(),
                     ]);
                     $this->saveItem($obj->id);
@@ -503,6 +505,7 @@ class Upsert extends Component
                     $obj->style_id = $this->style_id;
                     $obj->total_qty = $this->total_qty;
                     $obj->active_id = '1';
+                    $obj->tenant_id = session()->get('tenant_id');
                     $obj->user_id = \Auth::id();
                     $obj->save();
 

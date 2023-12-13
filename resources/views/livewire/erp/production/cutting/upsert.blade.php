@@ -319,7 +319,7 @@
                     <x-button.back/>
                 </div>
                 <div>
-                    <x-button.print/>
+{{--                    <x-button.print/>--}}
                 </div>
                 <div>
                     <x-button.delete/>

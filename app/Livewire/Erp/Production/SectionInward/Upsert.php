@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Erp\Production\SectionInward;
 
+use App\Models\Erp\Order;
 use App\Models\Erp\Production\Jobcard;
 use App\Models\Erp\Production\JobcardItem;
 use App\Models\Erp\Production\PeInwardItem;
@@ -78,6 +79,70 @@ class Upsert extends Component
         $this->contact_name = $v['name'];
         $this->contactTyped = false;
     }
+
+    //
+    // Order no
+    //
+    public $order_id = '';
+    public $order_no = '';
+    public Collection $orderCollection;
+    public $highlightOrder = 0;
+    public $orderTyped = false;
+
+    public function decrementOrder(): void
+    {
+        if ($this->highlightOrder === 0) {
+            $this->highlightOrder = count($this->orderCollection) - 1;
+            return;
+        }
+        $this->highlightOrder--;
+    }
+
+    public function incrementOrder(): void
+    {
+        if ($this->highlightOrder === count($this->orderCollection) - 1) {
+            $this->highlightOrder = 0;
+            return;
+        }
+        $this->highlightOrder++;
+    }
+
+    public function enterOrder(): void
+    {
+        $obj = $this->orderCollection[$this->highlightOrder] ?? null;
+
+        $this->order_no = '';
+        $this->orderCollection = Collection::empty();
+        $this->highlightOrder = 0;
+
+        $this->order_no = $obj['vname'] ?? '';;
+        $this->order_id = $obj['id'] ?? '';;
+    }
+
+    public function setOrder($name, $id): void
+    {
+        $this->order_no = $name;
+        $this->order_id = $id;
+        $this->getOrderList();
+    }
+
+    #[On('refresh-order')]
+    public function refreshOrder($v): void
+    {
+        $this->order_id = $v['id'];
+        $this->order_no = $v['name'];
+        $this->orderTyped = false;
+
+    }
+
+    public function getOrderList(): void
+    {
+        $this->orderCollection = $this->order_no ? Order::search(trim($this->order_no))
+            ->where('tenant_id', '=', session()->get('tenant_id'))
+            ->get() : Order::where('tenant_id', '=', session()->get('tenant_id'))->get();
+    }
+
+
     //
     // Job Card
     //
@@ -127,7 +192,10 @@ class Upsert extends Component
     public function getJobcardList(): void
     {
         $this->jobcardCollection = $this->jobcard_no ? Jobcard::search(trim($this->jobcard_no))
-            ->get() : Jobcard::all();
+            ->where('tenant_id', '=', session()->get('tenant_id'))
+            ->where('order_id', '=', $this->order_id ?: '1')
+            ->get() :
+            Jobcard::where('tenant_id', '=', session()->get('tenant_id'))->get();
     }
 
     #[On('refresh-jobcard')]
@@ -252,6 +320,7 @@ class Upsert extends Component
             $this->vdate = $obj->vdate;
             $this->contact_id = $obj->contact_id;
             $this->contact_name = $obj->contact->vname;
+            $this->order_no = $obj->jobcard->order->vname;
             $this->jobcard_id = $obj->jobcard_id;
             $this->jobcard_no = $obj->jobcard->vno;
             $this->contact_dc = $obj->contact_dc;
@@ -265,14 +334,13 @@ class Upsert extends Component
                     'section_outwards.vno as section_outward_no',
                     'colours.vname as colour_name',
                     'sizes.vname as size_name',
-                    'section_outwards.tenant_id as xtenant_id',
                 )
                 ->join('section_outward_items', 'section_outward_items.id', '=', 'section_inward_items.section_outward_item_id')
                 ->join('section_outwards', 'section_outwards.id', '=', 'section_outward_items.section_outward_id')
                 ->join('colours', 'colours.id', '=', 'section_inward_items.colour_id')
                 ->join('sizes', 'sizes.id', '=', 'section_inward_items.size_id')
                 ->where('section_inward_id', '=', $id)
-                ->where('section_outwards.tenant_id', '=', session()->has('tenant_id'))
+                ->where('section_outwards.tenant_id', '=', session()->get('tenant_id'))
                 ->get()
                 ->transform(function ($data) {
                     return [
@@ -404,7 +472,7 @@ class Upsert extends Component
                         'total_qty' => $this->total_qty,
                         'receiver_details' => $this->receiver_details,
                         'active_id' => $this->active_id,
-                        'tenant_id' => session()->has('tenant_id'),
+                        'tenant_id' => session()->get('tenant_id'),
                         'user_id' => \Auth::id(),
                     ]);
                     $this->saveItem($obj->id);
@@ -422,7 +490,7 @@ class Upsert extends Component
                     $obj->total_qty = $this->total_qty;
                     $obj->receiver_details = $this->receiver_details;
                     $obj->active_id = $this->active_id ?: '0';
-                    $obj->tenant_id = session()->has('tenant_id');
+                    $obj->tenant_id = session()->get('tenant_id');
                     $obj->user_id = \Auth::id();
                     $obj->save();
 
@@ -488,6 +556,7 @@ class Upsert extends Component
     public function render()
     {
         $this->getContactList();
+        $this->getOrderList();
         $this->getJobcardList();
         $this->getSectionOutwardList();
         return view('livewire.erp.production.section-inward.upsert');

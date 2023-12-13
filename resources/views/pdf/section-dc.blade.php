@@ -125,9 +125,9 @@
                 Delivery Challan
 
             </div>
-{{--            <div style="text-align: right; color: white; margin-top: -20px; margin-bottom: 4px">--}}
-{{--                Original copy&nbsp;&nbsp;&nbsp;&nbsp;--}}
-{{--            </div>--}}
+            <div style="text-align: right; color: white; margin-top: -20px; margin-bottom: 4px">
+                Original copy&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
         </td>
     </tr>
     <tr>
@@ -141,9 +141,112 @@
         </td>
         <td style="padding: 0;margin: 0;">
             <div style="text-align: left; width: 100%">
+                <div><span style="font-size: 18px;">&nbsp;Unit-{{session()->get('tenant_id')}}</span></div>
                 <div><span style="vertical-align: middle;font-size: 13px; ">&nbsp;&nbsp;Dc no:&nbsp;</span><span
                         style="font-size: 18px;">&nbsp;&nbsp;{{$obj->vno}}</span></div>
-                <div style="height: 15px">&nbsp;</div>
+                <div><span style="vertical-align: middle;font-size: 13px; ">&nbsp;&nbsp;Date:&nbsp;</span><span
+                        style="font-size: 14px;">{{$obj->vdate}}</span></div>
+            </div>
+        </td>
+    </tr>
+    </thead>
+</table>
+
+<table width="100%">
+    <thead style="background-color: lightgray;">
+    <tr>
+        <th>#</th>
+        <th>Order No</th>
+        <th>Style No</th>
+        <th>Colour</th>
+        <th>Sizes</th>
+        <th>Quantity</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach($list as $index => $row)
+
+        <tr>
+            <td width="12" align="center">{{$index+1}} </td>
+            <td align="center">{{$obj->order_name}} </td>
+            <td width="55">{{$obj->style_name}} </td>
+            <td align="center">&nbsp;{{$row['colour_name']}}</td>
+            <td align="center">&nbsp;{{$row['size_name']}}</td>
+            <td width="20" align="right">&nbsp;{{$row['qty']}}</td>
+        </tr>
+
+    @endforeach
+
+    @for($i = 0; $i < 10-$list->count(); $i++)
+
+        <tr>
+            <td width="12" align="center">&nbsp;</td>
+            <td width="12" align="center">&nbsp;</td>
+            <td width="12" align="center">&nbsp;</td>
+            <td width="12" align="center">&nbsp;</td>
+            <td width="12" align="center">&nbsp;</td>
+            <td width="12" align="center">&nbsp;</td>
+        </tr>
+
+    @endfor
+
+
+
+    <tr>
+        <td colspan="6" align="center"></td>
+    </tr>
+    <tr>
+        <td colspan="3" align="left">Receiver Name : {{$obj->receiver_details}}</td>
+        <td colspan="2" align="right">&nbsp;Total&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td align="right">&nbsp;{{$obj->total_qty}}</td>
+    </tr>
+    <tr>
+        <td colspan="3" style="height: 40px; text-align: left; vertical-align: top; padding-top: 5px ">Receiver Sign
+        </td>
+        <td colspan="3" style="height: 40px; text-align: center; vertical-align: top; padding-top: 5px ">
+            &nbsp;for&nbsp;{{$cmp->get('company_name')}}
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+<table width="100%" class="print:*">
+    <thead>
+    <tr>
+        <td colspan="2">
+            <div style="height: 65px;" class="bg-blue-400 ">
+                <div style="text-align: center; width: 100%;" class="companyname">{{$cmp->get('company_name')}}</div>
+                <div style="text-align: center; width: 100%;" class="address1">{{$cmp->get('address_1')}}</div>
+                <div style="text-align: center; width: 100%;" class="address2">{{$cmp->get('address_2')}}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="  background-color: darkgray">
+            <div style=" height: 18px;text-align: center;  vertical-align: middle; color: white; font-size: medium  ">
+                Delivery Challan
+
+            </div>
+            <div style="text-align: right; color: white; margin-top: -20px; margin-bottom: 4px">
+                Second copy&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 0;margin: 0;">
+            <div style="text-align: left;">
+                <p style="font-size: 12px; line-height: 5px ">&nbsp;&nbsp;M/s.{{$contact->get('contact_name')}}</p>
+                <p style="line-height: 5px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$contact->get('address_1')}}</p>
+                <p style="line-height: 5px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$contact->get('address_3')}}</p>
+                <p style="line-height: 5px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$contact->get('gstCell')}}</p>
+            </div>
+        </td>
+        <td style="padding: 0;margin: 0;">
+            <div style="text-align: left; width: 100%">
+                <div><span style="font-size: 18px;">&nbsp;Unit-{{session()->get('tenant_id')}}</span></div>
+                <div><span style="vertical-align: middle;font-size: 13px; ">&nbsp;&nbsp;Dc no:&nbsp;</span><span
+                        style="font-size: 18px;">&nbsp;&nbsp;{{$obj->vno}}</span></div>
                 <div><span style="vertical-align: middle;font-size: 13px; ">&nbsp;&nbsp;Date:&nbsp;</span><span
                         style="font-size: 14px;">{{$obj->vdate}}</span></div>
             </div>

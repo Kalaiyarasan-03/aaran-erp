@@ -5,7 +5,6 @@ namespace App\Models\Erp\Production;
 use App\Models\Erp\Order;
 use App\Models\Erp\Style;
 use App\Models\User;
-use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,8 +12,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Jobcard extends Model
 {
     use HasFactory;
-
-    use BelongsToTenant;
 
     protected $guarded = [];
 
