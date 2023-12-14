@@ -26,7 +26,6 @@ class Index extends Component
                         'vname' => Str::upper($this->vname),
                         'desc' => Str::ucfirst($this->desc),
                         'active_id' => $this->active_id,
-                        'tenant_id' => session()->get('tenant_id'),
                         'user_id' => Auth::id(),
                     ]);
                     $message = "Saved";
@@ -36,7 +35,6 @@ class Index extends Component
                     $obj->vname = Str::upper($this->vname);
                     $obj->desc = Str::ucfirst($this->desc);
                     $obj->active_id = $this->active_id ?: '0';
-                    $obj->tenant_id = session()->get('tenant_id');
                     $obj->user_id = Auth::id();
                     $obj->save();
                     $message = "Updated";

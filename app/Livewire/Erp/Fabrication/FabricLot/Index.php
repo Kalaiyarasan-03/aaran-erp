@@ -67,7 +67,6 @@ class Index extends Component
 
         return FabricLot::search($this->searches)
             ->where('active_id', '=', $this->activeRecord)
-            ->where('tenant_id', '=', session()->get('tenant_id'))
             ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
             ->paginate($this->perPage);
     }
