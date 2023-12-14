@@ -293,7 +293,7 @@
             {{--Qty -------------------------------------------------------------------------------------}}
             <div class="w-full">
                 <label for="qty"></label>
-                <input id="qty" wire:model="qty" class="block w-full purple-textbox-no-rounded" placeholder="Qty">
+                <input id="qty" wire:model="qty" class="block w-full purple-textbox-no-rounded" autocomplete="false" placeholder="Qty">
             </div>
 
             <button wire:click="addItems" class="px-3 bg-green-500 text-white font-semibold tracking-wider ">Add
