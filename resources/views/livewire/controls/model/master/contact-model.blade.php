@@ -11,8 +11,27 @@
         <x-input.lookup-text wire:model="website" :label="'Website'" :name="'website'"/>
         <x-input.lookup-text wire:model="address_1" :label="'Street'" :name="'address_street'"/>
         <x-input.lookup-text wire:model="address_2" :label="'Area'" :name="'address_area'"/>
-        <x-input.lookup-text wire:model="city_id" :label="'City'" :name="'city_id'"/>
-        <x-input.lookup-text wire:model="state_id" :label="'State'" :name="'state_id'"/>
-        <x-input.lookup-text wire:model="pincode_id" :label="'Pincode'" :name="'pincode_id'"/>
+
+        <x-input.model-select wire:model="city_id" :label="'City'">
+            <option class="text-gray-400"> choose ..</option>
+            @foreach($cities as $city)
+                <option value="{{$city->id}}">{{$city->vname}}</option>
+            @endforeach
+        </x-input.model-select>
+
+        <x-input.model-select wire:model="state_id" :label="'State'">
+            <option class="text-gray-400"> choose ..</option>
+            @foreach($states as $state)
+                <option value="{{$state->id}}">{{$state->vname}}</option>
+            @endforeach
+        </x-input.model-select>
+
+        <x-input.model-select wire:model="pincode_id" :label="'Pincode'">
+            <option class="text-gray-400"> choose ..</option>
+            @foreach($pincodes as $pincode)
+                <option value="{{$pincode->id}}">{{$pincode->vname}}</option>
+            @endforeach
+        </x-input.model-select>
+
     </x-controls.lookup.model>
 </div>

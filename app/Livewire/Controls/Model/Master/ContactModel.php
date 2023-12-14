@@ -2,6 +2,9 @@
 
 namespace App\Livewire\Controls\Model\Master;
 
+use App\Models\Common\City;
+use App\Models\Common\Pincode;
+use App\Models\Common\State;
 use App\Models\Master\Contact;
 use Livewire\Component;
 
@@ -25,9 +28,16 @@ class ContactModel extends Component
     public string $pincode_id = '';
     public string $active_id = '1';
 
+    public $cities;
+    public $states;
+    public $pincodes;
+
     public function mount($name)
     {
         $this->vname = $name;
+        $this->cities = City::all();
+        $this->states = State::all();
+        $this->pincodes = Pincode::all();
     }
 
     public function save()
