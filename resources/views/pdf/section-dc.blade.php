@@ -141,7 +141,7 @@
         </td>
         <td style="padding: 0;margin: 0;">
             <div style="text-align: left; width: 100%">
-                <div><span style="font-size: 18px;">&nbsp;Unit-{{session()->get('tenant_id')}}</span></div>
+                <div><span style="font-size: 18px;">&nbsp;Unit - {{session()->get('tenant_id')}}</span></div>
                 <div><span style="vertical-align: middle;font-size: 13px; ">&nbsp;&nbsp;Dc no:&nbsp;</span><span
                         style="font-size: 18px;">&nbsp;&nbsp;{{$obj->vno}}</span></div>
                 <div><span style="vertical-align: middle;font-size: 13px; ">&nbsp;&nbsp;Date:&nbsp;</span><span
@@ -243,7 +243,7 @@
         </td>
         <td style="padding: 0;margin: 0;">
             <div style="text-align: left; width: 100%">
-                <div><span style="font-size: 18px;">&nbsp;Unit-{{session()->get('tenant_id')}}</span></div>
+                <div><span style="font-size: 18px;">&nbsp;Unit - {{session()->get('tenant_id')}}</span></div>
                 <div><span style="vertical-align: middle;font-size: 13px; ">&nbsp;&nbsp;Dc no:&nbsp;</span><span
                         style="font-size: 18px;">&nbsp;&nbsp;{{$obj->vno}}</span></div>
                 <div><span style="vertical-align: middle;font-size: 13px; ">&nbsp;&nbsp;Date:&nbsp;</span><span
