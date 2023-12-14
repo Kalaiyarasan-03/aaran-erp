@@ -75,7 +75,8 @@ class Upsert extends Component
     public function getOrderList(): void
     {
         $this->orderCollection = $this->order_no ? Order::search(trim($this->order_no))
-            ->get() : Order::all();
+            ->where('tenant_id', '=', session()->get('tenant_id'))
+            ->get() : Order::where('tenant_id', '=', session()->get('tenant_id'))->get();
     }
 
     //
