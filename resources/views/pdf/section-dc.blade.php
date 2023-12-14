@@ -145,7 +145,7 @@
                 <div><span style="vertical-align: middle;font-size: 13px; ">&nbsp;&nbsp;Dc no:&nbsp;</span><span
                         style="font-size: 18px;">&nbsp;&nbsp;{{$obj->vno}}</span></div>
                 <div><span style="vertical-align: middle;font-size: 13px; ">&nbsp;&nbsp;Date:&nbsp;</span><span
-                        style="font-size: 14px;">{{$obj->vdate}}</span></div>
+                        style="font-size: 14px;">{{$obj->vdate ?date('d-m-Y', strtotime($obj->vdate)):''}}</span></div>
             </div>
         </td>
     </tr>
@@ -191,13 +191,12 @@
     @endfor
 
 
-
     <tr>
         <td colspan="6" align="center"></td>
     </tr>
     <tr>
-        <td colspan="3" align="left">Receiver Name : {{$obj->receiver_details}}</td>
-        <td colspan="2" align="right">&nbsp;Total&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="5" align="left">Purpose : {{$obj->receiver_details}}</td>
+        <td align="right">&nbsp;Total&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td align="right">&nbsp;{{$obj->total_qty}}</td>
     </tr>
     <tr>
@@ -248,7 +247,7 @@
                 <div><span style="vertical-align: middle;font-size: 13px; ">&nbsp;&nbsp;Dc no:&nbsp;</span><span
                         style="font-size: 18px;">&nbsp;&nbsp;{{$obj->vno}}</span></div>
                 <div><span style="vertical-align: middle;font-size: 13px; ">&nbsp;&nbsp;Date:&nbsp;</span><span
-                        style="font-size: 14px;">{{$obj->vdate}}</span></div>
+                        style="font-size: 14px;">{{$obj->vdate ?date('d-m-Y', strtotime($obj->vdate)):''}}</span></div>
             </div>
         </td>
     </tr>
@@ -294,13 +293,12 @@
     @endfor
 
 
-
     <tr>
         <td colspan="6" align="center"></td>
     </tr>
     <tr>
-        <td colspan="3" align="left">Receiver Name : {{$obj->receiver_details}}</td>
-        <td colspan="2" align="right">&nbsp;Total&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="5" align="left">Purpose : {{$obj->receiver_details}}</td>
+        <td align="right">&nbsp;Total&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td align="right">&nbsp;{{$obj->total_qty}}</td>
     </tr>
     <tr>
