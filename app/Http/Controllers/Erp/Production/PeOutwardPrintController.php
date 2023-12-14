@@ -58,16 +58,15 @@ class PeOutwardPrintController extends Controller
 
             $peoutItem  = $data;
 
-//            Pdf::setOption(['dpi' => 150, 'defaultPaperSize'=>'a5', 'defaultFont' => 'sans-serif']);
-//            $customPaper = array(0,0,419.58,595.35);
+            Pdf::setOption(['dpi' => 150, 'defaultPaperSize'=>'a5', 'defaultFont' => 'sans-serif']);
+            $customPaper = array(0,0,419.58,595.35);
 
             $pdf = PDF::loadView('pdf.pe-dc',[
                 'obj' => $peout,
                 'list' => $peoutItem,
                 'cmp' => $tenant,
                 'contact' => $contact
-            ]);
-//                ->setPaper($customPaper, 'landscape');
+            ])->setPaper($customPaper, 'landscape');
 
 
             $pdf->render();

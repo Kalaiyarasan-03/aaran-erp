@@ -200,8 +200,8 @@
         <td colspan="7" align="center"></td>
     </tr>
     <tr>
-        <td colspan="3" align="left">Receiver Name : {{$obj->receiver_details}}</td>
-        <td colspan="3" align="right">&nbsp;Total&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="5" align="left">Purpose : {{$obj->receiver_details}}</td>
+        <td align="right">&nbsp;Total&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td align="right">&nbsp;{{$obj->total_qty}}</td>
     </tr>
     <tr>
@@ -213,8 +213,6 @@
     </tr>
     </tbody>
 </table>
-<div><br></div>
-<div><br></div>
 <table width="100%" class="print:*">
     <thead>
     <tr>
@@ -307,8 +305,8 @@
         <td colspan="7" align="center"></td>
     </tr>
     <tr>
-        <td colspan="3" align="left">Receiver Name : {{$obj->receiver_details}}</td>
-        <td colspan="3" align="right">&nbsp;Total&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+        <td colspan="5" align="left">Purpose : {{$obj->receiver_details}}</td>
+        <td align="right">&nbsp;Total&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td align="right">&nbsp;{{$obj->total_qty}}</td>
     </tr>
     <tr>
