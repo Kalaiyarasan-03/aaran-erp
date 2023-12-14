@@ -1,5 +1,5 @@
 <div>
-    <x-controls.lookup.model :show-model="$showModel" :width="'1/2'" >
+    <x-controls.lookup.model :show-model="$showModel" :width="'w-1/2'" >
         <x-input.lookup-text wire:model="vname"  x-ref="vname" :label="'Contact Name'" :name="'vname'"/>
         <x-input.lookup-text wire:model="contact_person" :label="'Contact Person'" :name="'contact_person'"/>
         <x-input.lookup-text wire:model="mobile" :label="'Mobile'" :name="'mobile'"/>
