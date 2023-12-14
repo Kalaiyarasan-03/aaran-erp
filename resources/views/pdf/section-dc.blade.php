@@ -195,7 +195,7 @@
         <td colspan="6" align="center"></td>
     </tr>
     <tr>
-        <td colspan="5" align="left">Purpose : {{$obj->receiver_details}}</td>
+        <td colspan="4" align="left">Purpose : {{$obj->receiver_details}}</td>
         <td align="right">&nbsp;Total&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td align="right">&nbsp;{{$obj->total_qty}}</td>
     </tr>
@@ -297,7 +297,7 @@
         <td colspan="6" align="center"></td>
     </tr>
     <tr>
-        <td colspan="5" align="left">Purpose : {{$obj->receiver_details}}</td>
+        <td colspan="4" align="left">Purpose : {{$obj->receiver_details}}</td>
         <td align="right">&nbsp;Total&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
         <td align="right">&nbsp;{{$obj->total_qty}}</td>
     </tr>
