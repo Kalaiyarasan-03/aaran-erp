@@ -37,7 +37,7 @@
                                     <div class="block py-1 shadow-md w-full
                 rounded-lg border-transparent flex-1 appearance-none border
                                  bg-white text-gray-800 ring-1 ring-purple-600">
-                                        <ul class="overflow-y-scroll h-full">
+                                        <ul class="overflow-y-scroll h-96">
                                             @if($contactCollection)
                                                 @forelse ($contactCollection as $i => $contact)
                                                     <div wire:key="{{ $contact->id }}"></div>
