@@ -148,7 +148,7 @@
 
 
                 <div><span style="vertical-align: middle;font-size: 13px; ">&nbsp;&nbsp;Date:&nbsp;</span><span
-                        style="font-size: 14px;">{{$obj->vdate}}</span></div>
+                        style="font-size: 14px;">{{$obj->vdate ?date('d-m-Y', strtotime($row->vdate)):''}}</span></div>
             </div>
         </td>
     </tr>
