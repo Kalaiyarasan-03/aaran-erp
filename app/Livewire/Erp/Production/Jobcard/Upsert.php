@@ -367,7 +367,6 @@ class Upsert extends Component
                 ->join('colours', 'colours.id', '=', 'jobcard_items.colour_id')
                 ->join('sizes', 'sizes.id', '=', 'jobcard_items.size_id')
                 ->where('jobcard_id', '=', $id)
-                ->where('tenant_id', '=', session()->get('tenant_id'))
                 ->get()
                 ->transform(function ($data) {
                     return [
