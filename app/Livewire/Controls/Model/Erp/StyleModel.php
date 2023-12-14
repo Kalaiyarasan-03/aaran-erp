@@ -24,6 +24,7 @@ class StyleModel extends Component
                 'vname' => $this->vname,
                 'desc' => $this->desc,
                 'active_id' => '1',
+                'tenant_id' => session()->get('tenant_id'),
                 'user_id' => \Auth::id()
             ]);
             $this->dispatch('refresh-style-item', ['name' => $this->vname, 'id' => $obj->id]);
