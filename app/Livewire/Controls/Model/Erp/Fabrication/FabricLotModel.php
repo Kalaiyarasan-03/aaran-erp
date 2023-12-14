@@ -27,6 +27,7 @@ class FabricLotModel extends Component
                 'vname' => Str::ucfirst($this->vname),
                 'desc' => Str::ucfirst($this->desc),
                 'active_id' => '1',
+                'tenant_id' => session()->get('tenant_id'),
                 'user_id' => Auth::id()
             ]);
             $this->dispatch('refresh-fabric-lot-item', ['name' => $this->vname, 'id' => $obj->id]);

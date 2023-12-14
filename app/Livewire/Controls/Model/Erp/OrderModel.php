@@ -26,6 +26,7 @@ class OrderModel extends Component
                 'vname' => Str::upper($this->vname),
                 'desc' => Str::ucfirst($this->desc),
                 'active_id' => '1',
+                'tenant_id' => session()->get('tenant_id'),
                 'user_id' => Auth::id()
             ]);
             $this->dispatch('refresh-order-item', ['name' => $this->vname, 'id' => $obj->id]);
