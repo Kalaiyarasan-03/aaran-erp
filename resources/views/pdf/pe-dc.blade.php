@@ -213,9 +213,8 @@
     </tr>
     </tbody>
 </table>
-<div>$nbsp</div>
-<div>$nbsp</div>
-<div>$nbsp</div>
+<div>&nbsp</div>
+<div>&nbsp</div>
 <table width="100%" class="print:*">
     <thead>
     <tr>
