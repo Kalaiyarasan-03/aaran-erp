@@ -156,8 +156,8 @@
     <thead style="background-color: lightgray;">
     <tr>
         <th width="12px" >#</th>
-        <th>Order No</th>
-        <th width="225px" >Style No</th>
+        <th width="22px">Order&nbsp;No</th>
+        <th width="225px" >Style&nbsp;No</th>
         <th>Colour</th>
         <th>Sizes</th>
         <th width="70px" >Quantity</th>
@@ -258,8 +258,8 @@
     <thead style="background-color: lightgray;">
     <tr>
         <th width="12px" >#</th>
-        <th>Order No</th>
-        <th width="225px" >Style No</th>
+        <th width="22px">Order&nbsp;No</th>
+        <th width="225px" >Style&nbsp;No</th>
         <th>Colour</th>
         <th>Sizes</th>
         <th width="70px" >Quantity</th>
