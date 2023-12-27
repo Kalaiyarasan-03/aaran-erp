@@ -157,26 +157,26 @@
 <table width="100%">
     <thead style="background-color: lightgray;">
     <tr>
-        <th>#</th>
+        <th width="12px" >#</th>
         <th>Order No</th>
-        <th>Style No</th>
+        <th width="225px" >Style No</th>
         <th>Cutting Ref</th>
         <th>Colour</th>
         <th>Sizes</th>
-        <th>Quantity</th>
+        <th width="70px" >Quantity</th>
     </tr>
     </thead>
     <tbody>
     @foreach($list as $index => $row)
 
         <tr>
-            <td width="12" align="center">{{$index+1}} </td>
+            <td align="center">{{$index+1}} </td>
             <td align="center">{{$obj->order_name}} </td>
-            <td width="55">{{$obj->style_name}} </td>
+            <td >{{$obj->style_name}} </td>
             <td align="center">&nbsp;{{$row['cutting_no']}}</td>
             <td align="center">&nbsp;{{$row['colour_name']}}</td>
             <td align="center">&nbsp;{{$row['size_name']}}</td>
-            <td width="20" align="right">&nbsp;{{$row['qty']}}</td>
+            <td align="right">&nbsp;{{$row['qty']}}</td>
         </tr>
 
     @endforeach
@@ -184,13 +184,13 @@
     @for($i = 0; $i < 10-$list->count(); $i++)
 
         <tr>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
         </tr>
 
     @endfor
@@ -262,26 +262,26 @@
 <table width="100%">
     <thead style="background-color: lightgray;">
     <tr>
-        <th>#</th>
+        <th width="12px" >#</th>
         <th>Order No</th>
-        <th>Style No</th>
+        <th width="225px" >Style No</th>
         <th>Cutting Ref</th>
         <th>Colour</th>
         <th>Sizes</th>
-        <th>Quantity</th>
+        <th width="70px" >Quantity</th>
     </tr>
     </thead>
     <tbody>
     @foreach($list as $index => $row)
 
         <tr>
-            <td width="12" align="center">{{$index+1}} </td>
+            <td align="center">{{$index+1}} </td>
             <td align="center">{{$obj->order_name}} </td>
-            <td width="55">{{$obj->style_name}} </td>
+            <td >{{$obj->style_name}} </td>
             <td align="center">&nbsp;{{$row['cutting_no']}}</td>
             <td align="center">&nbsp;{{$row['colour_name']}}</td>
             <td align="center">&nbsp;{{$row['size_name']}}</td>
-            <td width="20" align="right">&nbsp;{{$row['qty']}}</td>
+            <td align="right">&nbsp;{{$row['qty']}}</td>
         </tr>
 
     @endforeach
@@ -289,13 +289,13 @@
     @for($i = 0; $i < 10-$list->count(); $i++)
 
         <tr>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
         </tr>
 
     @endfor
