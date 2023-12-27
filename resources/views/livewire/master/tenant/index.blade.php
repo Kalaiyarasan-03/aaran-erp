@@ -1,5 +1,5 @@
 <div>
-       <x-slot name="header">Tenant</x-slot>
+       <x-slot name="header">Companies</x-slot>
 
        <x-forms.m-panel>
 
