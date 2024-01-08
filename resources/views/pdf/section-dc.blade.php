@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Invoice</title>
+    <title>Section Dc</title>
     <style type="text/css">
         * {
             font-family: Verdana, Arial, sans-serif;
@@ -74,10 +74,10 @@
 
         .gst {
             position: fixed;
-            margin-top: 43px;
-            top: 46px !important;
+            margin-top: 32px;
+            top: 32px !important;
             font-weight: 400;
-            font-size: 16px;
+            font-size: 12px;
             text-align: center;
             font-family: sans-serif;
         }
@@ -140,9 +140,9 @@
             </div>
         </td>
         <td style="padding: 0;margin: 0;">
-            <div style="text-align: left; width: 100%">
+            <div style="text-align: left; width: 100%;">
                 <div><span style="font-size: 18px;">&nbsp;Unit - {{session()->get('tenant_id')}}</span></div>
-                <div><span style="vertical-align: middle;font-size: 13px; ">&nbsp;&nbsp;Dc no:&nbsp;</span><span
+                <div><span style="vertical-align: middle;font-size: 13px;">&nbsp;&nbsp;Dc no:&nbsp;</span><span
                         style="font-size: 18px;">&nbsp;&nbsp;{{$obj->vno}}</span></div>
                 <div><span style="vertical-align: middle;font-size: 13px; ">&nbsp;&nbsp;Date:&nbsp;</span><span
                         style="font-size: 14px;">{{$obj->vdate ?date('d-m-Y', strtotime($obj->vdate)):''}}</span></div>
@@ -151,7 +151,6 @@
     </tr>
     </thead>
 </table>
-
 <table width="100%">
     <thead style="background-color: lightgray;">
     <tr>
