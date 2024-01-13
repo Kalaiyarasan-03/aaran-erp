@@ -281,12 +281,13 @@
     @for($i = 0; $i < 10-$list->count(); $i++)
 
         <tr>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
-            <td width="12" align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
+            <td align="center">&nbsp;</td>
         </tr>
 
     @endfor
